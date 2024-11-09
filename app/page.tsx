@@ -1,80 +1,70 @@
 import { ChatWindow } from "@/components/ChatWindow";
 
 export default function Home() {
-  const InfoCard = (
-    <div className="p-4 md:p-8 rounded bg-[#25252d] w-full max-h-[85%] overflow-hidden">
-      <h1 className="text-3xl md:text-4xl mb-4">
-        ▲ Next.js + LangChain.js 🦜🔗
+  const WelcomeCard = (
+    <div className="p-4 md:p-8 rounded bg-gradient-to-br from-blue-900 to-slate-900 w-full max-h-[85%] overflow-hidden">
+      <h1 className="text-3xl md:text-4xl mb-4 font-bold text-white">
+        Para Research Navigator
       </h1>
-      <ul>
-        <li className="text-l">
-          🤝
-          <span className="ml-2">
-            This template showcases a simple chatbot using{" "}
-            <a href="https://js.langchain.com/" target="_blank">
-              LangChain.js
-            </a>{" "}
-            and the Vercel{" "}
-            <a href="https://sdk.vercel.ai/docs" target="_blank">
-              AI SDK
-            </a>{" "}
-            in a{" "}
-            <a href="https://nextjs.org/" target="_blank">
-              Next.js
-            </a>{" "}
-            project.
-          </span>
-        </li>
-        <li className="hidden text-l md:block">
-          💻
-          <span className="ml-2">
-            You can find the prompt and model logic for this use-case in{" "}
-            <code>app/api/chat/route.ts</code>.
-          </span>
-        </li>
-        <li>
-          🏴‍☠️
-          <span className="ml-2">
-            By default, the bot is pretending to be a pirate, but you can change
-            the prompt to whatever you want!
-          </span>
-        </li>
-        <li className="hidden text-l md:block">
-          🎨
-          <span className="ml-2">
-            The main frontend logic is found in <code>app/page.tsx</code>.
-          </span>
-        </li>
-        <li className="text-l">
-          🐙
-          <span className="ml-2">
-            This template is open source - you can see the source code and
-            deploy your own version{" "}
-            <a
-              href="https://github.com/langchain-ai/langchain-nextjs-template"
-              target="_blank"
-            >
-              from the GitHub repo
-            </a>
-            !
-          </span>
-        </li>
-        <li className="text-l">
-          👇
-          <span className="ml-2">
-            Try asking e.g. <code>What is it like to be a pirate?</code> below!
-          </span>
-        </li>
-      </ul>
+      <p className="text-lg text-blue-100 mb-6">
+        Explore Geoffrey Hinton's groundbreaking AI journey through an interactive experience
+      </p>
+      
+      <div className="space-y-6">
+        <section className="border border-blue-800 rounded-lg p-4 bg-slate-900/50">
+          <h2 className="text-xl font-semibold mb-3 text-blue-200">Journey Highlights</h2>
+          <ul className="space-y-3">
+            <li className="flex items-start">
+              <span className="text-blue-400 mr-2">📚</span>
+              <span>From Psychology to AI: Early influences and transitions</span>
+            </li>
+            <li className="flex items-start">
+              <span className="text-blue-400 mr-2">🔬</span>
+              <span>Persistence through the AI Winter period</span>
+            </li>
+            <li className="flex items-start">
+              <span className="text-blue-400 mr-2">💡</span>
+              <span>Breakthrough: Development of backpropagation</span>
+            </li>
+            <li className="flex items-start">
+              <span className="text-blue-400 mr-2">🌟</span>
+              <span>Legacy and impact on modern deep learning</span>
+            </li>
+          </ul>
+        </section>
+
+        <section className="border border-blue-800 rounded-lg p-4 bg-slate-900/50">
+          <h2 className="text-xl font-semibold mb-3 text-blue-200">How to Explore</h2>
+          <ul className="space-y-3">
+            <li className="flex items-start">
+              <span className="text-blue-400 mr-2">💬</span>
+              <span>Chat with Para to explore different aspects of Hinton's journey</span>
+            </li>
+            <li className="flex items-start">
+              <span className="text-blue-400 mr-2">📊</span>
+              <span>View interactive visualizations of research impact</span>
+            </li>
+            <li className="flex items-start">
+              <span className="text-blue-400 mr-2">🔄</span>
+              <span>Follow the story progression through key milestones</span>
+            </li>
+          </ul>
+        </section>
+
+        <div className="text-center text-blue-200 bg-blue-900/30 p-4 rounded-lg">
+          <p>Try asking: "Tell me about Geoffrey Hinton's early research interests"</p>
+        </div>
+      </div>
     </div>
   );
+
   return (
     <ChatWindow
       endpoint="api/chat"
-      emoji="🏴‍☠️"
-      titleText="Patchy the Chatty Pirate"
-      placeholder="I'm an LLM pretending to be a pirate! Ask me about the pirate life!"
-      emptyStateComponent={InfoCard}
+      emoji="🧠"
+      titleText="Para Research Navigator"
+      placeholder="Ask about Geoffrey Hinton's research journey..."
+      emptyStateComponent={WelcomeCard}
     ></ChatWindow>
   );
 }
