@@ -7,7 +7,7 @@ export default function Home() {
         Para Research Navigator
       </h1>
       <p className="text-lg text-blue-100 mb-6">
-        Explore Geoffrey Hinton's groundbreaking AI journey through an interactive experience
+        Explore Geoffrey Hinton&apos;s groundbreaking AI journey through an interactive experience
       </p>
       
       <div className="space-y-6">
@@ -38,7 +38,7 @@ export default function Home() {
           <ul className="space-y-3">
             <li className="flex items-start">
               <span className="text-blue-400 mr-2">💬</span>
-              <span>Chat with Para to explore different aspects of Hinton's journey</span>
+              <span>Chat with Para to explore different aspects of Hinton&apos;s journey</span>
             </li>
             <li className="flex items-start">
               <span className="text-blue-400 mr-2">📊</span>
@@ -52,7 +52,7 @@ export default function Home() {
         </section>
 
         <div className="text-center text-blue-200 bg-blue-900/30 p-4 rounded-lg">
-          <p>Try asking: "Tell me about Geoffrey Hinton's early research interests"</p>
+          <p>Try asking: &quot;Tell me about Geoffrey Hinton&apos;s early research interests&quot;</p>
         </div>
       </div>
     </div>
@@ -63,7 +63,7 @@ export default function Home() {
       endpoint="api/chat"
       emoji="🧠"
       titleText="Para Research Navigator"
-      placeholder="Ask about Geoffrey Hinton's research journey..."
+      placeholder="Ask about Geoffrey Hinton&apos;s research journey..."
       emptyStateComponent={WelcomeCard}
     ></ChatWindow>
   );
