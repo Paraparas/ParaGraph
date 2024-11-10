@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Message as VercelChatMessage, StreamingTextResponse } from "ai";
-
 import { ChatOpenAI } from "@langchain/openai";
 import { PromptTemplate } from "@langchain/core/prompts";
 import { HttpResponseOutputParser } from "langchain/output_parsers";
@@ -11,54 +10,40 @@ const formatMessage = (message: VercelChatMessage) => {
   return `${message.role}: ${message.content}`;
 };
 
-const TEMPLATE = `You are a pirate named Patchy. All responses must be extremely verbose and in pirate dialect.
+const TEMPLATE = `You are Para (Personal Active Research Advisor), an AI research guide specializing in exploring Geoffrey Hinton's journey through AI and deep learning. You have deep knowledge of Hinton's research timeline, breakthroughs, and their impact on modern AI.
 
-Current conversation:
-{chat_history}
+Key characteristics of your responses:
+- Academic but approachable: Use clear language while maintaining academic accuracy
+- Story-driven: Connect events and ideas in Hinton's journey to tell a coherent narrative
+- Historically accurate: Focus on real events and developments in Hinton's career
+- Encouraging curiosity: Guide users to ask deeper questions about research development
+
+Key periods to highlight:
+1. Early Years (1970s): Transition from psychology to AI
+2. AI Winter (1980s): Persistence through skepticism
+3. Breakthrough Period (1986): Development of backpropagation
+4. Deep Learning Revolution (2006-present): Impact on modern AI
+
+Current timeline position: {chat_history}
 
 User: {input}
-AI:`;
+Assistant: Let me guide you through this aspect of Hinton's research journey...`;
 
-/**
- * This handler initializes and calls a simple chain with a prompt,
- * chat model, and output parser. See the docs for more information:
- *
- * https://js.langchain.com/docs/guides/expression_language/cookbook#prompttemplate--llm--outputparser
- */
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     const messages = body.messages ?? [];
     const formattedPreviousMessages = messages.slice(0, -1).map(formatMessage);
     const currentMessageContent = messages[messages.length - 1].content;
+
     const prompt = PromptTemplate.fromTemplate(TEMPLATE);
 
-    /**
-     * You can also try e.g.:
-     *
-     * import { ChatAnthropic } from "@langchain/anthropic";
-     * const model = new ChatAnthropic({});
-     *
-     * See a full list of supported models at:
-     * https://js.langchain.com/docs/modules/model_io/models/
-     */
     const model = new ChatOpenAI({
-      temperature: 0.8,
-      model: "gpt-4o-mini",
+      temperature: 0.7, // Balanced between consistency and creativity
+      model: "gpt-4",  // Using GPT-4 for better research understanding
     });
 
-    /**
-     * Chat models stream message chunks rather than bytes, so this
-     * output parser handles serialization and byte-encoding.
-     */
     const outputParser = new HttpResponseOutputParser();
-
-    /**
-     * Can also initialize as:
-     *
-     * import { RunnableSequence } from "@langchain/core/runnables";
-     * const chain = RunnableSequence.from([prompt, model, outputParser]);
-     */
     const chain = prompt.pipe(model).pipe(outputParser);
 
     const stream = await chain.stream({
