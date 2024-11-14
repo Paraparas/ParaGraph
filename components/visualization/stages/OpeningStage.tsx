@@ -3,15 +3,21 @@
 import React, { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 
+// Add display name to wrapper component
 const HighchartsWrapper = dynamic(() => 
   import('highcharts/highstock').then(async (mod) => {
     const Highcharts = mod.default;
     const networkgraph = await import('highcharts/modules/networkgraph');
     networkgraph.default(Highcharts);
-    return ({ options }) => {
+    
+    // Create named component with display name
+    const HighchartsComponent = ({ options }) => {
       const HighchartsReact = require('highcharts-react-official').default;
       return <HighchartsReact highcharts={Highcharts} options={options} />;
     };
+    HighchartsComponent.displayName = 'HighchartsComponent';
+    
+    return HighchartsComponent;
   }),
   { ssr: false }
 );
@@ -21,21 +27,21 @@ const OpeningStage = ({ progress = 0 }) => {
   
   // Initialize nodes with fixed positions
   const nodePositions = {
-    'Para': { x: 200, y: 200 },           // Center
-    'Unique Idea': { x: 100, y: 100 },    // Top left
-    'Great Execution': { x: 300, y: 100 }, // Top right
-    'Technical Skills': { x: 100, y: 300 }, // Bottom left
-    'Compelling Story': { x: 300, y: 300 }  // Bottom right
+    'Para': { x: 200, y: 200 },
+    'Unique Idea': { x: 100, y: 100 },
+    'Great Execution': { x: 300, y: 100 },
+    'Technical Skills': { x: 100, y: 300 },
+    'Compelling Story': { x: 300, y: 300 }
   };
 
+  // Fix useEffect dependency
   useEffect(() => {
     console.log('OpeningStage mounted with progress:', progress);
     setIsLoading(false);
-  }, []);
+  }, [progress]); // Add progress to dependency array
 
   // Calculate connections based on progress
   const getConnections = () => {
-    // Define all possible connections
     const connections = [
       ['Para', 'Unique Idea'],
       ['Para', 'Great Execution'],
@@ -43,7 +49,6 @@ const OpeningStage = ({ progress = 0 }) => {
       ['Para', 'Compelling Story']
     ];
 
-    // Number of visible connections based on progress
     const visibleCount = Math.ceil(progress * connections.length);
     console.log('Visible connections:', visibleCount);
     
@@ -102,10 +107,10 @@ const OpeningStage = ({ progress = 0 }) => {
       },
       // data: getConnections(),
       data: [
-        { from: 'Para', to: 'Unique Idea' },
-        { from: 'Para', to: 'Great Execution' },
-        { from: 'Para', to: 'Technical Skills' },
-        { from: 'Para', to: 'Compelling Story' }
+        ['Para', 'Unique Idea'],
+        ['Para', 'Great Execution'],
+        ['Para', 'Technical Skills'],
+        ['Para', 'Compelling Story']
       ],
       nodes: [
         {
@@ -114,7 +119,7 @@ const OpeningStage = ({ progress = 0 }) => {
             radius: 40,
             fillColor: '#2563eb'
           },
-          fixed: false,
+          fixed: true,
           ...nodePositions['Para']
         },
         {
@@ -123,7 +128,7 @@ const OpeningStage = ({ progress = 0 }) => {
             radius: 35,
             fillColor: '#3b82f6'
           },
-          fixed: false,
+          fixed: true,
           ...nodePositions['Unique Idea']
         },
         {
@@ -132,7 +137,7 @@ const OpeningStage = ({ progress = 0 }) => {
             radius: 35,
             fillColor: '#3b82f6'
           },
-          fixed: false,
+          fixed: true,
           ...nodePositions['Great Execution']
         },
         {
@@ -141,7 +146,7 @@ const OpeningStage = ({ progress = 0 }) => {
             radius: 35,
             fillColor: '#3b82f6'
           },
-          fixed: false,
+          fixed: true,
           ...nodePositions['Technical Skills']
         },
         {
@@ -150,7 +155,7 @@ const OpeningStage = ({ progress = 0 }) => {
             radius: 35,
             fillColor: '#3b82f6'
           },
-          fixed: false,
+          fixed: true,
           ...nodePositions['Compelling Story']
         }
       ],
@@ -161,9 +166,6 @@ const OpeningStage = ({ progress = 0 }) => {
       }
     }]
   };
-
-  console.log('Current progress:', progress);
-  console.log('Visible connections:', getConnections());
 
   return (
     <div className="w-full max-w-4xl mx-auto bg-gradient-to-br from-slate-900 to-blue-900 rounded-lg p-6">
@@ -177,5 +179,8 @@ const OpeningStage = ({ progress = 0 }) => {
     </div>
   );
 };
+
+// Add display name to main component
+OpeningStage.displayName = 'OpeningStage';
 
 export default OpeningStage;
