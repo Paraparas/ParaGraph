@@ -5,7 +5,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import { Message } from 'ai';
 import { useChat } from "ai/react";
-import { useRef, useState, ReactElement } from "react";
+import { useRef, useState, ReactElement, useEffect } from "react";
 import type { FormEvent } from "react";
 
 import { ChatMessageBubble } from "@/components/ChatMessageBubble";
@@ -19,11 +19,21 @@ export function ChatWindow(props: {
   titleText?: string,
   emoji?: string;
   showIngestForm?: boolean,
-  showIntermediateStepsToggle?: boolean
+  showIntermediateStepsToggle?: boolean,
+  onMessagesChange?: (messages: Message[]) => void
 }) {
   const messageContainerRef = useRef<HTMLDivElement | null>(null);
 
-  const { endpoint, emptyStateComponent, placeholder, titleText = "An LLM", showIngestForm, showIntermediateStepsToggle, emoji } = props;
+  const { 
+    endpoint, 
+    emptyStateComponent, 
+    placeholder, 
+    titleText = "An LLM", 
+    showIngestForm, 
+    showIntermediateStepsToggle, 
+    emoji,
+    onMessagesChange
+  } = props;
 
   const [showIntermediateSteps, setShowIntermediateSteps] = useState(false);
   const [intermediateStepsLoading, setIntermediateStepsLoading] = useState(false);
@@ -40,13 +50,19 @@ export function ChatWindow(props: {
   const { messages, input, setInput, handleInputChange, handleSubmit, isLoading: chatEndpointIsLoading, setMessages } =
     useChat({
       api: endpoint,
-      onResponse(response) {
-        const sourcesHeader = response.headers.get("x-sources");
-        const sources = sourcesHeader ? JSON.parse((Buffer.from(sourcesHeader, 'base64')).toString('utf8')) : [];
-        const messageIndexHeader = response.headers.get("x-message-index");
-        if (sources.length && messageIndexHeader !== null) {
-          setSourcesForMessages({...sourcesForMessages, [messageIndexHeader]: sources});
-        }
+//       onResponse(response) {
+//         const sourcesHeader = response.headers.get("x-sources");
+//         const sources = sourcesHeader ? JSON.parse((Buffer.from(sourcesHeader, 'base64')).toString('utf8')) : [];
+//         const messageIndexHeader = response
+// .headers.get("x-message-index");
+//         if (sources.length && messageIndexHeader !== null) {
+//           setSourcesForMessages({...sourcesForMessages, [messageIndexHeader]: sources});
+//         }
+//       },
+      onFinish() {
+        // Call the onMessagesChange prop whenever messages are updated
+        console.log('Chat finished, messages updated:', messages);
+        onMessagesChange?.(messages);
       },
       streamMode: "text",
       onError: (e) => {
@@ -56,11 +72,22 @@ export function ChatWindow(props: {
       }
     });
 
+  // // Add effect to monitor messages changes
+  // useEffect(() => {
+  //   console.log('Messages updated:', messages);
+  //   onMessagesChange?.(messages);
+  // }, [messages, onMessagesChange]);
+
   async function sendMessage(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (messageContainerRef.current) {
       messageContainerRef.current.classList.add("grow");
     }
+    
+    // Notify immediately of user message
+    const userMessage = { role: 'user', content: input };
+    onMessagesChange?.([...messages, userMessage]);
+
     if (!messages.length) {
       await new Promise(resolve => setTimeout(resolve, 300));
     }
