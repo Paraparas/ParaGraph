@@ -4,31 +4,31 @@ export default function Home() {
   const WelcomeCard = (
     <div className="p-4 md:p-8 rounded bg-gradient-to-br from-blue-900 to-slate-900 w-full max-h-[85%] overflow-hidden">
       <h1 className="text-3xl md:text-4xl mb-4 font-bold text-white">
-        Para Research Navigator
+        Building Para: A Self-Referential Journey
       </h1>
       <p className="text-lg text-blue-100 mb-6">
-        Explore Geoffrey Hinton&apos;s groundbreaking AI journey through an interactive experience
+        Watch Para demonstrate its problem-solving capabilities by guiding you through its own development story
       </p>
       
       <div className="space-y-6">
         <section className="border border-blue-800 rounded-lg p-4 bg-slate-900/50">
-          <h2 className="text-xl font-semibold mb-3 text-blue-200">Journey Highlights</h2>
+          <h2 className="text-xl font-semibold mb-3 text-blue-200">Story Highlights</h2>
           <ul className="space-y-3">
             <li className="flex items-start">
-              <span className="text-blue-400 mr-2">📚</span>
-              <span>From Psychology to AI: Early influences and transitions</span>
-            </li>
-            <li className="flex items-start">
-              <span className="text-blue-400 mr-2">🔬</span>
-              <span>Persistence through the AI Winter period</span>
-            </li>
-            <li className="flex items-start">
               <span className="text-blue-400 mr-2">💡</span>
-              <span>Breakthrough: Development of backpropagation</span>
+              <span>From vague idea to structured solution</span>
             </li>
             <li className="flex items-start">
-              <span className="text-blue-400 mr-2">🌟</span>
-              <span>Legacy and impact on modern deep learning</span>
+              <span className="text-blue-400 mr-2">🔄</span>
+              <span>Meta-narrative approach to problem-solving</span>
+            </li>
+            <li className="flex items-start">
+              <span className="text-blue-400 mr-2">🎯</span>
+              <span>Step-by-step development journey</span>
+            </li>
+            <li className="flex items-start">
+              <span className="text-blue-400 mr-2">✨</span>
+              <span>Interactive feature demonstrations</span>
             </li>
           </ul>
         </section>
@@ -37,22 +37,22 @@ export default function Home() {
           <h2 className="text-xl font-semibold mb-3 text-blue-200">How to Explore</h2>
           <ul className="space-y-3">
             <li className="flex items-start">
-              <span className="text-blue-400 mr-2">💬</span>
-              <span>Chat with Para to explore different aspects of Hinton&apos;s journey</span>
+              <span className="text-blue-400 mr-2">🤔</span>
+              <span>Ask &quot;How can we win this hackathon?&quot;</span>
             </li>
             <li className="flex items-start">
               <span className="text-blue-400 mr-2">📊</span>
-              <span>View interactive visualizations of research impact</span>
+              <span>Follow the development visualization</span>
             </li>
             <li className="flex items-start">
-              <span className="text-blue-400 mr-2">🔄</span>
-              <span>Follow the story progression through key milestones</span>
+              <span className="text-blue-400 mr-2">🔍</span>
+              <span>Explore Para&apos;s problem-solving approach</span>
             </li>
           </ul>
         </section>
 
         <div className="text-center text-blue-200 bg-blue-900/30 p-4 rounded-lg">
-          <p>Try asking: &quot;Tell me about Geoffrey Hinton&apos;s early research interests&quot;</p>
+          <p>Start with: &quot;How do we approach building Para for this hackathon?&quot;</p>
         </div>
       </div>
     </div>
@@ -61,9 +61,9 @@ export default function Home() {
   return (
     <ChatWindow
       endpoint="api/chat"
-      emoji="🧠"
-      titleText="Para Research Navigator"
-      placeholder="Ask about Geoffrey Hinton&apos;s research journey..."
+      emoji="🌟"
+      titleText="Para: Self-Referential Demo"
+      placeholder="Ask about building Para..."
       emptyStateComponent={WelcomeCard}
     ></ChatWindow>
   );
