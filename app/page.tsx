@@ -26,7 +26,8 @@ export default function Home() {
         const startTime = Date.now();
         const duration = 30000; // 30 seconds
         
-        function updateProgress() {
+        // Use arrow function instead
+        const updateProgress = () => {
           const elapsed = Date.now() - startTime;
           const newProgress = Math.min(elapsed / duration, 1);
           setProgress(newProgress);
@@ -34,7 +35,7 @@ export default function Home() {
           if (newProgress < 1 && stage === 'opening') {
             requestAnimationFrame(updateProgress);
           }
-        }
+        };
         
         requestAnimationFrame(updateProgress);
       }
