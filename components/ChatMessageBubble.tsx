@@ -1,38 +1,44 @@
-import type { Message } from "ai/react";
+'use client';
 
-export function ChatMessageBubble(props: { message: Message, aiEmoji?: string, sources: any[] }) {
-  const colorClassName =
-    props.message.role === "user" ? "bg-sky-600" : "bg-slate-50 text-black";
-  const alignmentClassName =
-    props.message.role === "user" ? "ml-auto" : "mr-auto";
-  const prefix = props.message.role === "user" ? "🧑" : props.aiEmoji;
+import { Message } from 'ai';
+
+export function ChatMessageBubble({ message, aiEmoji, sources }: { message: Message; aiEmoji?: string; sources?: any[] }) {
+  const isUser = message.role === 'user';
+
   return (
-    <div
-      className={`${alignmentClassName} ${colorClassName} rounded px-4 py-2 max-w-[80%] mb-8 flex`}
-    >
-      <div className="mr-2">
-        {prefix}
+    <div className={`group flex items-start mb-4 ${isUser ? 'justify-end' : 'justify-start'} animate-in fade-in`}>
+      {/* Avatar/Icon */}
+      <div className={`flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center
+        ${isUser ? 'order-2 ml-3 bg-indigo-500/20' : 'order-1 mr-3 bg-slate-500/20'}`}>
+        <span className="text-sm">{isUser ? '👤' : aiEmoji}</span>
       </div>
-      <div className="whitespace-pre-wrap flex flex-col">
-        <span>{props.message.content}</span>
-        {props.sources && props.sources.length ? <>
-          <code className="mt-4 mr-auto bg-slate-600 px-2 py-1 rounded">
-            <h2>
-              🔍 Sources:
-            </h2>
-          </code>
-          <code className="mt-1 mr-2 bg-slate-600 px-2 py-1 rounded text-xs">
-            {props.sources?.map((source, i) => (
-              <div className="mt-2" key={"source:" + i}>
-                {i + 1}. &quot;{source.pageContent}&quot;{
-                  source.metadata?.loc?.lines !== undefined
-                    ? <div><br/>Lines {source.metadata?.loc?.lines?.from} to {source.metadata?.loc?.lines?.to}</div>
-                    : ""
-                  }
-              </div>
-            ))}
-          </code>
-        </> : ""}
+
+      {/* Message Content */}
+      <div className={`relative max-w-[80%] ${isUser ? 'order-1' : 'order-2'}`}>
+        <div className={`p-4 rounded-2xl backdrop-blur-sm transform transition-all duration-300
+          ${isUser 
+            ? 'bg-indigo-500/10 border border-indigo-500/20 text-indigo-100 hover:shadow-indigo-500/10' 
+            : 'bg-slate-800/50 border border-slate-700/50 text-slate-200 hover:shadow-slate-500/10'
+          }
+          hover:shadow-lg hover:-translate-y-0.5
+          ${isUser ? 'hover:bg-indigo-500/20' : 'hover:bg-slate-800/70'}
+        `}>
+          <p className="text-sm leading-relaxed whitespace-pre-wrap">{message.content}</p>
+
+          {/* Sources section if available */}
+          {sources && sources.length > 0 && (
+            <div className="mt-4 pt-4 border-t border-slate-700/40">
+              <p className="text-xs text-slate-400 mb-2">Sources:</p>
+              <ul className="space-y-2">
+                {sources.map((source, i) => (
+                  <li key={i} className="text-xs text-slate-400 hover:text-indigo-300 transition-colors">
+                    {source}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

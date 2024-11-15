@@ -8,8 +8,6 @@ import OpeningStage from '@/components/visualization/stages/OpeningStage';
 export default function Home() {
   const [stage, setStage] = useState('pre-start');
   const [progress, setProgress] = useState(0);
-
-  // Add state for current message
   const [currentMessage, setCurrentMessage] = useState('');
 
   const handleMessagesChange = useCallback((newMessages: Message[]) => {
@@ -40,23 +38,35 @@ export default function Home() {
         requestAnimationFrame(updateProgress);
       }
     }
-  }, [stage]);
+  }, []);
 
   const WelcomeCard = (
-    <div className="space-y-6">
-      <h1 className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-emerald-400">
-        Para Research Navigator
-      </h1>
-      <p className="text-lg text-blue-200 leading-relaxed">
-        Watch how Para breaks down complex problems using its own development journey
-      </p>
-      
-      <div className="p-6 rounded-2xl bg-gradient-to-br from-blue-900/50 to-slate-900/50 border border-blue-500/20 backdrop-blur-sm">
-        <h2 className="text-xl font-semibold mb-4 text-blue-300">Start Your Journey</h2>
-        <div className="prose prose-invert">
-          <p className="text-blue-100 mb-4">Begin by asking:</p>
-          <div className="p-4 rounded-lg bg-blue-950/50 border border-blue-500/30">
-            <code className="text-emerald-400">
+    <div className="space-y-8">
+      {/* Hero Section */}
+      <div className="relative">
+        <div className="absolute inset-0 bg-gradient-to-r from-violet-600/20 to-indigo-600/20 blur-3xl" />
+        <div className="relative">
+          <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-white mb-4">
+            Para <span className="text-indigo-400">Research Navigator</span>
+          </h1>
+          <p className="text-xl text-slate-300 leading-relaxed max-w-2xl">
+            Experience AI-driven problem solving through a self-referential journey of building Para itself.
+          </p>
+        </div>
+      </div>
+
+      {/* Quick Start Section */}
+      <div className="rounded-2xl bg-gradient-to-b from-slate-800/50 to-slate-900/50 border border-slate-700/50 backdrop-blur-xl p-8">
+        <h2 className="text-xl font-semibold mb-6 text-white flex items-center gap-2">
+          <span className="w-8 h-8 rounded-lg bg-indigo-500/20 flex items-center justify-center">
+            🚀
+          </span>
+          Quick Start
+        </h2>
+        <div className="space-y-4">
+          <p className="text-slate-300">Begin your journey with:</p>
+          <div className="bg-slate-900/50 rounded-lg p-4 border border-slate-800">
+            <code className="text-indigo-300">
               &quot;How do we approach building Para for this hackathon?&quot;
             </code>
           </div>
@@ -66,35 +76,48 @@ export default function Home() {
   );
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-slate-900 via-blue-950 to-slate-900">
-      <div className="max-w-7xl mx-auto p-4 md:p-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Chat Panel - Now on the left */}
-          <div className="rounded-2xl backdrop-blur-md bg-gradient-to-br from-blue-900/30 to-slate-900/30 border border-blue-500/20">
-            <ChatWindow
-              endpoint="api/chat"
-              emoji="🌟"
-              titleText="Para: Self-Referential Demo"
-              placeholder="Ask how to win this hackathon..."
-              emptyStateComponent={WelcomeCard}
-              onMessagesChange={handleMessagesChange}
-            />
-          </div>
+    <main className="min-h-screen bg-slate-900">
+      {/* Background gradients */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,_var(--tw-gradient-stops))] from-indigo-900/20 via-slate-900 to-slate-900" />
 
-          {/* Visualization Panel - Now on the right */}
-          <div className="rounded-2xl backdrop-blur-md bg-gradient-to-br from-slate-900/50 to-blue-900/50 border border-blue-500/20 p-6">
-            {stage === 'pre-start' ? (
-              <div className="flex items-center justify-center h-[400px] text-center">
-                <div className="space-y-4">
-                  <div className="text-xl text-blue-200">Visualization will appear here</div>
-                  <div className="text-sm text-blue-400">
-                    Ask about building Para to begin the journey
+      <div className="relative">
+        {/* Gradient canvas - like Stripe's animated gradient */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute -inset-[10px] opacity-50">
+            <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/30 to-purple-500/30 blur-3xl animate-pulse" />
+          </div>
+        </div>
+
+        {/* Main content */}
+        <div className="relative max-w-7xl mx-auto p-4 md:p-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {/* Chat Panel */}
+            <div className="rounded-2xl bg-slate-800/20 border border-slate-700/30 backdrop-blur-xl shadow-2xl">
+              <ChatWindow
+                endpoint="api/chat"
+                emoji="✨"
+                titleText="Para: Self-Referential Demo"
+                placeholder="Ask how to win this hackathon..."
+                emptyStateComponent={WelcomeCard}
+                onMessagesChange={handleMessagesChange}
+              />
+            </div>
+
+            {/* Visualization Panel */}
+            <div className="rounded-2xl bg-slate-800/20 border border-slate-700/30 backdrop-blur-xl p-6 shadow-2xl">
+              {stage === 'pre-start' ? (
+                <div className="flex items-center justify-center h-[400px] text-center">
+                  <div className="space-y-4">
+                    <div className="text-xl text-slate-300">Visualization will appear here</div>
+                    <div className="text-sm text-slate-400">
+                      Ask about building Para to begin the journey
+                    </div>
                   </div>
                 </div>
-              </div>
-            ) : (
-              <OpeningStage progress={progress} />
-            )}
+              ) : (
+                <OpeningStage progress={progress} currentMessage={currentMessage} />
+              )}
+            </div>
           </div>
         </div>
       </div>
