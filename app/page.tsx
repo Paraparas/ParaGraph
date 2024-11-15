@@ -5,8 +5,11 @@ import { Message } from 'ai';
 import { ChatWindow } from "@/components/ChatWindow";
 import OpeningStage from '@/components/visualization/stages/OpeningStage';
 
+// Define stage type
+type StageType = 'pre-start' | 'opening';
+
 export default function Home() {
-  const [stage, setStage] = useState('pre-start');
+  const [stage, setStage] = useState<StageType>('pre-start');
   const [progress, setProgress] = useState(0);
 
   // Handle message updates with simpler logic
@@ -26,13 +29,13 @@ export default function Home() {
         const startTime = Date.now();
         const duration = 30000; // 30 seconds
         
-        // Use arrow function instead
+        // Define animation function using arrow function
         const updateProgress = () => {
           const elapsed = Date.now() - startTime;
           const newProgress = Math.min(elapsed / duration, 1);
           setProgress(newProgress);
           
-          if (newProgress < 1 && stage === 'opening') {
+          if (newProgress < 1) {
             requestAnimationFrame(updateProgress);
           }
         };
