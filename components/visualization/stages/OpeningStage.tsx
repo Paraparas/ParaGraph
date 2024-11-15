@@ -1,52 +1,120 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import dynamic from 'next/dynamic';
+import type { Options } from 'highcharts';
 
-// Create a component that handles Highcharts initialization
+// Extend Highcharts types for networkgraph nodes
+interface ExtendedNodeOptions {
+  id: string;
+  color: string;
+  marker?: {
+    radius: number;
+  };
+  x?: number;
+  y?: number;
+  fixed?: boolean;
+}
+
+interface ChartComponentProps {
+  options: Options;
+}
+
 const HighchartsComponent = dynamic(() => 
   import('highcharts/highstock').then(async (mod) => {
-    // Get the base Highcharts
-    const Highcharts = mod.default;
-    
-    // Import and initialize networkgraph module
+    const Highcharts = mod.default || mod;
     const networkgraph = await import('highcharts/modules/networkgraph');
     networkgraph.default(Highcharts);
     
-    // Return a component that uses the initialized Highcharts
-    const Component = ({ options }) => {
+    const Component = ({ options }: ChartComponentProps) => {
       const HighchartsReact = require('highcharts-react-official').default;
       return <HighchartsReact highcharts={Highcharts} options={options} />;
     };
+    Component.displayName = 'HighchartsComponent';
     
     return Component;
   }),
-  { 
-    ssr: false,
-    loading: () => <div className="text-white text-center py-20">Loading chart...</div>
-  }
+  { ssr: false }
 );
 
-const OpeningStage = ({ progress = 0 }) => {
-  const getConnections = () => {
-    const connections = [
-      ['Para', 'Unique Idea'],
-      ['Para', 'Great Execution'],
-      ['Para', 'Technical Skills'],
-      ['Para', 'Compelling Story']
-    ];
-    return connections.slice(0, Math.max(1, Math.ceil(progress * connections.length)));
-  };
+interface OpeningStageProps {
+  progress: number;
+}
 
-  const options = {
+const OpeningStage: React.FC<OpeningStageProps> = ({ progress = 0 }) => {
+  // Define nodes using our extended type
+  const nodes: ExtendedNodeOptions[] = [
+    { 
+      id: 'Para',
+      color: '#2563eb',
+      marker: {
+        radius: 40
+      },
+      x: 200,
+      y: 200,
+      fixed: true
+    },
+    {
+      id: 'Unique Idea',
+      color: '#3b82f6',
+      marker: {
+        radius: 35
+      },
+      x: 100,
+      y: 100,
+      fixed: true
+    },
+    {
+      id: 'Great Execution',
+      color: '#3b82f6',
+      marker: {
+        radius: 35
+      },
+      x: 300,
+      y: 100,
+      fixed: true
+    },
+    {
+      id: 'Technical Skills',
+      color: '#3b82f6',
+      marker: {
+        radius: 35
+      },
+      x: 100,
+      y: 300,
+      fixed: true
+    },
+    {
+      id: 'Compelling Story',
+      color: '#3b82f6',
+      marker: {
+        radius: 35
+      },
+      x: 300,
+      y: 300,
+      fixed: true
+    }
+  ];
+
+  const connections = [
+    ['Para', 'Unique Idea'],
+    ['Para', 'Great Execution'],
+    ['Para', 'Technical Skills'],
+    ['Para', 'Compelling Story']
+  ].slice(0, Math.max(1, Math.ceil(progress * 4)));
+
+  // Cast the options to avoid TypeScript errors
+  const options: Options = {
     chart: {
       type: 'networkgraph',
-      height: 400,
+      height: '400px',
       backgroundColor: 'transparent'
     },
     title: {
       text: 'Building Para',
-      style: { color: '#ffffff' }
+      style: {
+        color: '#ffffff'
+      }
     },
     credits: {
       enabled: false
@@ -60,6 +128,7 @@ const OpeningStage = ({ progress = 0 }) => {
       }
     },
     series: [{
+      type: 'networkgraph',
       dataLabels: {
         enabled: true,
         style: {
@@ -67,60 +136,9 @@ const OpeningStage = ({ progress = 0 }) => {
           color: '#ffffff'
         }
       },
-      data: getConnections(),
-      nodes: [
-        { 
-          id: 'Para',
-          color: '#2563eb',
-          marker: {
-            radius: 40
-          },
-          x: 200,
-          y: 200,
-          fixed: true
-        },
-        {
-          id: 'Unique Idea',
-          color: '#3b82f6',
-          marker: {
-            radius: 35
-          },
-          x: 100,
-          y: 100,
-          fixed: true
-        },
-        {
-          id: 'Great Execution',
-          color: '#3b82f6',
-          marker: {
-            radius: 35
-          },
-          x: 300,
-          y: 100,
-          fixed: true
-        },
-        {
-          id: 'Technical Skills',
-          color: '#3b82f6',
-          marker: {
-            radius: 35
-          },
-          x: 100,
-          y: 300,
-          fixed: true
-        },
-        {
-          id: 'Compelling Story',
-          color: '#3b82f6',
-          marker: {
-            radius: 35
-          },
-          x: 300,
-          y: 300,
-          fixed: true
-        }
-      ]
-    }]
+      data: connections,
+      nodes: nodes
+    } as any] // Use type assertion here
   };
 
   return (
