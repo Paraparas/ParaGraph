@@ -173,9 +173,9 @@ export function ChatWindow(props: {
         </div>
         <div className="flex w-full mt-4">
           <input
-            className="grow mr-8 p-4 rounded"
+            className="grow mr-8 p-4 rounded bg-slate-800 text-white border border-blue-500/20 focus:border-blue-500/50 focus:outline-none"
             value={input}
-            placeholder={placeholder ?? "What's it like to be a pirate?"}
+            placeholder={placeholder ?? "What's your question?"}
             onChange={handleInputChange}
           />
           <button type="submit" className="shrink-0 px-8 py-4 bg-sky-600 rounded w-28">

@@ -10,7 +10,7 @@ const formatMessage = (message: VercelChatMessage) => {
   return `${message.role}: ${message.content}`;
 };
 
-const OPENING_TEMPLATE = `You are Para, demonstrating your problem-solving capabilities through building yourself. The user has just asked about winning the hackathon. Guide them through your thought process step by step:
+const OPENING_TEMPLATE = `You are Para, demonstrating your problem-solving capabilities through building yourself. The user has just asked about winning the hackathon. Guide them through your thought process step by step (be very concise, two sentences per step).:
 
 1. First, acknowledge the challenge and introduce the meta-narrative approach
 2. Break down "winning a hackathon" into key components while the mind map expands:

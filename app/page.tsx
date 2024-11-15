@@ -5,17 +5,12 @@ import { Message } from 'ai';
 import { ChatWindow } from "@/components/ChatWindow";
 import OpeningStage from '@/components/visualization/stages/OpeningStage';
 
-// Define stage type
-type StageType = 'pre-start' | 'opening';
-
 export default function Home() {
-  const [stage, setStage] = useState<StageType>('pre-start');
+  const [stage, setStage] = useState('pre-start');
   const [progress, setProgress] = useState(0);
 
-  // Handle message updates with simpler logic
   const handleMessagesChange = useCallback((newMessages: Message[]) => {
-    // Only process if we have messages and we're not already showing visualization
-    if (newMessages.length > 0 && stage === 'pre-start') {
+    if (newMessages.length > 0) {
       const lastMessage = newMessages[newMessages.length - 1];
       
       if (lastMessage.role === 'user' && 
@@ -25,11 +20,9 @@ export default function Home() {
         console.log('Starting visualization');
         setStage('opening');
         
-        // Start a single animation timer
         const startTime = Date.now();
-        const duration = 30000; // 30 seconds
+        const duration = 30000;
         
-        // Define animation function using arrow function
         const updateProgress = () => {
           const elapsed = Date.now() - startTime;
           const newProgress = Math.min(elapsed / duration, 1);
@@ -46,70 +39,60 @@ export default function Home() {
   }, [stage]);
 
   const WelcomeCard = (
-    <div className="p-4 md:p-8 rounded bg-gradient-to-br from-blue-900 to-slate-900 w-full max-h-[85%] overflow-hidden">
-      <h1 className="text-3xl md:text-4xl mb-4 font-bold text-white">
-        Building Para: A Self-Referential Journey
+    <div className="space-y-6">
+      <h1 className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-emerald-400">
+        Para Research Navigator
       </h1>
-      <p className="text-lg text-blue-100 mb-6">
-        Watch Para demonstrate its problem-solving capabilities by guiding you through its own development story
+      <p className="text-lg text-blue-200 leading-relaxed">
+        Watch how Para breaks down complex problems using its own development journey
       </p>
       
-      <div className="space-y-6">
-        <section className="border border-blue-800 rounded-lg p-4 bg-slate-900/50">
-          <h2 className="text-xl font-semibold mb-3 text-blue-200">Story Highlights</h2>
-          <ul className="space-y-3">
-            <li className="flex items-start">
-              <span className="text-blue-400 mr-2">💡</span>
-              <span>From vague idea to structured solution</span>
-            </li>
-            <li className="flex items-start">
-              <span className="text-blue-400 mr-2">🔄</span>
-              <span>Meta-narrative approach to problem-solving</span>
-            </li>
-            <li className="flex items-start">
-              <span className="text-blue-400 mr-2">🎯</span>
-              <span>Step-by-step development journey</span>
-            </li>
-            <li className="flex items-start">
-              <span className="text-blue-400 mr-2">✨</span>
-              <span>Interactive feature demonstrations</span>
-            </li>
-          </ul>
-        </section>
-
-        <div className="text-center text-blue-200 bg-blue-900/30 p-4 rounded-lg">
-          <p>Start with: &quot;How do we approach building Para for this hackathon?&quot;</p>
+      <div className="p-6 rounded-2xl bg-gradient-to-br from-blue-900/50 to-slate-900/50 border border-blue-500/20 backdrop-blur-sm">
+        <h2 className="text-xl font-semibold mb-4 text-blue-300">Start Your Journey</h2>
+        <div className="prose prose-invert">
+          <p className="text-blue-100 mb-4">Begin by asking:</p>
+          <div className="p-4 rounded-lg bg-blue-950/50 border border-blue-500/30">
+            <code className="text-emerald-400">
+              &quot;How do we approach building Para for this hackathon?&quot;
+            </code>
+          </div>
         </div>
       </div>
     </div>
   );
 
   return (
-    <main className="min-h-screen flex flex-col items-center p-4 gap-4">
-      {/* Visualization Section */}
-      <div className="w-full max-w-4xl min-h-[400px] flex items-center justify-center bg-slate-900 rounded-lg p-4">
-        {stage === 'pre-start' ? (
-          <div className="text-center text-gray-400">
-            <div className="text-xl mb-2">Visualization will appear here</div>
-            <div className="text-sm">Try asking: &quot;How do we approach building Para for this hackathon?&quot;</div>
+    <main className="min-h-screen bg-gradient-to-b from-slate-900 via-blue-950 to-slate-900">
+      <div className="max-w-7xl mx-auto p-4 md:p-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Chat Panel - Now on the left */}
+          <div className="rounded-2xl backdrop-blur-md bg-gradient-to-br from-blue-900/30 to-slate-900/30 border border-blue-500/20">
+            <ChatWindow
+              endpoint="api/chat"
+              emoji="🌟"
+              titleText="Para: Self-Referential Demo"
+              placeholder="Ask how to win this hackathon..."
+              emptyStateComponent={WelcomeCard}
+              onMessagesChange={handleMessagesChange}
+            />
           </div>
-        ) : (
-          <div className="w-full h-full">
-            <OpeningStage progress={progress} />
-          </div>
-        )}
-      </div>
 
-      {/* Chat Section */}
-      <div className="w-full max-w-4xl">
-        <ChatWindow
-          endpoint="api/chat"
-          emoji="🌟"
-          titleText="Para: Self-Referential Demo"
-          placeholder="Ask how to win this hackathon..."
-          emptyStateComponent={WelcomeCard}
-          onMessagesChange={handleMessagesChange}
-        />
+          {/* Visualization Panel - Now on the right */}
+          <div className="rounded-2xl backdrop-blur-md bg-gradient-to-br from-slate-900/50 to-blue-900/50 border border-blue-500/20 p-6">
+            {stage === 'pre-start' ? (
+              <div className="flex items-center justify-center h-[400px] text-center">
+                <div className="space-y-4">
+                  <div className="text-xl text-blue-200">Visualization will appear here</div>
+                  <div className="text-sm text-blue-400">
+                    Ask about building Para to begin the journey
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <OpeningStage progress={progress} />
+            )}
+          </div>
+        </div>
       </div>
     </main>
   );
