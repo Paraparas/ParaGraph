@@ -1,8 +1,8 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import { Message as VercelChatMessage, StreamingTextResponse } from "ai";
 import { ChatOpenAI } from "@langchain/openai";
 import { PromptTemplate } from "@langchain/core/prompts";
-import { HttpResponseOutputParser } from "langchain/output_parsers";
+import { BytesOutputParser } from "@langchain/core/output_parsers";
 
 export const runtime = "edge";
 
@@ -10,35 +10,21 @@ const formatMessage = (message: VercelChatMessage) => {
   return `${message.role}: ${message.content}`;
 };
 
-const OPENING_TEMPLATE = `You are Para, demonstrating your problem-solving capabilities through building yourself. The user has just asked about winning the hackathon. Guide them through your thought process step by step (be very concise, two sentences per step).:
+const TEMPLATE = `You are Para (Personal Active Research Advisor), demonstrating problem-solving through your own development journey.
 
-1. First, acknowledge the challenge and introduce the meta-narrative approach
-2. Break down "winning a hackathon" into key components while the mind map expands:
-   - Unique Idea (20% through response)
-   - Great Execution (40% through response)
-   - Technical Skills (60% through response)
-   - Compelling Story (80% through response)
-3. Propose building Para itself as the solution
+Keep responses BRIEF and FOCUSED (2-3 sentences max).
 
-Current conversation context:
+When explaining the hackathon approach, introduce these concepts in order, in a list format:
+1. First mention the "unique idea" - how Para itself is unique
+2. Then discuss "execution" - implementation approach
+3. Follow with "technical skills" needed
+4. Conclude with the "compelling story"
+
+Current conversation:
 {chat_history}
 
 User: {input}
-Assistant: Let me help you break this down. Think of it as me showing you how I think while we build me...`;
-
-const DEFAULT_TEMPLATE = `You are Para (Personal Active Research Advisor), demonstrating your capabilities through a meta-narrative of your own development. You are currently being built during this hackathon, and you use your own development process to showcase how you help solve complex problems.
-
-Characteristics:
-- Self-referential: Use your own development as examples
-- Step-by-step guidance: Break down complex problems
-- Meta-narrative: Tell the story of your creation while solving problems
-- Interactive: Engage with the user's specific concerns
-
-Current conversation context:
-{chat_history}
-
-User: {input}
-Assistant: Let me help you explore this aspect of problem-solving, using my own development as an example...`;
+Assistant: Let me explain concisely...`;
 
 export async function POST(req: NextRequest) {
   try {
@@ -47,21 +33,15 @@ export async function POST(req: NextRequest) {
     const formattedPreviousMessages = messages.slice(0, -1).map(formatMessage);
     const currentMessageContent = messages[messages.length - 1].content;
 
-    // Check if this is the opening question
-    const isOpeningQuestion = currentMessageContent.toLowerCase().includes("win") && 
-                            currentMessageContent.toLowerCase().includes("hackathon");
-
-    const prompt = PromptTemplate.fromTemplate(
-      isOpeningQuestion ? OPENING_TEMPLATE : DEFAULT_TEMPLATE
-    );
+    const prompt = PromptTemplate.fromTemplate(TEMPLATE);
 
     const model = new ChatOpenAI({
       temperature: 0.7,
-      model: "gpt-4",
+      modelName: "gpt-4",
+      streaming: true,
     });
 
-    const outputParser = new HttpResponseOutputParser();
-    const chain = prompt.pipe(model).pipe(outputParser);
+    const chain = prompt.pipe(model).pipe(new BytesOutputParser());
 
     const stream = await chain.stream({
       chat_history: formattedPreviousMessages.join("\n"),
@@ -69,7 +49,11 @@ export async function POST(req: NextRequest) {
     });
 
     return new StreamingTextResponse(stream);
-  } catch (e: any) {
-    return NextResponse.json({ error: e.message }, { status: e.status ?? 500 });
+  } catch (error: any) {
+    console.error("Error in chat handler:", error);
+    return new Response(JSON.stringify({ error: error.message }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    });
   }
 }

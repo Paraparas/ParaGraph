@@ -4,17 +4,15 @@ import React, { useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import type { Options } from 'highcharts';
 
-// Extend Highcharts types for networkgraph nodes
-interface ExtendedNodeOptions {
+// Define types for our nodes and connections
+type NodeType = {
   id: string;
   color: string;
-  marker?: {
-    radius: number;
-  };
-  x?: number;
-  y?: number;
-  fixed?: boolean;
-}
+  marker: { radius: number };
+  mass: number;
+};
+
+type ConnectionType = [string, string];  // From node, To node
 
 interface ChartComponentProps {
   options: Options;
@@ -39,76 +37,86 @@ const HighchartsComponent = dynamic(() =>
 
 interface OpeningStageProps {
   progress: number;
+  currentMessage?: string;
 }
 
-const OpeningStage: React.FC<OpeningStageProps> = ({ progress = 0 }) => {
-  // Define nodes using our extended type
-  const nodes: ExtendedNodeOptions[] = [
-    { 
+const OpeningStage: React.FC<OpeningStageProps> = ({ progress = 0, currentMessage = '' }) => {
+  // Define node appearance based on message content
+  const getVisibleNodes = (): NodeType[] => {
+    const msg = currentMessage.toLowerCase();
+    const nodes: NodeType[] = [];
+    
+    // Always show Para node
+    nodes.push({
       id: 'Para',
       color: '#2563eb',
-      marker: {
-        radius: 40
-      },
-      x: 200,
-      y: 200,
-      fixed: true
-    },
-    {
-      id: 'Unique Idea',
-      color: '#3b82f6',
-      marker: {
-        radius: 35
-      },
-      x: 100,
-      y: 100,
-      fixed: true
-    },
-    {
-      id: 'Great Execution',
-      color: '#3b82f6',
-      marker: {
-        radius: 35
-      },
-      x: 300,
-      y: 100,
-      fixed: true
-    },
-    {
-      id: 'Technical Skills',
-      color: '#3b82f6',
-      marker: {
-        radius: 35
-      },
-      x: 100,
-      y: 300,
-      fixed: true
-    },
-    {
-      id: 'Compelling Story',
-      color: '#3b82f6',
-      marker: {
-        radius: 35
-      },
-      x: 300,
-      y: 300,
-      fixed: true
+      marker: { radius: 60 },
+      mass: 8
+    });
+
+    // Add nodes based on message content
+    if (msg.includes('unique idea') || progress > 0.1) {
+      nodes.push({
+        id: 'Unique Idea',
+        color: '#3b82f6',
+        marker: { radius: 40 },
+        mass: 4
+      });
     }
-  ];
+    
+    if (msg.includes('execution') || progress > 0.15) {
+      nodes.push({
+        id: 'Great Execution',
+        color: '#3b82f6',
+        marker: { radius: 40 },
+        mass: 4
+      });
+    }
+    
+    if (msg.includes('technical') || progress > 0.2) {
+      nodes.push({
+        id: 'Technical Skills',
+        color: '#3b82f6',
+        marker: { radius: 40 },
+        mass: 4
+      });
+    }
+    
+    if (msg.includes('story') || progress > 0.25) {
+      nodes.push({
+        id: 'Compelling Story',
+        color: '#3b82f6',
+        marker: { radius: 40 },
+        mass: 4
+      });
+    }
 
-  const connections = [
-    ['Para', 'Unique Idea'],
-    ['Para', 'Great Execution'],
-    ['Para', 'Technical Skills'],
-    ['Para', 'Compelling Story']
-  ].slice(0, Math.max(1, Math.ceil(progress * 4)));
+    return nodes;
+  };
 
-  // Cast the options to avoid TypeScript errors
+  // Get connections based on visible nodes
+  const getConnections = (): ConnectionType[] => {
+    const nodes = getVisibleNodes();
+    const connections: ConnectionType[] = [];
+    
+    // Create connections for each visible node to Para
+    nodes.forEach(node => {
+      if (node.id !== 'Para') {
+        connections.push(['Para', node.id]);
+      }
+    });
+
+    return connections;
+  };
+
   const options: Options = {
     chart: {
       type: 'networkgraph',
       height: '400px',
-      backgroundColor: 'transparent'
+      backgroundColor: 'transparent',
+      animation: {
+        duration: 1000
+      }
     },
     title: {
       text: 'Building Para',
@@ -122,8 +130,19 @@ const OpeningStage: React.FC<OpeningStageProps> = ({ progress = 0 }) => {
     plotOptions: {
       networkgraph: {
         layoutAlgorithm: {
-          enableSimulation: false,
-          friction: -0.9
+          enableSimulation: true,
+          integration: 'verlet',
+          gravitationalConstant: 0.8,
+          initialPositionRadius: 100,
+          friction: -0.9,
+          maxIterations: 300,
+          linkLength: 300
+        },
+        draggable: true,
+        link: {
+          color: '#60a5fa',
+          width: 2,
+          opacity: 0.6
         }
       }
     },
@@ -136,9 +155,12 @@ const OpeningStage: React.FC<OpeningStageProps> = ({ progress = 0 }) => {
           color: '#ffffff'
         }
       },
-      data: connections,
-      nodes: nodes
-    } as any] // Use type assertion here
+      data: getConnections(),
+      nodes: getVisibleNodes(),
+      animation: {
+        duration: 1000
+      }
+    }] as any  // Type assertion needed for Highcharts series
   };
 
   return (

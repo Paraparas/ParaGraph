@@ -9,9 +9,13 @@ export default function Home() {
   const [stage, setStage] = useState('pre-start');
   const [progress, setProgress] = useState(0);
 
+  // Add state for current message
+  const [currentMessage, setCurrentMessage] = useState('');
+
   const handleMessagesChange = useCallback((newMessages: Message[]) => {
     if (newMessages.length > 0) {
       const lastMessage = newMessages[newMessages.length - 1];
+      setCurrentMessage(lastMessage.content);
       
       if (lastMessage.role === 'user' && 
           (lastMessage.content.toLowerCase().includes('hackathon') || 
