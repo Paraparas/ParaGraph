@@ -50,15 +50,6 @@ export function ChatWindow(props: {
   const { messages, input, setInput, handleInputChange, handleSubmit, isLoading: chatEndpointIsLoading, setMessages } =
     useChat({
       api: endpoint,
-//       onResponse(response) {
-//         const sourcesHeader = response.headers.get("x-sources");
-//         const sources = sourcesHeader ? JSON.parse((Buffer.from(sourcesHeader, 'base64')).toString('utf8')) : [];
-//         const messageIndexHeader = response
-// .headers.get("x-message-index");
-//         if (sources.length && messageIndexHeader !== null) {
-//           setSourcesForMessages({...sourcesForMessages, [messageIndexHeader]: sources});
-//         }
-//       },
       onFinish() {
         // Call the onMessagesChange prop whenever messages are updated
         console.log('Chat finished, messages updated:', messages);
@@ -72,12 +63,6 @@ export function ChatWindow(props: {
       }
     });
 
-  // // Add effect to monitor messages changes
-  // useEffect(() => {
-  //   console.log('Messages updated:', messages);
-  //   onMessagesChange?.(messages);
-  // }, [messages, onMessagesChange]);
-
   async function sendMessage(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (messageContainerRef.current) {
@@ -85,7 +70,11 @@ export function ChatWindow(props: {
     }
     
     // Notify immediately of user message
-    const userMessage = { role: 'user', content: input };
+    const userMessage: Message = {
+      id: String(messages.length),
+      role: 'user',
+      content: input
+    };
     onMessagesChange?.([...messages, userMessage]);
 
     if (!messages.length) {
