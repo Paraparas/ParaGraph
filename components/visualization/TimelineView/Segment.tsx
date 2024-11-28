@@ -1,4 +1,3 @@
-// /components/visualization/TimelineView/Segment.tsx
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -123,60 +122,91 @@ const DetailView: React.FC<{
 };
 
 const TimelineSegment: React.FC<SegmentProps> = ({
-  segment,
-  startPercent,
-  widthPercent,
-  formatTime,
-  isHighlighted = true
-}) => {
-  const [isExpanded, setIsExpanded] = useState(false);
-  const topicColor = topicConfig[segment.topic]?.color || DEFAULT_COLOR;
-
-  return (
-    <>
-      {/* Base segment */}
-      <div 
-        className="absolute top-0 bottom-0"
-        style={{
-          left: `${startPercent}%`,
-          width: `${widthPercent}%`,
-          opacity: isHighlighted ? 1 : 0.3,
-          transition: 'opacity 0.2s ease-in-out'
-        }}
-      >
-        <motion.div
-          className="absolute inset-0 rounded-lg cursor-pointer overflow-hidden"
+    segment,
+    startPercent,
+    widthPercent,
+    formatTime,
+    isHighlighted = true
+  }) => {
+    const [isExpanded, setIsExpanded] = useState(false);
+    const [isHovered, setIsHovered] = useState(false);
+    const topicColor = topicConfig[segment.topic]?.color || DEFAULT_COLOR;
+  
+    // Calculate if segment is narrow
+    const isNarrow = widthPercent < 3; // Adjusted threshold
+  
+    return (
+      <>
+        {/* Base segment */}
+        <div 
+          className="absolute top-0 bottom-0 group"
           style={{
-            backgroundColor: topicColor + '20',
-            borderLeft: `2px solid ${topicColor}`,
+            left: `${startPercent}%`,
+            width: `${Math.max(widthPercent, 1)}%`, // Ensure minimum width
+            opacity: isHighlighted ? 1 : 0.3,
+            transition: 'opacity 0.2s ease-in-out'
           }}
-          whileHover={{
-            backgroundColor: topicColor + '40',
-            y: -2,
-            transition: { duration: 0.2 }
-          }}
-          onClick={() => setIsExpanded(true)}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
         >
-          <div className="p-2">
-            <div className="text-xs text-slate-300 line-clamp-2">
-              {segment.briefSummary || segment.content.slice(0, 30) + '...'}
+          <motion.div
+            className="absolute inset-0 rounded-lg cursor-pointer overflow-hidden"
+            style={{
+              backgroundColor: topicColor + '20',
+              borderLeft: `2px solid ${topicColor}`,
+            }}
+            whileHover={{
+              backgroundColor: topicColor + '40',
+              y: -2,
+              transition: { duration: 0.2 }
+            }}
+            onClick={() => setIsExpanded(true)}
+          >
+            <div className="p-2 relative h-full">
+              {/* Content always visible unless very narrow */}
+              <div className={`text-xs text-slate-300 ${isNarrow ? 'opacity-0' : 'line-clamp-2'}`}>
+                {segment.briefSummary || segment.content.slice(0, 30) + '...'}
+              </div>
+  
+              {/* Hover tooltip for narrow segments */}
+              {(isHovered && isNarrow) && (
+                <div 
+                  className="absolute left-full top-1/2 transform -translate-y-1/2 ml-2 
+                    z-10 bg-slate-800 rounded-lg shadow-xl border border-slate-700/50 p-2
+                    whitespace-nowrap"
+                >
+                  <div className="text-xs text-slate-300">
+                    {formatTime(segment.start)} - {formatTime(segment.start + segment.duration)}
+                  </div>
+                  <div className="text-sm text-white font-medium">
+                    {segment.briefSummary}
+                  </div>
+                </div>
+              )}
+  
+              {/* Duration indicator */}
+              {!isNarrow && (
+                <div className="absolute bottom-1 right-2 text-xs text-slate-400 opacity-0 
+                  group-hover:opacity-100 transition-opacity">
+                  {segment.duration}s
+                </div>
+              )}
             </div>
-          </div>
-        </motion.div>
-      </div>
-
-      {/* Detail View Portal */}
-      <AnimatePresence>
-        {isExpanded && (
-          <DetailView 
-            segment={segment}
-            formatTime={formatTime}
-            onClose={() => setIsExpanded(false)}
-          />
-        )}
-      </AnimatePresence>
-    </>
-  );
-};
+          </motion.div>
+        </div>
+  
+        {/* Detail View Portal */}
+        <AnimatePresence>
+          {isExpanded && (
+            <DetailView 
+              segment={segment}
+              formatTime={formatTime}
+              onClose={() => setIsExpanded(false)}
+            />
+          )}
+        </AnimatePresence>
+      </>
+    );
+  };
 
 export default TimelineSegment;
