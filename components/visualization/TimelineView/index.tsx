@@ -6,10 +6,10 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Card, CardContent } from '@/components/ui/card';
 import TimelineSegment from './Segment';
 import { MeetingData, Speaker, Segment } from '@/lib/types/transcript';
-import { topicConfig } from '@/components/visualization/shared/TopicConfig';
+import { topicConfig } from '../shared/TopicConfig';
 import { sampleMeetingData } from '@/data/samples/sample-meeting';
 
-// Format time helper (keeping your implementation)
+// Format time helper
 const formatTime = (seconds: number): string => {
   const mins = Math.floor(seconds / 60);
   const secs = Math.floor(seconds % 60);
@@ -23,7 +23,6 @@ interface TimelineViewProps {
 const TimelineView: React.FC<TimelineViewProps> = ({ data = sampleMeetingData }) => {
   const [collapsedSpeakers, setCollapsedSpeakers] = useState<Record<string, boolean>>({});
   const [selectedTopic, setSelectedTopic] = useState<string | null>(null);
-  const [focusedSegment, setFocusedSegment] = useState<string | null>(null);
 
   // Calculate total duration from the last segment
   const totalDuration = useMemo(() => {
@@ -67,7 +66,7 @@ const TimelineView: React.FC<TimelineViewProps> = ({ data = sampleMeetingData })
   return (
     <div className="space-y-6">
       {/* Topic Filter Bar */}
-      <div className="sticky top-0 z-40 backdrop-blur-xl bg-slate-900/80 -mx-6 px-6 py-3 border-b border-slate-700/50">
+      <div className="sticky top-0 z-40 bg-slate-900 -mx-6 px-6 py-3 border-b border-slate-700/50">
         <div className="flex flex-wrap gap-2">
           {Object.entries(topicConfig).map(([key, { color, label }]) => (
             <button
@@ -85,9 +84,8 @@ const TimelineView: React.FC<TimelineViewProps> = ({ data = sampleMeetingData })
             >
               <span className="flex items-center gap-2">
                 {label}
-                {/* Show count when topic is selected */}
                 {selectedTopic === key && (
-                  <span className="px-1.5 py-0.5 text-xs rounded-full bg-slate-900/50">
+                  <span className="px-1.5 py-0.5 text-xs rounded-full bg-slate-800">
                     {Object.values(data.segments)
                       .flat()
                       .filter(seg => seg.topic === key)
@@ -126,8 +124,8 @@ const TimelineView: React.FC<TimelineViewProps> = ({ data = sampleMeetingData })
             return (
               <Card 
                 key={speaker.id}
-                className={`bg-slate-800/50 border-slate-700/50 backdrop-blur transition-all duration-300
-                  hover:bg-slate-800/70 hover:border-slate-600/50
+                className={`bg-slate-800 border-slate-700/50 backdrop-blur transition-all duration-300
+                  hover:border-slate-600/50
                   ${!hasSelectedTopicSegments ? 'opacity-50' : 'opacity-100'}`}
               >
                 <CardContent className="p-0">
