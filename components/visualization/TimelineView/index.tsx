@@ -24,21 +24,21 @@ interface TimelineViewProps {
 }
 
 const TimelineView: React.FC<TimelineViewProps> = ({ data = sampleMeetingData }) => {
-  const [collapsedSpeakers, setCollapsedSpeakers] = useState<Record<string, boolean>>({});
-  const [selectedTopic, setSelectedTopic] = useState<string | null>(null);
-  const [showLeftScroll, setShowLeftScroll] = useState(false);
-  const [showRightScroll, setShowRightScroll] = useState(false);
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-
-  // Helper function moved to the top of the component
-  const getSegmentsForSpeaker = (speaker: Speaker): Segment[] => {
-    return data.segments[speaker.id] || [];
-  };
+    const [collapsedSpeakers, setCollapsedSpeakers] = useState<Record<string, boolean>>({});
+    const [selectedTopic, setSelectedTopic] = useState<string | null>(null);
+    const [showLeftScroll, setShowLeftScroll] = useState(false);
+    const [showRightScroll, setShowRightScroll] = useState(false);
+    const [timelineWidth, setTimelineWidth] = useState(800); // Default minimum width
+    const scrollContainerRef = useRef<HTMLDivElement>(null);
+  
+    const getSegmentsForSpeaker = (speaker: Speaker): Segment[] => {
+      return data.segments[speaker.id] || [];
+    };
 
   // Calculate speaker statistics
   const speakerStats = useMemo(() => {
     return data.speakers.map(speaker => {
-      const segments = getSegmentsForSpeaker(speaker);
+      const segments = data.segments[speaker.id] || [];
       const totalTime = segments.reduce((sum, seg) => sum + seg.duration, 0);
       const topicCounts = segments.reduce((counts, seg) => ({
         ...counts,
@@ -52,8 +52,9 @@ const TimelineView: React.FC<TimelineViewProps> = ({ data = sampleMeetingData })
         topicCounts
       };
     });
-  }, [data]);
+  }, [data]); // Now depends only on data
 
+  // Calculate total duration
   const totalDuration = useMemo(() => {
     return Math.max(
       ...Object.values(data.segments).flatMap(segments =>
@@ -63,12 +64,23 @@ const TimelineView: React.FC<TimelineViewProps> = ({ data = sampleMeetingData })
     );
   }, [data]);
 
-  // Calculate minimum width - each second gets 2px width (adjustable)
-  const minTimelineWidth = useMemo(() => {
-    return Math.max(totalDuration * 2, window.innerWidth - 48); // -48 for padding
+  // Update timeline width on mount and window resize
+  useEffect(() => {
+    const updateTimelineWidth = () => {
+      const viewportWidth = window.innerWidth;
+      const calculatedWidth = Math.max(totalDuration * 2, viewportWidth - 48);
+      setTimelineWidth(calculatedWidth);
+    };
+
+    // Initial calculation
+    updateTimelineWidth();
+
+    // Add resize listener
+    window.addEventListener('resize', updateTimelineWidth);
+    return () => window.removeEventListener('resize', updateTimelineWidth);
   }, [totalDuration]);
 
-  // Generate time markers every 30 seconds
+  // Generate time markers
   const timeMarkers = useMemo(() => {
     const markerCount = Math.ceil(totalDuration / 30);
     return Array.from({ length: markerCount + 1 }, (_, i) => i * 30);
@@ -176,11 +188,11 @@ const TimelineView: React.FC<TimelineViewProps> = ({ data = sampleMeetingData })
 
         {/* Scrollable Container */}
         <div 
-          ref={scrollContainerRef}
-          className="overflow-x-auto scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-transparent
-            px-4 -mx-4" // Added padding and negative margin for full-width scroll
+        ref={scrollContainerRef}
+        className="overflow-x-auto scrollbar-thin scrollbar-thumb-slate-700/50 scrollbar-track-transparent
+          px-4 -mx-4"
         >
-          <div style={{ width: `${minTimelineWidth}px` }}>
+            <div style={{ width: `${timelineWidth}px` }}>
             {/* Timeline ruler */}
             <div className="h-8 relative border-b border-slate-700/50">
               <div className="absolute inset-x-0 flex justify-between">
