@@ -1,0 +1,200 @@
+{
+  "speakers": [
+    {
+      "id": "M",
+      "name": "Muhammad",
+      "role": "New Team Member"
+    },
+    {
+      "id": "K",
+      "name": "Kinan",
+      "role": "Technical Lead"
+    },
+    {
+      "id": "E",
+      "name": "Ewa",
+      "role": "UI/UX Designer"
+    },
+    {
+      "id": "Q",
+      "name": "Qi",
+      "role": "Project Manager"
+    }
+  ],
+  "segments": {
+    "M": [
+      {
+        "topic": "PLAN",
+        "start": 0,
+        "duration": 12,
+        "content": "Thanks for having this onboarding meeting. I've reviewed the roadmap, but I'd love to understand how everything fits together. What's our core focus for the hackathon demo?",
+        "briefSummary": "Inquiry about hackathon focus.",
+        "detailedSummary": [
+          "Muhammad thanks everyone for the meeting.",
+          "He seeks clarity on the hackathon demo focus.",
+          "He has reviewed the roadmap."
+        ]
+      },
+      {
+        "topic": "PLAN",
+        "start": 84,
+        "duration": 12,
+        "content": "That sounds powerful. How do we handle transitions between different visualization layers?",
+        "briefSummary": "Question on visualization transitions.",
+        "detailedSummary": [
+          "Muhammad expresses enthusiasm about the visualization.",
+          "He asks about handling transitions between layers."
+        ]
+      },
+      {
+        "topic": "PLAN",
+        "start": 175,
+        "duration": 12,
+        "content": "Should I focus on any specific aspect during testing?",
+        "briefSummary": "Asking for testing focus.",
+        "detailedSummary": [
+          "Muhammad seeks guidance on testing.",
+          "He wants to know specific aspects to focus on."
+        ]
+      }
+    ],
+    "K": [
+      {
+        "topic": "TECH",
+        "start": 31,
+        "duration": 27,
+        "content": "Sure. We're using real-time speech processing with two key innovations. First, we're implementing speaker diarization to track who's talking when. Second, we're using topic detection to color-code different discussion themes. The challenge is maintaining accuracy while processing in real-time. Ewa, this connects directly to your visualization work, especially for the temporal flow view.",
+        "briefSummary": "Overview of ASR innovations.",
+        "detailedSummary": [
+          "Kinan discusses real-time speech processing.",
+          "He mentions speaker diarization and topic detection.",
+          "He highlights the challenge of maintaining accuracy."
+        ]
+      },
+      {
+        "topic": "TECH",
+        "start": 128,
+        "duration": 26,
+        "content": "Interesting idea, Ewa! We could map confidence scores to visual properties. Actually, I've been thinking about topic detection too. Instead of fixed categories, we could dynamically generate topic clusters based on semantic similarity. Qi, this might help with your vision for knowledge graph generation.",
+        "briefSummary": "Discussing topic detection improvements.",
+        "detailedSummary": [
+          "Kinan appreciates Ewa's idea on visualization.",
+          "He suggests mapping confidence scores to visuals.",
+          "He proposes dynamic topic clusters based on similarity."
+        ]
+      },
+      {
+        "topic": "TECH",
+        "start": 213,
+        "duration": 26,
+        "content": "And while testing the ASR, pay attention to how well it handles technical terms. I'm implementing a domain-specific vocabulary system, but we need to balance accuracy with processing speed. Qi, should we prioritize real-time processing or accuracy for the demo?",
+        "briefSummary": "Testing focus on ASR accuracy.",
+        "detailedSummary": [
+          "Kinan emphasizes the importance of technical terms.",
+          "He mentions a domain-specific vocabulary system.",
+          "He questions the priority between speed and accuracy."
+        ]
+      }
+    ],
+    "E": [
+      {
+        "topic": "VIZ",
+        "start": 58,
+        "duration": 26,
+        "content": "Exactly, Kinan. The temporal flow view is our first layer of visualization. I'm designing it to show speaker contributions as parallel lanes, with topic-based color coding. The key is making complex information instantly graspable. Muhammad, imagine uploading a meeting recording and immediately seeing how topics flow between speakers.",
+        "briefSummary": "Overview of temporal flow view.",
+        "detailedSummary": [
+          "Ewa describes the temporal flow view.",
+          "She explains the design with parallel lanes and color coding.",
+          "She emphasizes the importance of clarity in visualization."
+        ]
+      },
+      {
+        "topic": "VIZ",
+        "start": 135,
+        "duration": 27,
+        "content": "Great point! We're using smooth morphing animations between views. When users switch from temporal flow to topic map, topics maintain their color coding but reorganize spatially to show relationships. Kinan, I'm curious - could we use the ASR confidence scores to adjust visualization opacity?",
+        "briefSummary": "Discussing visualization transitions.",
+        "detailedSummary": [
+          "Ewa explains the use of morphing animations.",
+          "She highlights the importance of maintaining color coding.",
+          "She suggests using ASR confidence scores for opacity."
+        ]
+      },
+      {
+        "topic": "PLAN",
+        "start": 207,
+        "duration": 18,
+        "content": "Focus first on the temporal flow view. Watch how topic transitions appear, check if the speaker lanes are clearly distinguished. Also, we're adding interactive features - hovering over a topic highlights related segments across speakers. Think about what would help you understand meeting content quickly.",
+        "briefSummary": "Testing focus on temporal flow view.",
+        "detailedSummary": [
+          "Ewa instructs Muhammad on testing priorities.",
+          "She emphasizes the importance of topic transitions.",
+          "She mentions new interactive features."
+        ]
+      },
+      {
+        "topic": "PLAN",
+        "start": 265,
+        "duration": 17,
+        "content": "Agreed. Clean data will help us showcase the core value proposition. Muhammad, we can start you with some pre-recorded test meetings to establish our baseline visualization performance.",
+        "briefSummary": "Establishing testing baseline.",
+        "detailedSummary": [
+          "Ewa agrees on the importance of clean data.",
+          "She suggests starting with pre-recorded meetings.",
+          "She aims to establish baseline performance."
+        ]
+      }
+    ],
+    "Q": [
+      {
+        "topic": "VISION",
+        "start": 12,
+        "duration": 16,
+        "content": "Great question, Muhammad. ParaGraph transforms meeting discussions into visual knowledge maps. Think of it as a dynamic way to understand team conversations. For the hackathon, we're focusing on three key components: ASR integration, visualization architecture, and insights generation. Kinan, want to walk us through the ASR part?",
+        "briefSummary": "Overview of ParaGraph's focus.",
+        "detailedSummary": [
+          "Qi explains ParaGraph's purpose.",
+          "He outlines key components for the hackathon.",
+          "He invites Kinan to discuss ASR."
+        ]
+      },
+      {
+        "topic": "VISION",
+        "start": 168,
+        "duration": 16,
+        "content": "Absolutely! That ties into our bigger vision. Beyond just visualizing single meetings, we want to show how ideas evolve across multiple sessions. The knowledge graph becomes this living map of team expertise. Muhammad, you'll be helping us test these different visualization layers.",
+        "briefSummary": "Discussing knowledge graph vision.",
+        "detailedSummary": [
+          "Qi discusses the broader vision for ParaGraph.",
+          "He emphasizes the evolution of ideas over time.",
+          "He assigns Muhammad to test visualization layers."
+        ]
+      },
+      {
+        "topic": "PLAN",
+        "start": 239,
+        "duration": 26,
+        "content": "For the hackathon demo, let's prioritize accuracy. We can show real-time capabilities as a stretch goal. The key is demonstrating how ParaGraph makes meeting content more accessible and actionable. Ewa's visualization needs clean data to really shine.",
+        "briefSummary": "Prioritizing accuracy for demo.",
+        "detailedSummary": [
+          "Qi emphasizes the importance of accuracy.",
+          "He suggests real-time capabilities as a stretch goal.",
+          "He highlights the need for clean data for visualization."
+        ]
+      },
+      {
+        "topic": "PLAN",
+        "start": 262,
+        "duration": 18,
+        "content": "Perfect. Let's wrap up with clear next steps. Muhammad, focus on temporal flow testing. Kinan, refine the ASR accuracy. Ewa, polish those view transitions. We'll sync again tomorrow to check progress.",
+        "briefSummary": "Summarizing next steps.",
+        "detailedSummary": [
+          "Qi outlines next steps for each member.",
+          "He emphasizes the importance of synchronization.",
+          "He sets a follow-up meeting for progress check."
+        ]
+      }
+    ]
+  }
+}

@@ -1,4 +1,3 @@
-// /app/visualization/page.tsx
 'use client';
 
 import TimelineView from '@/components/visualization/TimelineView';

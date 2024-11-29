@@ -11,7 +11,7 @@ import {
   Segment
 } from '@/lib/types/transcript';
 import { topicConfig } from '../shared/TopicConfig';
-import { sampleMeetingData } from '@/data/samples/sample-meeting';
+import { useMeetingData } from '@/lib/hooks/useMeetingData';
 
 const formatTime = (seconds: number): string => {
   const mins = Math.floor(seconds / 60);
@@ -23,103 +23,117 @@ interface TimelineViewProps {
   data?: MeetingData;
 }
 
-const TimelineView: React.FC<TimelineViewProps> = ({ data = sampleMeetingData }) => {
-    const [collapsedSpeakers, setCollapsedSpeakers] = useState<Record<string, boolean>>({});
-    const [selectedTopic, setSelectedTopic] = useState<string | null>(null);
-    const [showLeftScroll, setShowLeftScroll] = useState(false);
-    const [showRightScroll, setShowRightScroll] = useState(false);
-    const [timelineWidth, setTimelineWidth] = useState(800); // Default minimum width
-    const scrollContainerRef = useRef<HTMLDivElement>(null);
-  
-    const getSegmentsForSpeaker = (speaker: Speaker): Segment[] => {
-      return data.segments[speaker.id] || [];
-    };
+const TimelineView: React.FC = () => {
+  // 1. Data loading hook
+  const { meetingData, isLoading, error } = useMeetingData('cached');
 
-  // Calculate speaker statistics
+  // 2. All useState hooks
+  const [collapsedSpeakers, setCollapsedSpeakers] = useState<Record<string, boolean>>({});
+  const [selectedTopic, setSelectedTopic] = useState<string | null>(null);
+  const [showLeftScroll, setShowLeftScroll] = useState(false);
+  const [showRightScroll, setShowRightScroll] = useState(false);
+  const [timelineWidth, setTimelineWidth] = useState(800);
+
+  // 3. useRef
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  // 4. useMemo hooks
   const speakerStats = useMemo(() => {
-    return data.speakers.map(speaker => {
-      const segments = data.segments[speaker.id] || [];
-      const totalTime = segments.reduce((sum, seg) => sum + seg.duration, 0);
-      const topicCounts = segments.reduce((counts, seg) => ({
-        ...counts,
-        [seg.topic]: (counts[seg.topic] || 0) + 1
-      }), {} as Record<string, number>);
+      if (!meetingData) return [];
+      return meetingData.speakers.map(speaker => {
+          const segments = meetingData.segments[speaker.id] || [];
+          const totalTime = segments.reduce((sum, seg) => sum + seg.duration, 0);
+          const topicCounts = segments.reduce((counts, seg) => ({
+              ...counts,
+              [seg.topic]: (counts[seg.topic] || 0) + 1
+          }), {} as Record<string, number>);
 
-      return {
-        ...speaker,
-        totalTime,
-        segmentCount: segments.length,
-        topicCounts
-      };
-    });
-  }, [data]); // Now depends only on data
+          return {
+              ...speaker,
+              totalTime,
+              segmentCount: segments.length,
+              topicCounts
+          };
+      });
+  }, [meetingData]);
 
-  // Calculate total duration
   const totalDuration = useMemo(() => {
-    return Math.max(
-      ...Object.values(data.segments).flatMap(segments =>
-        segments.map(seg => seg.start + seg.duration)
-      ),
-      300 // Minimum 5 minutes
-    );
-  }, [data]);
+      if (!meetingData) return 300;
+      return Math.max(
+          ...Object.values(meetingData.segments || {}).flatMap(segments =>
+              segments.map(seg => seg.start + seg.duration)
+          ),
+          300
+      );
+  }, [meetingData]);
 
-  // Update timeline width on mount and window resize
-  useEffect(() => {
-    const updateTimelineWidth = () => {
-      const viewportWidth = window.innerWidth;
-      const calculatedWidth = Math.max(totalDuration * 2, viewportWidth - 48);
-      setTimelineWidth(calculatedWidth);
-    };
-
-    // Initial calculation
-    updateTimelineWidth();
-
-    // Add resize listener
-    window.addEventListener('resize', updateTimelineWidth);
-    return () => window.removeEventListener('resize', updateTimelineWidth);
-  }, [totalDuration]);
-
-  // Generate time markers
   const timeMarkers = useMemo(() => {
-    const markerCount = Math.ceil(totalDuration / 30);
-    return Array.from({ length: markerCount + 1 }, (_, i) => i * 30);
+      const markerCount = Math.ceil(totalDuration / 30);
+      return Array.from({ length: markerCount + 1 }, (_, i) => i * 30);
   }, [totalDuration]);
 
-  // Check scroll shadows visibility
-  const checkScrollShadows = () => {
-    if (scrollContainerRef.current) {
-      const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
-      setShowLeftScroll(scrollLeft > 0);
-      setShowRightScroll(scrollLeft < scrollWidth - clientWidth);
-    }
-  };
-
-  // Add scroll listener
+  // 5. All useEffect hooks
   useEffect(() => {
-    const scrollContainer = scrollContainerRef.current;
-    if (scrollContainer) {
-      checkScrollShadows();
-      scrollContainer.addEventListener('scroll', checkScrollShadows);
-      window.addEventListener('resize', checkScrollShadows);
-
-      return () => {
-        scrollContainer.removeEventListener('scroll', checkScrollShadows);
-        window.removeEventListener('resize', checkScrollShadows);
+      const updateTimelineWidth = () => {
+          const viewportWidth = window.innerWidth;
+          const calculatedWidth = Math.max(totalDuration * 2, viewportWidth - 48);
+          setTimelineWidth(calculatedWidth);
       };
-    }
+
+      updateTimelineWidth();
+      window.addEventListener('resize', updateTimelineWidth);
+      return () => window.removeEventListener('resize', updateTimelineWidth);
+  }, [totalDuration]);
+
+  useEffect(() => {
+      const scrollContainer = scrollContainerRef.current;
+      if (scrollContainer) {
+          const checkScrollShadows = () => {
+              const { scrollLeft, scrollWidth, clientWidth } = scrollContainer;
+              setShowLeftScroll(scrollLeft > 0);
+              setShowRightScroll(scrollLeft < scrollWidth - clientWidth);
+          };
+
+          checkScrollShadows();
+          scrollContainer.addEventListener('scroll', checkScrollShadows);
+          window.addEventListener('resize', checkScrollShadows);
+
+          return () => {
+              scrollContainer.removeEventListener('scroll', checkScrollShadows);
+              window.removeEventListener('resize', checkScrollShadows);
+          };
+      }
   }, []);
 
-  // Scroll handlers
+  // 6. Handler functions
   const handleScroll = (direction: 'left' | 'right') => {
-    if (scrollContainerRef.current) {
-      const scrollAmount = scrollContainerRef.current.clientWidth * 0.8;
-      scrollContainerRef.current.scrollBy({
-        left: direction === 'left' ? -scrollAmount : scrollAmount,
-        behavior: 'smooth'
-      });
-    }
+      if (scrollContainerRef.current) {
+          const scrollAmount = scrollContainerRef.current.clientWidth * 0.8;
+          scrollContainerRef.current.scrollBy({
+              left: direction === 'left' ? -scrollAmount : scrollAmount,
+              behavior: 'smooth'
+          });
+      }
   };
+
+  // 7. Loading and error states
+  if (isLoading) {
+      return <div className="flex items-center justify-center h-64">
+          <div className="text-slate-400">Loading meeting data...</div>
+      </div>;
+  }
+
+  if (error) {
+      return <div className="flex items-center justify-center h-64">
+          <div className="text-red-400">Error: {error}</div>
+      </div>;
+  }
+
+  if (!meetingData) {
+      return <div className="flex items-center justify-center h-64">
+          <div className="text-slate-400">No meeting data available</div>
+      </div>;
+  }
 
   return (
     <div className="space-y-6">
@@ -144,7 +158,7 @@ const TimelineView: React.FC<TimelineViewProps> = ({ data = sampleMeetingData })
                 {label}
                 {selectedTopic === key && (
                   <span className="px-1.5 py-0.5 text-xs rounded-full bg-slate-800">
-                    {Object.values(data.segments)
+                    {Object.values(meetingData.segments)
                       .flat()
                       .filter(seg => seg.topic === key)
                       .length}
@@ -209,7 +223,7 @@ const TimelineView: React.FC<TimelineViewProps> = ({ data = sampleMeetingData })
             {/* Speaker Lanes */}
             <div className="space-y-2">
               {speakerStats.map(speaker => {
-                const segments = data.segments[speaker.id] || [];
+                const segments = meetingData.segments[speaker.id] || [];
                 const hasSelectedTopicSegments = !selectedTopic || 
                   segments.some(seg => seg.topic === selectedTopic);
 
