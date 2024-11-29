@@ -123,18 +123,18 @@ const TimelineView: React.FC<TimelineViewProps> = ({ data = sampleMeetingData })
 
   return (
     <div className="space-y-6">
-      {/* Topic Filter Bar */}
-      <div className="sticky top-0 z-40 bg-slate-900 -mx-6 px-6 py-3 border-b border-slate-700/50">
-        <div className="flex flex-wrap gap-2">
+      {/* Topic Filter Bar - clean version */}
+      <div className="sticky top-0 z-40 bg-slate-900 border-b border-slate-700/50">
+        <div className="flex flex-wrap gap-2 py-3">
           {Object.entries(topicConfig).map(([key, { color, label }]) => (
             <button
               key={key}
               onClick={() => setSelectedTopic(selectedTopic === key ? null : key)}
-              className={`px-3 py-1.5 rounded-full text-sm transition-all
+              className={`px-3 py-1.5 rounded-full text-sm transition-colors
                 ${selectedTopic && selectedTopic !== key ? 'opacity-50' : 'opacity-100'}
-                hover:opacity-100 hover:scale-105`}
+                hover:opacity-100`}
               style={{ 
-                backgroundColor: `${color}20`,
+                backgroundColor: `${color}15`,
                 borderColor: color,
                 borderWidth: '1px',
                 color: color
@@ -156,9 +156,9 @@ const TimelineView: React.FC<TimelineViewProps> = ({ data = sampleMeetingData })
         </div>
       </div>
 
-      {/* Timeline Content */}
+      {/* Timeline Content - clean version */}
       <div className="relative">
-        {/* Scroll Shadows and Buttons */}
+        {/* Scroll Shadows - simplified */}
         {showLeftScroll && (
           <div className="absolute left-0 top-0 bottom-0 z-20 flex items-center">
             <div className="absolute inset-y-0 left-0 w-8 bg-gradient-to-r from-slate-900 to-transparent"/>
@@ -166,7 +166,7 @@ const TimelineView: React.FC<TimelineViewProps> = ({ data = sampleMeetingData })
               onClick={() => handleScroll('left')}
               className="h-8 w-8 rounded-full bg-slate-800 border border-slate-700/50 
                 flex items-center justify-center text-slate-400 hover:text-slate-300
-                transform -translate-x-4 hover:bg-slate-700 transition-all"
+                transform -translate-x-4 transition-colors"
             >
               <ChevronLeft className="w-4 h-4" />
             </button>
@@ -179,7 +179,7 @@ const TimelineView: React.FC<TimelineViewProps> = ({ data = sampleMeetingData })
               onClick={() => handleScroll('right')}
               className="h-8 w-8 rounded-full bg-slate-800 border border-slate-700/50 
                 flex items-center justify-center text-slate-400 hover:text-slate-300
-                transform translate-x-4 hover:bg-slate-700 transition-all"
+                transform translate-x-4 transition-colors"
             >
               <ChevronRight className="w-4 h-4" />
             </button>
@@ -188,12 +188,11 @@ const TimelineView: React.FC<TimelineViewProps> = ({ data = sampleMeetingData })
 
         {/* Scrollable Container */}
         <div 
-        ref={scrollContainerRef}
-        className="overflow-x-auto scrollbar-thin scrollbar-thumb-slate-700/50 scrollbar-track-transparent
-          px-4 -mx-4"
+          ref={scrollContainerRef}
+          className="overflow-x-auto scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-transparent"
         >
-            <div style={{ width: `${timelineWidth}px` }}>
-            {/* Timeline ruler */}
+          <div style={{ width: `${timelineWidth}px` }}>
+            {/* Time Ruler */}
             <div className="h-8 relative border-b border-slate-700/50">
               <div className="absolute inset-x-0 flex justify-between">
                 {timeMarkers.map((time, i) => (
@@ -207,99 +206,94 @@ const TimelineView: React.FC<TimelineViewProps> = ({ data = sampleMeetingData })
               </div>
             </div>
 
-            {/* Speaker lanes */}
+            {/* Speaker Lanes */}
             <div className="space-y-2">
               {speakerStats.map(speaker => {
-                const segments = getSegmentsForSpeaker(speaker);
+                const segments = data.segments[speaker.id] || [];
                 const hasSelectedTopicSegments = !selectedTopic || 
                   segments.some(seg => seg.topic === selectedTopic);
 
-                  return (
-                    <Card 
-                      key={speaker.id}
-                      className={`bg-slate-800 border-slate-700/50 transition-all duration-300
-                        ${!hasSelectedTopicSegments ? 'opacity-50' : 'opacity-100'}`}
-                    >
-                      <CardContent className="p-0">
-                        {/* Speaker header */}
-                        <div className="flex items-center justify-between px-4 h-12 border-b border-slate-700/50">
-                          <div className="flex items-center">
-                            <button
-                              onClick={() => setCollapsedSpeakers(prev => ({
-                                ...prev,
-                                [speaker.id]: !prev[speaker.id]
-                              }))}
-                              className="h-8 w-8 flex items-center justify-center rounded-lg
-                                hover:bg-slate-700/50 text-slate-400 hover:text-slate-300 transition-colors"
-                            >
-                              {collapsedSpeakers[speaker.id] ? 
-                                <ChevronRight className="w-4 h-4" /> : 
-                                <ChevronLeft className="w-4 h-4 rotate-90" />
-                              }
-                            </button>
-                            <span className="ml-2 text-slate-200 font-medium">
-                              {speaker.name}
-                            </span>
-                            <div className="ml-3 flex gap-2 text-xs text-slate-400">
-                              <span>{formatTime(speaker.totalTime)} total</span>
-                              <span>•</span>
-                              <span>{speaker.segmentCount} segments</span>
-                            </div>
-                          </div>
-  
-                          {/* Topic indicators */}
-                          <div className="flex gap-1">
-                            {Object.entries(speaker.topicCounts)
-                              .sort(([,a], [,b]) => b - a)
-                              .map(([topic, count]) => (
-                                <div
-                                  key={topic}
-                                  className="px-2 py-0.5 text-xs rounded-full"
-                                  style={{ 
-                                    backgroundColor: `${topicConfig[topic].color}20`,
-                                    color: topicConfig[topic].color
-                                  }}
-                                >
-                                  {count}
-                                </div>
-                              ))}
+                return (
+                  <Card 
+                    key={speaker.id}
+                    className={`border-slate-700/50 transition-colors
+                      ${!hasSelectedTopicSegments ? 'opacity-50 bg-slate-800/50' : 'bg-slate-800'}`}
+                  >
+                    <CardContent className="p-0">
+                      {/* Speaker Header */}
+                      <div className="flex items-center justify-between px-4 h-12 border-b border-slate-700/50">
+                        <div className="flex items-center">
+                          <button
+                            onClick={() => setCollapsedSpeakers(prev => ({
+                              ...prev,
+                              [speaker.id]: !prev[speaker.id]
+                            }))}
+                            className="h-8 w-8 flex items-center justify-center rounded-lg
+                              hover:bg-slate-700/50 text-slate-400 hover:text-slate-300 
+                              transition-colors"
+                          >
+                            {collapsedSpeakers[speaker.id] ? 
+                              <ChevronRight className="w-4 h-4" /> : 
+                              <ChevronLeft className="w-4 h-4 rotate-90" />
+                            }
+                          </button>
+                          <span className="ml-2 text-slate-200 font-medium">
+                            {speaker.name}
+                          </span>
+                          <div className="ml-3 flex gap-2 text-xs text-slate-400">
+                            <span>{formatTime(speaker.totalTime)} total</span>
+                            <span>•</span>
+                            <span>{speaker.segmentCount} segments</span>
                           </div>
                         </div>
-  
-                        {/* Timeline segments */}
-                        <AnimatePresence>
-                          {!collapsedSpeakers[speaker.id] && (
-                            <motion.div
-                              initial={{ height: 0 }}
-                              animate={{ height: 'auto' }}
-                              exit={{ height: 0 }}
-                              transition={{ duration: 0.2, ease: 'easeInOut' }}
-                              className="p-4"
-                            >
-                              <div className="relative h-16">
-                                {segments.map((segment, idx) => {
-                                  // Calculate segment position based on total width
-                                  const startPercent = (segment.start / totalDuration) * 100;
-                                  const widthPercent = (segment.duration / totalDuration) * 100;
-                                  
-                                  return (
-                                    <TimelineSegment
-                                      key={idx}
-                                      segment={segment}
-                                      startPercent={startPercent}
-                                      widthPercent={Math.max(widthPercent, 1)} // Ensure minimum width
-                                      formatTime={formatTime}
-                                      isHighlighted={!selectedTopic || segment.topic === selectedTopic}
-                                    />
-                                  );
-                                })}
+
+                        {/* Topic Indicators - simplified */}
+                        <div className="flex gap-1">
+                          {Object.entries(speaker.topicCounts)
+                            .sort(([,a], [,b]) => b - a)
+                            .map(([topic, count]) => (
+                              <div
+                                key={topic}
+                                className="px-2 py-0.5 text-xs rounded-full"
+                                style={{ 
+                                  backgroundColor: `${topicConfig[topic].color}15`,
+                                  color: topicConfig[topic].color
+                                }}
+                              >
+                                {count}
                               </div>
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
-                      </CardContent>
-                    </Card>
-                  );
+                            ))}
+                        </div>
+                      </div>
+
+                      {/* Timeline Segments */}
+                      <AnimatePresence>
+                        {!collapsedSpeakers[speaker.id] && (
+                          <motion.div
+                            initial={{ height: 0 }}
+                            animate={{ height: 'auto' }}
+                            exit={{ height: 0 }}
+                            transition={{ duration: 0.2 }}
+                            className="p-4"
+                          >
+                            <div className="relative h-16">
+                              {segments.map((segment, idx) => (
+                                <TimelineSegment
+                                  key={idx}
+                                  segment={segment}
+                                  startPercent={(segment.start / totalDuration) * 100}
+                                  widthPercent={Math.max((segment.duration / totalDuration) * 100, 1)}
+                                  formatTime={formatTime}
+                                  isHighlighted={!selectedTopic || segment.topic === selectedTopic}
+                                />
+                              ))}
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </CardContent>
+                  </Card>
+                );
               })}
             </div>
           </div>
