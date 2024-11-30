@@ -7,11 +7,11 @@ export const topicConfig: TopicConfig = {
     subtopics: {
       'ASR': {
         label: 'Speech Recognition',
-        items: ['real-time', 'offline', 'vocabulary']
+        items: ['real-time', 'offline']
       },
-      'ARCH': {
-        label: 'Architecture',
-        items: ['api', 'database', 'deployment']
+      'REALTIME': {
+        label: 'Real-time Processing',
+        items: ['performance', 'accuracy']
       }
     }
   },
@@ -19,7 +19,7 @@ export const topicConfig: TopicConfig = {
     color: '#ec4899', // Pink
     label: 'Visualization',
     subtopics: {
-      'TIMELINE': {
+      'FLOW': {
         label: 'Timeline View',
         items: ['segments', 'interactions']
       },
@@ -29,31 +29,31 @@ export const topicConfig: TopicConfig = {
       }
     }
   },
+  'VISION': {
+    color: '#8b5cf6', // Purple
+    label: 'Project Vision',
+    subtopics: {
+      'COGNITIVE': {
+        label: 'Cognitive Load',
+        items: ['complexity', 'usability']
+      },
+      'UX': {
+        label: 'User Experience',
+        items: ['interface', 'interactions']
+      }
+    }
+  },
   'PLAN': {
     color: '#f59e0b', // Amber
     label: 'Planning & Coordination',
     subtopics: {
       'TIMELINE': {
-        label: 'Timeline',
-        items: ['milestones', 'tasks']
+        label: 'Project Timeline',
+        items: ['milestones', 'deadlines']
       },
       'TEAM': {
         label: 'Team Organization',
-        items: ['roles', 'communication']
-      }
-    }
-  },
-  'VISION': {
-    color: '#8b5cf6', // Purple
-    label: 'Project Vision',
-    subtopics: {
-      'GOALS': {
-        label: 'Goals',
-        items: ['short-term', 'long-term']
-      },
-      'IMPACT': {
-        label: 'Impact',
-        items: ['user-value', 'innovation']
+        items: ['roles', 'tasks']
       }
     }
   }
