@@ -3,6 +3,9 @@ export interface TopicConfig {
     [key: string]: {
       color: string;     // Color for visualization
       label: string;     // Display label
+      subtopics: {
+        [key: string]: Subtopic;
+      };
     };
   }
   
@@ -84,3 +87,67 @@ export interface TopicConfig {
     error?: string;
     lastUpdated?: string;
   }
+
+  export interface TopicItem {
+    label: string;
+  }
+  
+  export interface Subtopic {
+    label: string;
+    items: string[];
+  }
+
+  // New types for TopicView
+export interface TopicNode {
+  id: string;
+  label: string;
+  type: 'main' | 'subtopic' | 'item';
+  parentId?: string;  // For subtopics and items
+  topicKey: string;   // Reference to main topic (for color)
+}
+
+// Connection types
+export interface BaseConnection {
+  source: string;
+  target: string;
+  strength?: number;
+}
+
+export interface ExplicitConnection extends BaseConnection {
+  type: 'explicit';
+  speaker: string;
+  content: string;  // What was actually said
+  timestamp?: number;  // When in the meeting this connection was made
+}
+
+export interface ImplicitConnection extends BaseConnection {
+  type: 'implicit';
+  insight: string;  // LLM's explanation of the connection
+  importance: string;  // Why this connection matters
+  confidence?: number;  // LLM's confidence in this connection (0-1)
+}
+
+export type TopicConnection = ExplicitConnection | ImplicitConnection;
+
+// Helper type guard
+export function isExplicitConnection(connection: TopicConnection): connection is ExplicitConnection {
+  return connection.type === 'explicit';
+}
+
+export function isImplicitConnection(connection: TopicConnection): connection is ImplicitConnection {
+  return connection.type === 'implicit';
+}
+
+export interface TopicViewData {
+  nodes: TopicNode[];
+  connections: {
+    explicit: ExplicitConnection[];
+    implicit: ImplicitConnection[];
+  };
+  metadata?: {
+    title?: string;
+    date?: string;
+    duration?: number;
+    participants?: number;
+  };
+}
