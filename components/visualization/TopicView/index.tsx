@@ -38,41 +38,72 @@ const TopicView = () => {
   // Calculate node positions
   const nodePositions = useMemo(() => {
     const positions: Record<string, { x: number; y: number }> = {};
-    const centerX = 400;
-    const centerY = 300;
-    const mainRadius = 200;
-    const subtopicRadius = 100;
-
+    
+    // Get viewport dimensions from viewBox
+    const viewportWidth = 1200;
+    const viewportHeight = 800;
+    
+    // Calculate safe area margins to keep nodes and text visible
+    const margin = 100; // Space for node radius + text + padding
+    const safeWidth = viewportWidth - 2 * margin;
+    const safeHeight = viewportHeight - 2 * margin;
+    
+    // Center point
+    const centerX = viewportWidth / 2;
+    const centerY = viewportHeight / 2;
+    
+    // Adjust radius based on safe area
+    const mainRadius = Math.min(safeWidth, safeHeight) * 0.35; // Reduced from previous value
+    const subtopicRadius = mainRadius * 0.7; // Proportional to main radius
+  
     // Position main topics in a circle
     const mainTopics = sampleNodes.filter(node => node.type === 'main');
     mainTopics.forEach((node, index) => {
-      const angle = (index / mainTopics.length) * 2 * Math.PI;
+      // Start angle from top (-π/2) and go clockwise
+      const angle = -Math.PI/2 + (index / mainTopics.length) * 2 * Math.PI;
       positions[node.id] = {
         x: centerX + Math.cos(angle) * mainRadius,
         y: centerY + Math.sin(angle) * mainRadius
       };
     });
-
-    // Position subtopics around their parent
+  
+    // Position subtopics around their parent with boundary checking
     sampleNodes.filter(node => node.type === 'subtopic').forEach(node => {
       const parentPos = positions[node.parentId!];
       if (!parentPos) return;
-
-      // Find siblings (other subtopics with same parent)
+  
+      // Find siblings
       const siblings = sampleNodes.filter(n => 
         n.type === 'subtopic' && n.parentId === node.parentId
       );
       const siblingIndex = siblings.findIndex(n => n.id === node.id);
       const totalSiblings = siblings.length;
-
+  
+      // Calculate arc range for subtopics (avoid overlap with other main nodes)
+      const arcRange = Math.PI * 0.8; // 108 degrees
+      const startAngle = -arcRange / 2;
+      
+      // Calculate angle to parent node from center
+      const parentAngle = Math.atan2(
+        parentPos.y - centerY,
+        parentPos.x - centerX
+      );
+  
       // Calculate position relative to parent
-      const angleOffset = (siblingIndex / totalSiblings) * Math.PI - Math.PI/2;
-      positions[node.id] = {
-        x: parentPos.x + Math.cos(angleOffset) * subtopicRadius,
-        y: parentPos.y + Math.sin(angleOffset) * subtopicRadius
-      };
+      const angleOffset = startAngle + (siblingIndex / (totalSiblings - 1 || 1)) * arcRange;
+      const finalAngle = parentAngle + angleOffset;
+  
+      // Calculate initial position
+      let x = parentPos.x + Math.cos(finalAngle) * subtopicRadius;
+      let y = parentPos.y + Math.sin(finalAngle) * subtopicRadius;
+  
+      // Ensure position is within bounds
+      x = Math.max(margin, Math.min(viewportWidth - margin, x));
+      y = Math.max(margin, Math.min(viewportHeight - margin, y));
+  
+      positions[node.id] = { x, y };
     });
-
+  
     return positions;
   }, []);
 
@@ -80,6 +111,25 @@ const TopicView = () => {
   const getTopicColor = (node: TopicNode): string => {
     const mainTopic = node.type === 'main' ? node.topicKey : node.parentId;
     return mainTopic ? topicConfig[mainTopic].color : '#94a3b8';
+  };
+
+  const speakerStyles = {
+    'Kinan': {
+      bgClass: 'stroke-emerald-500/30 stroke-2',
+      textClass: 'font-semibold tracking-wide'
+    },
+    'Ewa': {
+      bgClass: 'stroke-pink-500/30 stroke-2',
+      textClass: 'font-medium tracking-normal'
+    },
+    'Qi': {
+      bgClass: 'stroke-purple-500/30 stroke-2',
+      textClass: 'font-bold tracking-tight'
+    },
+    'Muhammad': {
+      bgClass: 'stroke-amber-500/30 stroke-2',
+      textClass: 'font-normal tracking-wider'
+    }
   };
 
     // Handle insight revelation
@@ -93,7 +143,7 @@ const TopicView = () => {
     }, [showInsights, activeInsightIndex]);
 
     return (
-        <Card className="w-full h-[600px]">
+        <Card className="w-full min-h-screen bg-slate-900">
           <div className="flex justify-between p-4">
             <Button
               variant={showSpeakers ? 'default' : 'outline'}
@@ -117,8 +167,8 @@ const TopicView = () => {
             </Button>
           </div>
     
-          <div className="w-full h-[520px] bg-slate-900/50 rounded-lg overflow-hidden">
-            <svg width="100%" height="100%" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid meet">
+          <div className="w-full h-[calc(100vh-100px)] overflow-hidden">
+            <svg width="100%" height="100%" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid meet">
               {/* Explicit Connections */}
               {explicitConnections.map((conn, idx) => {
                 const source = nodePositions[conn.source];
@@ -138,41 +188,93 @@ const TopicView = () => {
                         fill="none"
                       />
                       {showSpeakers && isExplicitConnection(conn) && conn.speaker && (
-                        <motion.text
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          x={labelPosition.x}
-                          y={labelPosition.y}
-                          textAnchor="middle"
-                          fill="#ffffff"
-                          className="text-xs font-medium"
+                        <motion.g
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
                         >
-                          <tspan dy="-5" className="font-inter font-medium bg-slate-800 px-1 rounded tracking-tight">
-                            {conn.speaker}
-                          </tspan>
-                        </motion.text>
-                      )}
+                            {/* Calculate the offset based on the connection angle */}
+                            {(() => {
+                            const dx = target.x - source.x;
+                            const dy = target.y - source.y;
+                            const angle = Math.atan2(dy, dx);
+                            
+                            // Offset the label perpendicular to the connection line
+                            const offset = 25; // Adjust this value to move labels further from the line
+                            const offsetX = Math.sin(angle) * offset;
+                            const offsetY = -Math.cos(angle) * offset;
+                            
+                            const labelX = labelPosition.x + offsetX;
+                            const labelY = labelPosition.y + offsetY;
+                            
+                            return (
+                                <>
+                                {/* Speaker label container */}
+                                <motion.g
+                                    initial={{ scale: 0.8, opacity: 0 }}
+                                    animate={{ scale: 1, opacity: 1 }}
+                                    transition={{ type: "spring", stiffness: 100 }}
+                                >
+                                    {/* Background */}
+                                    <rect
+                                    x={labelX - 35}
+                                    y={labelY - 10}
+                                    width="70"
+                                    height="20"
+                                    rx="4"
+                                    fill="#1e293b"  // Dark background
+                                    className={`${speakerStyles[conn.speaker].bgClass} shadow-sm`}
+                                    />
+                                    {/* Speaker name */}
+                                    <text
+                                    x={labelX}
+                                    y={labelY + 4}
+                                    textAnchor="middle"
+                                    fill="white"
+                                    className={`text-xs font-inter ${speakerStyles[conn.speaker].textClass}`}
+                                    >
+                                    {conn.speaker}
+                                    </text>
+                                </motion.g>
+                                </>
+                            );
+                            })()}
+                        </motion.g>
+                        )}
                     </g>
                   );
               })}
     
               {/* Implicit Connections */}
               <AnimatePresence>
-                {showInsights && implicitConnections.slice(0, activeInsightIndex + 1).map((conn, idx) => {
-                  const source = nodePositions[conn.source];
-                  const target = nodePositions[conn.target];
-                  if (!source || !target) return null;
-    
-                  const { path, labelPosition } = calculateConnectionPath(source, target);
-                  const connectionId = `implicit-${idx}`;
-    
-                  return (
+              {showInsights && implicitConnections.slice(0, activeInsightIndex + 1).map((conn, idx) => {
+                const source = nodePositions[conn.source];
+                const target = nodePositions[conn.target];
+                if (!source || !target) return null;
+
+                const { path, labelPosition } = calculateConnectionPath(source, target);
+                const connectionId = `implicit-${idx}`;
+
+                return (
                     <g 
-                      key={connectionId}
-                      onMouseEnter={() => setHoveredConnection(connectionId)}
-                      onMouseLeave={() => setHoveredConnection(null)}
+                    key={connectionId}
+                    onMouseEnter={() => {
+                        console.log('Hovering connection:', connectionId, conn); // Enhanced debugging
+                        setHoveredConnection(connectionId);
+                    }}
+                    onMouseLeave={() => {
+                        console.log('Leaving connection:', connectionId); // Added debug
+                        setHoveredConnection(null);
+                    }}
                     >
-                      <motion.path
+                    {/* Add a transparent hit area for better hover detection */}
+                    <path
+                        d={path}
+                        stroke="transparent"
+                        strokeWidth={20}
+                        fill="none"
+                        style={{ cursor: 'pointer' }}
+                    />
+                    <motion.path
                         initial={{ pathLength: 0, opacity: 0 }}
                         animate={{ pathLength: 1, opacity: 0.7 }}
                         exit={{ opacity: 0 }}
@@ -181,7 +283,7 @@ const TopicView = () => {
                         strokeWidth={2.5}
                         strokeDasharray="5,5"
                         fill="none"
-                      />
+                    />
                       {hoveredConnection === connectionId && isImplicitConnection(conn) && (
                         <motion.g
                           initial={{ opacity: 0 }}
@@ -196,10 +298,10 @@ const TopicView = () => {
                                 {conn.insight}
                             </text>
                             <foreignObject
-                            x={labelPosition.x - 150} // Wider than before
-                            y={labelPosition.y - 50}
-                            width="300" // Increased width
-                            height="80" // Increased height
+                            x={labelPosition.x - 200} // Wider than before
+                            y={labelPosition.y - 60}
+                            width="400" // Increased width
+                            height="auto" // Increased height
                             style={{ overflow: 'visible' }} // Allow content to determine size
                             >
                             <div className="bg-slate-800/90 p-3 rounded-lg shadow-lg border border-cyan-500/20">
