@@ -113,24 +113,38 @@ const TopicView = () => {
     return mainTopic ? topicConfig[mainTopic].color : '#94a3b8';
   };
 
-  const speakerStyles = {
-    'Kinan': {
-      bgClass: 'stroke-emerald-500/30 stroke-2',
-      textClass: 'font-semibold tracking-wide'
-    },
-    'Ewa': {
-      bgClass: 'stroke-pink-500/30 stroke-2',
-      textClass: 'font-medium tracking-normal'
-    },
-    'Qi': {
-      bgClass: 'stroke-purple-500/30 stroke-2',
-      textClass: 'font-bold tracking-tight'
-    },
-    'Muhammad': {
-      bgClass: 'stroke-amber-500/30 stroke-2',
-      textClass: 'font-normal tracking-wider'
-    }
-  };
+  const getUniqueColors = () => [
+    'stroke-emerald-500/30',
+    'stroke-pink-500/30',
+    'stroke-purple-500/30',
+    'stroke-amber-500/30',
+    'stroke-blue-500/30',
+    'stroke-indigo-500/30',
+    'stroke-red-500/30',
+    'stroke-teal-500/30'
+  ];
+
+  const uniqueSpeakers = useMemo(() => {
+    const speakers = new Set<string>();
+    explicitConnections.forEach(conn => {
+      if (isExplicitConnection(conn) && conn.speaker) {
+        speakers.add(conn.speaker);
+      }
+    });
+    return Array.from(speakers);
+  }, [explicitConnections]);
+  
+  // Generate speaker styles dynamically
+  const speakerStyles = useMemo(() => {
+    const colors = getUniqueColors();
+    return uniqueSpeakers.reduce((styles, speaker, index) => {
+      styles[speaker] = {
+        bgClass: `${colors[index % colors.length]} stroke-2`,
+        textClass: 'font-medium tracking-normal'
+      };
+      return styles;
+    }, {} as Record<string, { bgClass: string; textClass: string }>);
+  }, [uniqueSpeakers]);
 
     // Handle insight revelation
     React.useEffect(() => {
@@ -189,57 +203,57 @@ const TopicView = () => {
                       />
                       {showSpeakers && isExplicitConnection(conn) && conn.speaker && (
                         <motion.g
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
                         >
-                            {/* Calculate the offset based on the connection angle */}
-                            {(() => {
+                          {(() => {
                             const dx = target.x - source.x;
                             const dy = target.y - source.y;
                             const angle = Math.atan2(dy, dx);
                             
-                            // Offset the label perpendicular to the connection line
-                            const offset = 25; // Adjust this value to move labels further from the line
+                            const offset = 25;
                             const offsetX = Math.sin(angle) * offset;
                             const offsetY = -Math.cos(angle) * offset;
                             
                             const labelX = labelPosition.x + offsetX;
                             const labelY = labelPosition.y + offsetY;
                             
+                            const style = speakerStyles[conn.speaker] || {
+                              bgClass: 'stroke-gray-500/30 stroke-2',
+                              textClass: 'font-medium tracking-normal'
+                            };
+                            
                             return (
-                                <>
-                                {/* Speaker label container */}
+                              <>
                                 <motion.g
-                                    initial={{ scale: 0.8, opacity: 0 }}
-                                    animate={{ scale: 1, opacity: 1 }}
-                                    transition={{ type: "spring", stiffness: 100 }}
+                                  initial={{ scale: 0.8, opacity: 0 }}
+                                  animate={{ scale: 1, opacity: 1 }}
+                                  transition={{ type: "spring", stiffness: 100 }}
                                 >
-                                    {/* Background */}
-                                    <rect
+                                  <rect
                                     x={labelX - 35}
                                     y={labelY - 10}
                                     width="70"
                                     height="20"
                                     rx="4"
-                                    fill="#1e293b"  // Dark background
-                                    className={`${speakerStyles[conn.speaker].bgClass} shadow-sm`}
-                                    />
-                                    {/* Speaker name */}
-                                    <text
+                                    fill="#1e293b"
+                                    className={`${style.bgClass} shadow-sm`}
+                                  />
+                                  <text
                                     x={labelX}
                                     y={labelY + 4}
                                     textAnchor="middle"
                                     fill="white"
-                                    className={`text-xs font-inter ${speakerStyles[conn.speaker].textClass}`}
-                                    >
+                                    className={`text-xs font-inter ${style.textClass}`}
+                                  >
                                     {conn.speaker}
-                                    </text>
+                                  </text>
                                 </motion.g>
-                                </>
+                              </>
                             );
-                            })()}
+                          })()}
                         </motion.g>
-                        )}
+                      )}
                     </g>
                   );
               })}
