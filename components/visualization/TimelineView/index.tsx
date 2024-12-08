@@ -38,38 +38,56 @@ const TimelineView: React.FC = () => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   // 4. useMemo hooks
+  // Process speaker statistics from the new schema
   const speakerStats = useMemo(() => {
-      if (!meetingData) return [];
-      return meetingData.speakers.map(speaker => {
-          const segments = meetingData.segments[speaker.id] || [];
-          const totalTime = segments.reduce((sum, seg) => sum + seg.duration, 0);
-          const topicCounts = segments.reduce((counts, seg) => ({
-              ...counts,
-              [seg.topic]: (counts[seg.topic] || 0) + 1
-          }), {} as Record<string, number>);
+    if (!meetingData) return [];
 
-          return {
-              ...speaker,
-              totalTime,
-              segmentCount: segments.length,
-              topicCounts
-          };
-      });
-  }, [meetingData]);
+    // Group segments by speaker_id
+    const segmentsBySpeaker = meetingData.segments.reduce<Record<string, typeof meetingData.segments>>(
+      (acc, segment) => {
+        if (!acc[segment.speaker_id]) {
+          acc[segment.speaker_id] = [];
+        }
+        acc[segment.speaker_id].push(segment);
+        return acc;
+      },
+      {}
+    );
 
-  const totalDuration = useMemo(() => {
-      if (!meetingData) return 300;
-      return Math.max(
-          ...Object.values(meetingData.segments || {}).flatMap(segments =>
-              segments.map(seg => seg.start + seg.duration)
-          ),
-          300
+    // Calculate stats for each speaker
+    return meetingData.speakers.map(speaker => {
+      const segments = segmentsBySpeaker[speaker.id] || [];
+      const totalTime = segments.reduce((sum, seg) => sum + seg.duration, 0);
+      const topicCounts = segments.reduce(
+        (counts, seg) => ({
+          ...counts,
+          [seg.topic]: (counts[seg.topic] || 0) + 1
+        }),
+        {} as Record<string, number>
       );
+
+      return {
+        ...speaker,
+        totalTime,
+        segmentCount: segments.length,
+        topicCounts
+      };
+    });
   }, [meetingData]);
 
+  // Calculate the total duration of all segments
+  const totalDuration = useMemo(() => {
+    if (!meetingData || !meetingData.segments.length) return 300;
+    return Math.max(
+      ...meetingData.segments.map(seg => seg.start + seg.duration),
+      300
+    );
+  }, [meetingData]);
+
+  // Generate time markers based on the total duration
   const timeMarkers = useMemo(() => {
-      const markerCount = Math.ceil(totalDuration / 30);
-      return Array.from({ length: markerCount + 1 }, (_, i) => i * 30);
+    const markerCount = Math.ceil(totalDuration / 30);
+    return Array.from({ length: markerCount + 1 }, (_, i) => i * 30);
   }, [totalDuration]);
 
   // 5. All useEffect hooks
@@ -211,7 +229,7 @@ const TimelineView: React.FC = () => {
               <div className="absolute inset-x-0 flex justify-between">
                 {timeMarkers.map((time, i) => (
                   <div key={i} className="flex flex-col items-center">
-                    <div className="w-px h-2 bg-slate-700/50"/>
+                    <div className="w-px h-2 bg-slate-700/50" />
                     <div className="text-slate-400 text-xs">
                       {formatTime(time)}
                     </div>
@@ -223,7 +241,12 @@ const TimelineView: React.FC = () => {
             {/* Speaker Lanes */}
             <div className="space-y-2">
               {speakerStats.map(speaker => {
-                const segments = meetingData.segments[speaker.id] || [];
+                // Filter segments for the current speaker
+                const segments = meetingData.segments.filter(
+                  segment => segment.speaker_id === speaker.id
+                );
+
+                // Check if the speaker has any segments for the selected topic
                 const hasSelectedTopicSegments = !selectedTopic || 
                   segments.some(seg => seg.topic === selectedTopic);
 
@@ -264,7 +287,7 @@ const TimelineView: React.FC = () => {
                         {/* Topic Indicators - simplified */}
                         <div className="flex gap-1">
                           {Object.entries(speaker.topicCounts)
-                            .sort(([,a], [,b]) => b - a)
+                            .sort(([, a], [, b]) => b - a)
                             .map(([topic, count]) => (
                               <div
                                 key={topic}
