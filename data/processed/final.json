@@ -1,0 +1,353 @@
+{
+  "speakers": [
+    {
+      "id": "M",
+      "name": "Muhammad",
+      "role": "New Team Member"
+    },
+    {
+      "id": "K",
+      "name": "Kinan",
+      "role": "Technical Lead"
+    },
+    {
+      "id": "E",
+      "name": "Ewa",
+      "role": "Designer"
+    },
+    {
+      "id": "Q",
+      "name": "Qi",
+      "role": "Project Manager"
+    }
+  ],
+  "segments": {
+    "M": [
+      {
+        "topic": "VISION",
+        "start": 0,
+        "duration": 20,
+        "content": "Welcome Muhammad! We're happy to have you join us. What interested you most about ParaGraph from our previous discussion?",
+        "briefSummary": "Welcome and introduction to Muhammad.",
+        "detailedSummary": [
+          "Muhammad is welcomed to the team.",
+          "Discussion about his interest in ParaGraph."
+        ]
+      },
+      {
+        "topic": "VISION",
+        "start": 20,
+        "duration": 25,
+        "content": "Thanks everyone! I was really interested in the note-taking features. As a developer, I'm always learning new things, and it's difficult to organize everything. I tried many different apps, but they're either too strict or too messy. I want to know how ParaGraph is different.",
+        "briefSummary": "Muhammad expresses interest in note-taking features.",
+        "detailedSummary": [
+          "Muhammad shares his challenges with existing note-taking apps.",
+          "He seeks to understand ParaGraph's unique offerings."
+        ]
+      },
+      {
+        "topic": "VIZ",
+        "start": 45,
+        "duration": 15,
+        "content": "Eight languages? That's amazing! Are we planning to support multiple languages?",
+        "briefSummary": "Inquiry about language support.",
+        "detailedSummary": [
+          "Muhammad is impressed by Ewa's language skills.",
+          "He asks about the potential for multilingual support."
+        ]
+      },
+      {
+        "topic": "VISION",
+        "start": 45,
+        "duration": 15,
+        "content": "Really? That's impressive!",
+        "briefSummary": "Muhammad praises the ASR model.",
+        "detailedSummary": [
+          "Muhammad expresses admiration for the Japanese ASR model.",
+          "He acknowledges the team's technical achievements."
+        ]
+      },
+      {
+        "topic": "VISION",
+        "start": 75,
+        "duration": 30,
+        "content": "What do you mean by active? Could you give an example?",
+        "briefSummary": "Muhammad seeks clarification on active sharing.",
+        "detailedSummary": [
+          "He asks for examples of active information sharing.",
+          "Muhammad wants to understand the concept better."
+        ]
+      },
+      {
+        "topic": "VIZ",
+        "start": 105,
+        "duration": 15,
+        "content": "Yes, please!",
+        "briefSummary": "Muhammad shows interest in examples.",
+        "detailedSummary": [
+          "He expresses eagerness to see the visualization system.",
+          "Muhammad is engaged in the discussion."
+        ]
+      },
+      {
+        "topic": "VIZ",
+        "start": 315,
+        "duration": 15,
+        "content": "That's interesting. But how do you identify these connections? Is it based on keywords?",
+        "briefSummary": "Muhammad questions connection identification.",
+        "detailedSummary": [
+          "He inquires about the method for identifying connections.",
+          "Muhammad seeks to understand the underlying technology."
+        ]
+      },
+      {
+        "topic": "VISION",
+        "start": 465,
+        "duration": 30,
+        "content": "So it's like having an AI that thinks more like a human? That's fascinating. What about practical applications?",
+        "briefSummary": "Muhammad relates AI to human thinking.",
+        "detailedSummary": [
+          "He draws parallels between AI and human cognition.",
+          "Muhammad asks about real-world applications."
+        ]
+      },
+      {
+        "topic": "PLAN",
+        "start": 540,
+        "duration": 30,
+        "content": "That makes sense. Do we have any early feedback from users?",
+        "briefSummary": "Inquiry about user feedback.",
+        "detailedSummary": [
+          "Muhammad is interested in user experiences.",
+          "He wants to know about initial reactions."
+        ]
+      },
+      {
+        "topic": "PLAN",
+        "start": 645,
+        "duration": 30,
+        "content": "What about privacy? Since we're processing sensitive meeting data...",
+        "briefSummary": "Concern about privacy issues.",
+        "detailedSummary": [
+          "Muhammad raises a question about data privacy.",
+          "He emphasizes the importance of handling sensitive information."
+        ]
+      },
+      {
+        "topic": "PLAN",
+        "start": 750,
+        "duration": 30,
+        "content": "And what about real-time processing? Can users see these connections forming during the meeting?",
+        "briefSummary": "Muhammad asks about real-time capabilities.",
+        "detailedSummary": [
+          "He inquires about the possibility of real-time insights.",
+          "Muhammad is curious about user experience during meetings."
+        ]
+      },
+      {
+        "topic": "PLAN",
+        "start": 810,
+        "duration": 30,
+        "content": "I see how this goes beyond simple note-taking. What's our immediate focus for development?",
+        "briefSummary": "Muhammad seeks clarity on development focus.",
+        "detailedSummary": [
+          "He acknowledges the project's broader goals.",
+          "Muhammad wants to know the next steps in development."
+        ]
+      },
+      {
+        "topic": "PLAN",
+        "start": 1020,
+        "duration": 15,
+        "content": "How can I help? Where should I start?",
+        "briefSummary": "Muhammad offers to contribute.",
+        "detailedSummary": [
+          "He expresses willingness to assist the team.",
+          "Muhammad seeks guidance on his initial tasks."
+        ]
+      },
+      {
+        "topic": "VISION",
+        "start": 1215,
+        "duration": 15,
+        "content": "Thanks everyone! I'm excited to start contributing.",
+        "briefSummary": "Muhammad expresses excitement.",
+        "detailedSummary": [
+          "He thanks the team for the warm welcome.",
+          "Muhammad shows enthusiasm for his new role."
+        ]
+      }
+    ],
+    "K": [
+      {
+        "topic": "TECH",
+        "start": 135,
+        "duration": 15,
+        "content": "Yes, and speaking of language processing, Qi and I actually developed a Japanese ASR model that outperforms Whisper.",
+        "briefSummary": "Kinan discusses ASR model.",
+        "detailedSummary": [
+          "He mentions collaboration with Qi on ASR.",
+          "Kinan highlights the model's performance."
+        ]
+      },
+      {
+        "topic": "TECH",
+        "start": 435,
+        "duration": 30,
+        "content": "Right, and this affects how we handle the technical implementation. For the speech processing part, we need to preserve not just the words, but also the context and flow of ideas. This helps our system find meaningful connections later.",
+        "briefSummary": "Kinan explains technical implementation.",
+        "detailedSummary": [
+          "He emphasizes the importance of context in processing.",
+          "Kinan discusses the implications for system design."
+        ]
+      },
+      {
+        "topic": "PLAN",
+        "start": 1050,
+        "duration": 30,
+        "content": "We're also thinking about how to handle different types of meetings. Technical discussions might need different visualization approaches compared to strategic planning sessions.",
+        "briefSummary": "Kinan addresses meeting type considerations.",
+        "detailedSummary": [
+          "He discusses the need for varied visualization methods.",
+          "Kinan highlights the importance of context in meetings."
+        ]
+      },
+      {
+        "topic": "PLAN",
+        "start": 1230,
+        "duration": 30,
+        "content": "I can walk you through our current architecture tomorrow. There are some interesting challenges you might enjoy working on.",
+        "briefSummary": "Kinan offers to guide Muhammad.",
+        "detailedSummary": [
+          "He proposes a walkthrough of the architecture.",
+          "Kinan identifies challenges for Muhammad to explore."
+        ]
+      }
+    ],
+    "E": [
+      {
+        "topic": "VISION",
+        "start": 45,
+        "duration": 30,
+        "content": "That's a very good point, Muhammad. I take notes in eight different languages, so I understand this problem well. In our design, we focus on something important - it's not just about saving information, it's about understanding how different ideas connect to each other. That's why we made our visualization system.",
+        "briefSummary": "Ewa highlights design focus.",
+        "detailedSummary": [
+          "She relates to Muhammad's note-taking challenges.",
+          "Ewa explains the goal of the visualization system."
+        ]
+      },
+      {
+        "topic": "VIZ",
+        "start": 120,
+        "duration": 45,
+        "content": "Let me show you. When we have a meeting like this, people share many ideas. Some ideas seem unrelated at first, but there are often hidden connections. Our visualization system can show these connections in a way that's easy to understand. Want to see some examples?",
+        "briefSummary": "Ewa introduces visualization system.",
+        "detailedSummary": [
+          "She explains the purpose of the visualization system.",
+          "Ewa invites Muhammad to see examples."
+        ]
+      },
+      {
+        "topic": "VIZ",
+        "start": 315,
+        "duration": 45,
+        "content": "So we started with a simple timeline view - it shows who spoke when and about what topics. But the interesting part is how we show connections between different parts of the discussion. We use d3.js for the interactive elements, making it easy for users to explore these connections.",
+        "briefSummary": "Ewa describes timeline view.",
+        "detailedSummary": [
+          "She outlines the features of the timeline view.",
+          "Ewa explains the use of d3.js for interactivity."
+        ]
+      },
+      {
+        "topic": "PLAN",
+        "start": 750,
+        "duration": 30,
+        "content": "That's actually something we're working on now. The challenge is balancing immediate insights with deeper analysis. Sometimes connections only become clear after seeing the full context.",
+        "briefSummary": "Ewa discusses real-time processing challenges.",
+        "detailedSummary": [
+          "She explains the current focus on real-time insights.",
+          "Ewa highlights the complexity of connection analysis."
+        ]
+      },
+      {
+        "topic": "PLAN",
+        "start": 1380,
+        "duration": 30,
+        "content": "We're currently refining the visualization components. I'm working on making the interface more intuitive, especially for exploring complex connection networks.",
+        "briefSummary": "Ewa outlines current development focus.",
+        "detailedSummary": [
+          "She discusses improvements to the visualization interface.",
+          "Ewa emphasizes user experience in design."
+        ]
+      },
+      {
+        "topic": "PLAN",
+        "start": 1740,
+        "duration": 15,
+        "content": "Yes, and feel free to share your thoughts on the interface. Fresh perspectives often lead to improvements we hadn't considered.",
+        "briefSummary": "Ewa encourages feedback.",
+        "detailedSummary": [
+          "She invites Muhammad to share insights.",
+          "Ewa values collaboration in design."
+        ]
+      }
+    ],
+    "Q": [
+      {
+        "topic": "VISION",
+        "start": 45,
+        "duration": 45,
+        "content": "Actually, languages are quite special for our team. Ewa speaks eight languages, Kinan speaks ten, and I speak three. We call ourselves 'pi-lingual' - it's a term from Doug Hofstadter, who was my PhD advisor at Indiana University. But more importantly, this gives us different perspectives on how people learn and share knowledge.",
+        "briefSummary": "Qi discusses team's language skills.",
+        "detailedSummary": [
+          "He highlights the team's multilingual abilities.",
+          "Qi explains the concept of 'pi-lingual' and its significance."
+        ]
+      },
+      {
+        "topic": "TECH",
+        "start": 330,
+        "duration": 45,
+        "content": "It's more advanced than that. We're using a unique architecture inspired by research at CRCC - the Center for Research on Concepts and Cognition. Think about how humans make analogies - we don't just match words, we understand deeper patterns. Our system tries to do something similar.",
+        "briefSummary": "Qi explains advanced architecture.",
+        "detailedSummary": [
+          "He describes the inspiration behind their system.",
+          "Qi emphasizes the importance of understanding patterns."
+        ]
+      },
+      {
+        "topic": "PLAN",
+        "start": 810,
+        "duration": 30,
+        "content": "Exactly. Take universities for example. We're already in talks with several institutions like MIT and Johns Hopkins. They're interested because this could transform how knowledge is shared and preserved in academic settings.",
+        "briefSummary": "Qi discusses academic partnerships.",
+        "detailedSummary": [
+          "He mentions ongoing discussions with universities.",
+          "Qi highlights the potential impact on knowledge sharing."
+        ]
+      },
+      {
+        "topic": "PLAN",
+        "start": 1230,
+        "duration": 30,
+        "content": "And I'm coordinating with potential partners. We're getting valuable feedback that helps us prioritize features. For example, academic users want better integration with research repositories.",
+        "briefSummary": "Qi outlines coordination efforts.",
+        "detailedSummary": [
+          "He discusses collaboration with partners.",
+          "Qi emphasizes the importance of user feedback."
+        ]
+      },
+      {
+        "topic": "VISION",
+        "start": 1215,
+        "duration": 15,
+        "content": "Perfect. Remember, ParaGraph started with a simple idea - making knowledge sharing more active and meaningful. Everything we build supports this vision. Welcome to the team, Muhammad!",
+        "briefSummary": "Qi welcomes Muhammad to the team.",
+        "detailedSummary": [
+          "He reinforces the project's vision.",
+          "Qi expresses excitement for Muhammad's contributions."
+        ]
+      }
+    ]
+  }
+}
