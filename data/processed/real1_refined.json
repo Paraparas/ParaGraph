@@ -1,0 +1,323 @@
+{
+  "speakers": [
+    {
+      "id": "K",
+      "name": "Kinan",
+      "role": ""
+    },
+    {
+      "id": "M",
+      "name": "Muhammad",
+      "role": ""
+    },
+    {
+      "id": "Q",
+      "name": "Qi",
+      "role": ""
+    }
+  ],
+  "segments": {
+    "K": [
+      {
+        "topic": "PLAN",
+        "start": 45,
+        "duration": 45,
+        "content": "The ASR integration is definitely possible. We could pass the entire audio into a model like Whisper. However, speaker diarization might be harder - identifying who is speaking when. With Google Meet's API, they record each person's audio individually, making speaker identification easier. Since Muhammad left temporarily, they can more easily identify speakers in real-time.",
+        "briefSummary": "Discussed ASR integration feasibility.",
+        "detailedSummary": [
+          "ASR integration is possible with Whisper.",
+          "Speaker diarization may be challenging.",
+          "Google Meet's API aids in speaker identification."
+        ]
+      },
+      {
+        "topic": "PLAN",
+        "start": 345,
+        "duration": 45,
+        "content": "To summarize, I'll investigate tools to convert raw recordings to transcripts. Even without perfect speaker identification, the model might deduce speakers from context. It doesn't have to be perfect for the demo. I'll look into it and let you know.",
+        "briefSummary": "Summarized action items for transcript conversion.",
+        "detailedSummary": [
+          "Investigate tools for raw recordings to transcripts.",
+          "Model may deduce speakers from context.",
+          "Focus on demo requirements."
+        ]
+      },
+      {
+        "topic": "TECH",
+        "start": 315,
+        "duration": 90,
+        "content": "With the current version on Vercel, we have a good MVP that clearly shows the progression from transcript to time-segmented summarizations. Are there other features you're thinking of adding, or should we focus on this main functionality?",
+        "briefSummary": "Discussed MVP and potential feature additions.",
+        "detailedSummary": [
+          "Current version on Vercel shows good MVP.",
+          "Focus on transcript to summarization progression.",
+          "Inquire about additional features."
+        ]
+      },
+      {
+        "topic": "TECH",
+        "start": 840,
+        "duration": 90,
+        "content": "We could process the transcript into JSON first, then generate different visualization formats from that structure. That seems like a good feature to focus on implementing programmatically rather than hardcoding.",
+        "briefSummary": "Proposed processing transcript into JSON.",
+        "detailedSummary": [
+          "Process transcript into JSON format.",
+          "Generate various visualization formats.",
+          "Focus on programmatic implementation."
+        ]
+      },
+      {
+        "topic": "PLAN",
+        "start": 2700,
+        "duration": 90,
+        "content": "Thanks for directing the meeting, Qi. Having a clear plan is helpful.",
+        "briefSummary": "Appreciated meeting direction and planning.",
+        "detailedSummary": [
+          "Thanked Qi for directing the meeting.",
+          "Highlighted the importance of a clear plan."
+        ]
+      }
+    ],
+    "M": [
+      {
+        "topic": "TECH",
+        "start": 210,
+        "duration": 15,
+        "content": "Yes, sorry. Had some internet connection issues.",
+        "briefSummary": "Apologized for connection issues.",
+        "detailedSummary": [
+          "Apologized for the delay.",
+          "Mentioned internet connection problems."
+        ]
+      },
+      {
+        "topic": "VIZ",
+        "start": 1500,
+        "duration": 120,
+        "content": "I notice different colors representing speakers. For four speakers in this meeting, where is the fourth one represented?",
+        "briefSummary": "Inquired about speaker representation in visualization.",
+        "detailedSummary": [
+          "Noted color coding for speaker representation.",
+          "Questioned representation of the fourth speaker."
+        ]
+      },
+      {
+        "topic": "TECH",
+        "start": 2310,
+        "duration": 45,
+        "content": "LangGraph is great technology, but given our limited time, let's focus on core functionality first. We can add LangGraph if time permits.",
+        "briefSummary": "Suggested focusing on core functionality.",
+        "detailedSummary": [
+          "Acknowledged LangGraph as useful technology.",
+          "Emphasized prioritizing core functionality."
+        ]
+      }
+    ],
+    "Q": [
+      {
+        "topic": "VISION",
+        "start": 0,
+        "duration": 45,
+        "content": "Getting back to Kinan's question about the ASR module. We need to decide today if we want to include it. Users can currently start from their transcript, so while ASR would be better, if implementation takes a few days, that's too much. We want to focus on OpenAI integration and better visualization. Since we're ASR researchers, we can always integrate it later. We need you to decide if it's manageable now or should be done later.",
+        "briefSummary": "Discussed ASR module inclusion decision.",
+        "detailedSummary": [
+          "Need to decide on ASR module inclusion.",
+          "Focus on OpenAI integration and visualization.",
+          "Integration can be done later if needed."
+        ]
+      },
+      {
+        "topic": "TECH",
+        "start": 135,
+        "duration": 75,
+        "content": "If we use Google Meet, we get speaker diarization and identification for free. Later, when we make this a product, we'll want to integrate with all major meeting platforms - Zoom, Google Meet, Microsoft Teams. For now, we really need you to focus on large language model integration. I have some more advanced features in mind, but we should focus on the demo first.",
+        "briefSummary": "Highlighted benefits of Google Meet integration.",
+        "detailedSummary": [
+          "Google Meet provides free speaker diarization.",
+          "Future integration with major platforms planned.",
+          "Emphasized focus on LLM integration for demo."
+        ]
+      },
+      {
+        "topic": "PLAN",
+        "start": 450,
+        "duration": 90,
+        "content": "Our entire pipeline goes from either recording or transcript to the large language model, then parses and labels the data for visualization. As long as we have quality processed data after the LLM, we don't care about the source. We're fine with either option as long as we can feed reliable parsed data to the visualization module.",
+        "briefSummary": "Outlined data processing pipeline.",
+        "detailedSummary": [
+          "Pipeline from recording/transcript to LLM.",
+          "Focus on quality processed data for visualization.",
+          "Flexible with data source as long as it's reliable."
+        ]
+      },
+      {
+        "topic": "PLAN",
+        "start": 630,
+        "duration": 90,
+        "content": "For our final three-minute demo, we'll need a 20-minute meeting script to feed into the OpenAI model. We should think carefully about format - whether to include speaker names clearly in every speech, or use a simpler version. Let's prepare the script based on your prompts and data structure. With a longer meeting, we might discover issues we haven't seen in the five-minute tests.",
+        "briefSummary": "Discussed demo script requirements.",
+        "detailedSummary": [
+          "Need a 20-minute meeting script for demo.",
+          "Consider format for speaker names in script.",
+          "Longer meetings may reveal new issues."
+        ]
+      },
+      {
+        "topic": "VIZ",
+        "start": 720,
+        "duration": 150,
+        "content": "Let me show you the current implementation on Vercel. Here's our landing page where we can upload recordings and transcripts. We have some issues to fix - for example, some speech segments are overlapping incorrectly. We need to ensure our language model can clearly parse, label, and summarize based on our script. This needs to be clearly demonstrated in the three-minute demo.",
+        "briefSummary": "Showed current implementation and issues.",
+        "detailedSummary": [
+          "Demonstrated landing page on Vercel.",
+          "Identified overlapping speech segment issues.",
+          "Emphasized need for clear parsing and summarization."
+        ]
+      },
+      {
+        "topic": "PLAN",
+        "start": 810,
+        "duration": 60,
+        "content": "Muhammad, you can create or modify test scripts similar to Google Meet transcripts that work with Kinan's OpenAI integration. We want to make our demo script reflect real discussions. What are your actual questions and interests in this project?",
+        "briefSummary": "Assigned task to Muhammad for test scripts.",
+        "detailedSummary": [
+          "Tasked Muhammad with creating/modifying test scripts.",
+          "Aim for demo script to reflect real discussions.",
+          "Inquired about Muhammad's questions and interests."
+        ]
+      },
+      {
+        "topic": "VIZ",
+        "start": 990,
+        "duration": 210,
+        "content": "Let me show you the visualization layers. The first page is a timeline with four speakers. Each person's topics are color-coded - Muhammad discussed three topics, Kinan three topics, and others discussed visualization and planning. Users can focus on specific speakers and see brief overviews with detailed bullet points. We need more concrete summaries that provide context and background, not just high-level points.",
+        "briefSummary": "Presented visualization layers and user focus.",
+        "detailedSummary": [
+          "Showed timeline with color-coded topics.",
+          "Highlighted discussions by each speaker.",
+          "Emphasized need for detailed summaries."
+        ]
+      },
+      {
+        "topic": "VIZ",
+        "start": 1230,
+        "duration": 120,
+        "content": "Let's have Muhammad prepare different versions - 5 minutes, 10 minutes, 20 minutes - with various speaking patterns. We need to test edge cases and adjust our UI/UX accordingly. The next visualization is the topic wheel, using consistent color coding. This helps users familiar with the colors understand relationships between topics.",
+        "briefSummary": "Requested different test versions for UI/UX.",
+        "detailedSummary": [
+          "Muhammad to prepare various length versions.",
+          "Need to test edge cases for UI/UX adjustments.",
+          "Introduced topic wheel visualization concept."
+        ]
+      },
+      {
+        "topic": "VIZ",
+        "start": 1350,
+        "duration": 120,
+        "content": "The topic wheel shows how ideas connect across speakers. We track explicit links from actual speech and implicit links that show conceptual connections. This helps surface hidden insights and patterns in team discussions.",
+        "briefSummary": "Explained topic wheel visualization.",
+        "detailedSummary": [
+          "Topic wheel visualizes connections across speakers.",
+          "Tracks explicit and implicit links.",
+          "Aims to reveal insights in discussions."
+        ]
+      },
+      {
+        "topic": "VIZ",
+        "start": 1470,
+        "duration": 90,
+        "content": "There's an issue with this visualization - we should show all four speakers. This version uses prepared data, but the concept is to show both explicit connections from speech and implicit connections from shared concepts.",
+        "briefSummary": "Identified issue with speaker representation.",
+        "detailedSummary": [
+          "Need to show all four speakers in visualization.",
+          "Current version uses prepared data.",
+          "Aim to display explicit and implicit connections."
+        ]
+      },
+      {
+        "topic": "TECH",
+        "start": 1710,
+        "duration": 150,
+        "content": "Let me show you the current data structure. We have main topics and subtopics represented by different node sizes, with explicit connections from speaker statements and implicit connections found by our language models. We'll need a meta-GPT to manage smaller models looking for connections, with only verified insights appearing on the board.",
+        "briefSummary": "Presented current data structure.",
+        "detailedSummary": [
+          "Explained main topics and subtopics representation.",
+          "Discussed explicit and implicit connections.",
+          "Proposed using meta-GPT for managing connections."
+        ]
+      },
+      {
+        "topic": "TECH",
+        "start": 1860,
+        "duration": 90,
+        "content": "We could use LangGraph to coordinate multiple AI agents in a workflow. We could show this workflow in our demo to explain how we process and connect information. It's ambitious for our timeline, but would be impressive to judges.",
+        "briefSummary": "Proposed using LangGraph for AI coordination.",
+        "detailedSummary": [
+          "Suggested LangGraph for coordinating AI agents.",
+          "Proposed showing workflow in demo.",
+          "Acknowledged ambition for timeline."
+        ]
+      },
+      {
+        "topic": "PLAN",
+        "start": 2340,
+        "duration": 90,
+        "content": "Since we're using a LangChain template, LangGraph integration might be easier. Let's aim to decide by next Sunday. If we can't integrate it, we can still mention our experiments and future plans while showing our working pipeline. The final visualization layer will be a dashboard showing meeting metadata, topic coverage, and flow analysis.",
+        "briefSummary": "Discussed LangGraph integration timeline.",
+        "detailedSummary": [
+          "LangGraph integration may be easier with LangChain.",
+          "Set decision deadline for next Sunday.",
+          "Final visualization layer will be a dashboard."
+        ]
+      },
+      {
+        "topic": "VISION",
+        "start": 2670,
+        "duration": 180,
+        "content": "A key value proposition is transforming vague meeting content into measurable, trackable information. Companies want to quantify their meetings and knowledge sharing. We're providing tools to measure and analyze team knowledge exchange.",
+        "briefSummary": "Outlined value proposition for the project.",
+        "detailedSummary": [
+          "Transform vague meeting content into measurable data.",
+          "Companies seek to quantify meetings.",
+          "Tools for measuring team knowledge exchange."
+        ]
+      },
+      {
+        "topic": "PLAN",
+        "start": 2790,
+        "duration": 90,
+        "content": "We need to explicitly show we're using advanced AI, not just creating visualizations. That's another reason to demonstrate LangGraph - showing the AI agents working under the hood to create these connections and insights.",
+        "briefSummary": "Emphasized showcasing advanced AI usage.",
+        "detailedSummary": [
+          "Need to demonstrate advanced AI capabilities.",
+          "LangGraph to show AI agents' workings.",
+          "Highlight connections and insights generation."
+        ]
+      },
+      {
+        "topic": "PLAN",
+        "start": 2940,
+        "duration": 90,
+        "content": "For next week's deliverables: Kinan, decide on ASR integration and continue LLM integration for topic mapping. By next week, we want no hardcoded data - everything should be processed by language models. Muhammad, continue preparing test scripts of varying lengths. If anyone makes progress on LangGraph, share on Slack.",
+        "briefSummary": "Outlined next week's deliverables.",
+        "detailedSummary": [
+          "Kinan to decide on ASR integration.",
+          "Focus on LLM integration for topic mapping.",
+          "Muhammad to prepare varying length test scripts."
+        ]
+      },
+      {
+        "topic": "PLAN",
+        "start": 3120,
+        "duration": 19,
+        "content": "We're getting more efficient with our meetings. I'll share the transcript, recording, and papers on Slack. Let's maintain close communication there for feedback and progress updates.",
+        "briefSummary": "Encouraged efficient communication post-meeting.",
+        "detailedSummary": [
+          "Noted improvement in meeting efficiency.",
+          "Plan to share transcript and recording on Slack.",
+          "Emphasized importance of communication for updates."
+        ]
+      }
+    ]
+  }
+}

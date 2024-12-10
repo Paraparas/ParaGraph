@@ -1,24 +1,24 @@
 // /data/samples/sample-meeting.ts
 import { TopicConfig, Speaker, MeetingData } from '../../lib/types/transcript';
 
-export const topicConfig: TopicConfig = {
-  VISION: { 
-    color: '#4f46e5',
-    label: 'Project Vision & Overview'
-  },
-  TECH: { 
-    color: '#ec4899',
-    label: 'Technical Implementation'
-  },
-  VIZ: { 
-    color: '#10b981',
-    label: 'Visualization Design'
-  },
-  PLAN: { 
-    color: '#f59e0b',
-    label: 'Planning & Coordination'
-  }
-};
+// export const topicConfig: TopicConfig = {
+//   VISION: { 
+//     color: '#4f46e5',
+//     label: 'Project Vision & Overview'
+//   },
+//   TECH: { 
+//     color: '#ec4899',
+//     label: 'Technical Implementation'
+//   },
+//   VIZ: { 
+//     color: '#10b981',
+//     label: 'Visualization Design'
+//   },
+//   PLAN: { 
+//     color: '#f59e0b',
+//     label: 'Planning & Coordination'
+//   }
+// };
 
 export const sampleMeetingData: MeetingData = {
   speakers: [
