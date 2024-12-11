@@ -1,31 +1,45 @@
 import { TopicConfig } from '@/lib/types/transcript';
 
 export const topicConfig: TopicConfig = {
-  'TECH': {
+  'UX': {
+    color: '#ec4899', // Pink
+    label: 'User Experience',
+    subtopics: {
+      'INTERFACE': {
+        label: 'Interface Design',
+        items: ['visualization', 'interaction']
+      },
+      'USABILITY': {
+        label: 'Usability',
+        items: ['feedback', 'clarity']
+      }
+    }
+  },
+  'TECHNOLOGY': {
     color: '#10b981', // Emerald
     label: 'Technical Implementation',
     subtopics: {
       'ASR': {
-        label: 'Speech Recognition',
-        items: ['real-time', 'offline']
+        label: 'Speech Processing',
+        items: ['diarization', 'accuracy']
       },
-      'REALTIME': {
-        label: 'Real-time Processing',
-        items: ['performance', 'accuracy']
+      'ARCH': {
+        label: 'Architecture',
+        items: ['pipeline', 'integration']
       }
     }
   },
-  'VIZ': {
-    color: '#ec4899', // Pink
-    label: 'Visualization',
+  'PLANNING': {
+    color: '#f59e0b', // Amber
+    label: 'Planning',
     subtopics: {
-      'FLOW': {
-        label: 'Timeline View',
-        items: ['segments', 'interactions']
+      'ROADMAP': {
+        label: 'Development Roadmap',
+        items: ['priorities', 'testing']
       },
-      'TOPIC': {
-        label: 'Topic Map',
-        items: ['layout', 'connections']
+      'ROLES': {
+        label: 'Team Coordination',
+        items: ['tasks', 'collaboration']
       }
     }
   },
@@ -33,27 +47,23 @@ export const topicConfig: TopicConfig = {
     color: '#8b5cf6', // Purple
     label: 'Project Vision',
     subtopics: {
-      'COGNITIVE': {
-        label: 'Cognitive Load',
-        items: ['complexity', 'usability']
+      'GOALS': {
+        label: 'Core Goals',
+        items: ['knowledge sharing', 'understanding']
       },
-      'UX': {
-        label: 'User Experience',
-        items: ['interface', 'interactions']
+      'FUTURE': {
+        label: 'Future Development',
+        items: ['expansion', 'applications']
       }
     }
   },
-  'PLAN': {
-    color: '#f59e0b', // Amber
-    label: 'Planning & Coordination',
+  'OTHER': {
+    color: '#94a3b8', // Slate
+    label: 'Other Topics',
     subtopics: {
-      'TIMELINE': {
-        label: 'Project Timeline',
-        items: ['milestones', 'deadlines']
-      },
-      'TEAM': {
-        label: 'Team Organization',
-        items: ['roles', 'tasks']
+      'GENERAL': {
+        label: 'General Discussion',
+        items: ['introduction', 'misc']
       }
     }
   }

@@ -11,7 +11,7 @@ export async function getMeetingData(options: {
   const {
     mode = 'cached',
     transcriptPath = 'data/raw/final.md',
-    cachePath = 'data/processed/final.json'
+    cachePath = 'data/processed/final_refined.json'
   } = options;
 
   try {
