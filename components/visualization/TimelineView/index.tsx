@@ -39,24 +39,19 @@ const TimelineView: React.FC = () => {
   useEffect(() => {
     const updateWidth = () => {
       if (containerRef.current) {
-        const width = containerRef.current.clientWidth;
-        console.log('Container width:', width);
-        setContainerWidth(containerRef.current.clientWidth);
+        // Get actual container width minus padding
+        const width = containerRef.current.getBoundingClientRect().width - 32; // 2rem (px-4)
+        setContainerWidth(width);
       }
     };
-    // Initial measurement after a small delay
-    const timer = setTimeout(() => {
-      updateWidth();
-    }, 0);
-
-    // Add resize listener
-    window.addEventListener('resize', updateWidth);
-
-    // Cleanup
-    return () => {
-      clearTimeout(timer);
-      window.removeEventListener('resize', updateWidth);
-    };
+    
+    updateWidth();
+    const resizeObserver = new ResizeObserver(updateWidth);
+    if (containerRef.current) {
+      resizeObserver.observe(containerRef.current);
+    }
+    
+    return () => resizeObserver.disconnect();
   }, []);
 
   // 4. useMemo hooks

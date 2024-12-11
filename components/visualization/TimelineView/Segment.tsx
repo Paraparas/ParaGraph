@@ -1,10 +1,11 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Segment } from '@/lib/types/transcript';
 import { topicConfig } from '../shared/TopicConfig';
+import { select } from 'd3-selection';
 
 const DEFAULT_COLOR = '#94a3b8';
 
@@ -130,49 +131,60 @@ const TimelineSegment: React.FC<SegmentProps> = ({
 }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
+  const segmentRef = useRef<HTMLDivElement>(null);
   const topicColor = topicConfig[segment.topic]?.color || DEFAULT_COLOR;
 
   return (
     <div
+      ref={segmentRef}
       className="absolute top-0 bottom-0 group cursor-pointer"
       style={{
         left: `${startPercent}%`,
-        width: `${widthPercent}%`,
-        opacity: isHighlighted ? 1 : 0.3,
-        transition: 'opacity 0.2s ease-in-out'
+        width: `${Math.max(widthPercent, 0.2)}%`,
+        opacity: isHighlighted ? 1 : 0.3
       }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onClick={() => setIsExpanded(true)}
     >
-      <motion.div
-        className="absolute inset-0 rounded-sm"
+      {/* Segment bar */}
+      <div 
+        className="absolute inset-0 rounded-sm overflow-hidden"
         style={{
           backgroundColor: `${topicColor}20`,
-          borderLeft: `2px solid ${topicColor}`,
+          borderLeft: `2px solid ${topicColor}`
         }}
-        whileHover={{
-          backgroundColor: `${topicColor}40`,
-          y: -2,
-          transition: { duration: 0.2 }
-        }}
-      >
-        {/* Hover tooltip */}
+      />
+      
+      {/* Tooltip */}
+      <AnimatePresence>
         {isHovered && (
-          <div
-            className="absolute left-0 top-0 z-50 transform -translate-y-full mb-1
-              bg-slate-800 rounded-lg shadow-xl border border-slate-700/50 p-2
-              whitespace-nowrap"
+          <motion.div
+            className="absolute z-50 left-0 right-0 bottom-full mb-1"
+            initial={{ opacity: 0, y: -4 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.15 }}
           >
-            <div className="text-xs text-slate-300">
-              {formatTime(segment.start)} - {formatTime(segment.start + segment.duration)}
+            <div className="bg-slate-900/95 backdrop-blur-sm rounded-lg py-2 px-3 mx-auto inline-block whitespace-nowrap">
+              {/* Timestamp line */}
+              <div className="flex items-center gap-2 text-sm text-slate-200">
+                <div 
+                  className="w-1.5 h-1.5 rounded-full flex-shrink-0"
+                  style={{ backgroundColor: topicColor }}
+                />
+                <span>{formatTime(segment.start)} - {formatTime(segment.start + segment.duration)}</span>
+              </div>
+              {/* Brief Summary line */}
+              <div className="text-sm text-white font-medium">
+                {segment.briefSummary}
+              </div>
             </div>
-            <div className="text-sm text-white font-medium">
-              {segment.briefSummary}
-            </div>
-          </div>
+          </motion.div>
         )}
-      </motion.div>
+      </AnimatePresence>
+
+      {/* DetailView remains the same */}
       <AnimatePresence>
         {isExpanded && (
           <DetailView
@@ -185,6 +197,5 @@ const TimelineSegment: React.FC<SegmentProps> = ({
     </div>
   );
 };
-
 
 export default TimelineSegment;

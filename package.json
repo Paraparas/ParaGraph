@@ -30,6 +30,10 @@
     "ai": "^3.1.12",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "d3": "^7.9.0",
+    "d3-interpolate": "^3.0.1",
+    "d3-scale": "^4.0.2",
+    "d3-selection": "^3.0.0",
     "eslint": "8.46.0",
     "eslint-config-next": "13.4.12",
     "framer-motion": "^11.11.17",
@@ -50,6 +54,10 @@
     "zod-to-json-schema": "^3.21.4"
   },
   "devDependencies": {
+    "@types/d3": "^7.4.3",
+    "@types/d3-interpolate": "^3.0.4",
+    "@types/d3-scale": "^4.0.8",
+    "@types/d3-selection": "^3.0.11",
     "autoprefixer": "^10.4.20",
     "postcss": "^8.4.49",
     "prettier": "3.0.0",
