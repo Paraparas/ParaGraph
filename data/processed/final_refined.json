@@ -22,369 +22,431 @@
             {
                 "topic": "OTHER",
                 "start": 0,
-                "duration": 20,
-                "content": "Welcome Muhammad! We're happy to have you join us. What interested you most about ParaGraph from our previous discussion?",
-                "briefSummary": "Qi welcomes Muhammad with an opening question",
+                "duration": 12,
+                "content": "Welcome to the team, Muhammad! We're excited to have you join us. Before we dive into specific tasks, would you like to share what interested you most about ParaGraph from our initial discussions?",
+                "briefSummary": "Qi welcomes Muhammad and asks about his interests",
                 "detailedSummary": [
-                    "Qi personally welcomes Muhammad to the team meeting",
-                    "Qi asks Muhammad to share his specific interests in ParaGraph",
-                    "Qi references their previous discussion to build continuity"
+                    "Qi warmly welcomes Muhammad to the team",
+                    "Qi opens discussion by asking about Muhammad's interests",
+                    "Qi references their previous discussions about ParaGraph"
                 ]
             },
             {
                 "topic": "VISION",
-                "start": 105,
-                "duration": 45,
-                "content": "Actually, languages are quite special for our team. Ewa speaks eight languages, Kinan speaks ten, and I speak three. We call ourselves 'pi-lingual' - it's a term from Doug Hofstadter, who was my PhD advisor at Indiana University. But more importantly, this gives us different perspectives on how people learn and share knowledge.",
-                "briefSummary": "Qi describes team's multilingual background and its value",
+                "start": 95,
+                "duration": 73,
+                "content": "Actually, languages are quite special for our team. Ewa speaks eight languages, Kinan speaks ten, and I speak three. We call ourselves 'pi-lingual' - it's a term from Doug Hofstadter, who was my PhD advisor at Indiana University. This multilingual perspective has deeply influenced how we think about knowledge transfer. When you work across different languages, you start seeing fascinating patterns in how people express and connect ideas. This isn't just about translation - it's about understanding how knowledge flows across different ways of thinking.",
+                "briefSummary": "Qi explains team's multilingual background and its influence",
                 "detailedSummary": [
-                    "Qi details the team's extensive language capabilities (Ewa: 8, Kinan: 10, Qi: 3)",
-                    "Qi introduces the term 'pi-lingual' from Doug Hofstadter at Indiana University",
-                    "Qi connects multilingual experience to diverse perspectives on learning",
-                    "Qi emphasizes how language diversity enhances knowledge sharing understanding"
+                    "Qi details team's extensive language capabilities (Ewa: 8, Kinan: 10, Qi: 3)",
+                    "Qi introduces term 'pi-lingual' from Doug Hofstadter at Indiana University",
+                    "Qi explains how multilingual experience shapes knowledge transfer understanding",
+                    "Qi distinguishes between translation and deeper knowledge flow patterns"
                 ]
             },
             {
                 "topic": "VISION",
-                "start": 180,
-                "duration": 45,
-                "content": "Thanks! But for ParaGraph, we're focusing on something even more interesting. We want to change how people share and understand information. You see, most current tools are passive - they just store information. We want to make something active, something that helps people discover connections they might miss.",
+                "start": 185,
+                "duration": 80,
+                "content": "Thanks! But for ParaGraph, we're focusing on something even more interesting. We want to fundamentally change how people share and understand information. Most current tools are passive - they just store information. We're building something active, something that helps people discover connections they might miss. This comes from our research at CRCC, where we studied how humans naturally make analogies and connect ideas. We're not just applying AI to text processing; we're trying to mirror how human minds build understanding through connection and pattern recognition.",
                 "briefSummary": "Qi explains ParaGraph's active approach to knowledge sharing",
                 "detailedSummary": [
-                    "Qi distinguishes ParaGraph from passive information storage tools",
-                    "Qi articulates the vision of transforming how people interact with information",
-                    "Qi introduces the concept of active connection discovery",
-                    "Qi emphasizes ParaGraph's ability to surface hidden relationships"
-                ]
-            },
-            {
-                "topic": "VISION",
-                "start": 390,
-                "duration": 45,
-                "content": "It's more advanced than that. We're using a unique architecture inspired by research at CRCC - the Center for Research on Concepts and Cognition. Think about how humans make analogies - we don't just match words, we understand deeper patterns. Our system tries to do something similar.",
-                "briefSummary": "Qi explains ParaGraph's cognitive science foundation",
-                "detailedSummary": [
-                    "Qi connects ParaGraph's architecture to CRCC research principles",
-                    "Qi explains how human analogy-making inspires the system",
-                    "Qi describes the goal of understanding patterns beyond word matching",
-                    "Qi positions ParaGraph as a cognitive-inspired technology"
-                ]
-            },
-            {
-                "topic": "VISION",
-                "start": 495,
-                "duration": 45,
-                "content": "Exactly. Take universities for example. We're already in talks with several institutions like MIT and Johns Hopkins. They're interested because this could transform how knowledge is shared and preserved in academic settings.",
-                "briefSummary": "Qi outlines academic applications and partnerships",
-                "detailedSummary": [
-                    "Qi reveals ongoing discussions with major institutions (MIT, Johns Hopkins)",
-                    "Qi explains ParaGraph's potential impact on academic knowledge sharing",
-                    "Qi positions ParaGraph as a tool for knowledge preservation in academia"
+                    "Qi contrasts ParaGraph with passive information storage tools",
+                    "Qi emphasizes focus on active connection discovery",
+                    "Qi connects approach to CRCC research on human cognition",
+                    "Qi describes goal of mirroring human understanding processes"
                 ]
             },
             {
                 "topic": "TECHNOLOGY",
-                "start": 675,
-                "duration": 45,
-                "content": "Great question! Privacy is a top priority. We've designed our system so that organizations can run it on their own infrastructure. Also, we're implementing strong encryption and access controls.",
+                "start": 370,
+                "duration": 85,
+                "content": "It goes much deeper than keywords. We're implementing an architecture inspired by CRCC research on human cognition. Think about how you make analogies - you don't just match words, you understand deeper patterns and relationships. Our system uses a combination of symbolic processing and neural networks, plus what we call 'temperature variation' - similar to how human minds sometimes need to 'loosen up' constraints to see unexpected connections. This approach helps us find both explicit connections, like when someone directly references another topic, and implicit connections that might not be obvious during the conversation.",
+                "briefSummary": "Qi details the cognitive science behind connection detection",
+                "detailedSummary": [
+                    "Qi explains how system goes beyond keyword matching",
+                    "Qi describes architecture inspired by human cognition research",
+                    "Qi introduces concept of 'temperature variation' in processing",
+                    "Qi distinguishes between explicit and implicit connections"
+                ]
+            },
+            {
+                "topic": "VISION",
+                "start": 498,
+                "duration": 65,
+                "content": "Definitely. We're already in discussions with several institutions like MIT and Johns Hopkins. They're particularly interested in how this could transform knowledge sharing in academic settings. Think about research groups collaborating across different fields - our system could help them discover unexpected connections between their work. But the applications go beyond academia. In corporate settings, different departments often struggle to share knowledge effectively because they use different terminology and frameworks. ParaGraph can help bridge these gaps by identifying conceptual similarities even when the vocabulary differs.",
+                "briefSummary": "Qi outlines academic and corporate applications",
+                "detailedSummary": [
+                    "Qi reveals ongoing discussions with major institutions",
+                    "Qi explains potential for cross-field research collaboration",
+                    "Qi describes corporate knowledge sharing challenges",
+                    "Qi highlights ParaGraph's role in bridging terminology gaps"
+                ]
+            },
+            {
+                "topic": "TECHNOLOGY",
+                "start": 705,
+                "duration": 53,
+                "content": "Great question! Privacy is a top priority. We've designed the system so organizations can run it on their own infrastructure with strong encryption and access controls. This is particularly important for our target market of academic and corporate clients. We're also implementing features that let users control which connections are shared and with whom.",
                 "briefSummary": "Qi addresses privacy and security features",
                 "detailedSummary": [
-                    "Qi emphasizes privacy as a core priority in ParaGraph's design",
-                    "Qi explains the self-hosted infrastructure option for organizations",
-                    "Qi details the implementation of encryption and access controls"
+                    "Qi emphasizes privacy as core priority",
+                    "Qi explains self-hosted infrastructure option",
+                    "Qi details encryption and access control features",
+                    "Qi describes user control over connection sharing"
                 ]
             },
             {
                 "topic": "VISION",
-                "start": 825,
-                "duration": 45,
-                "content": "Yes, and this connects back to our vision of active learning. ParaGraph isn't just about recording meetings - it's about helping teams build knowledge together. Each meeting becomes a building block in the team's collective understanding.",
+                "start": 925,
+                "duration": 83,
+                "content": "This connects directly to our vision of active learning. We're not just building a meeting tool - we're creating a platform that helps teams build collective knowledge. Each meeting becomes part of a larger knowledge graph, making it easier to track how ideas evolve and connect over time. This is particularly valuable for research groups and innovation teams where insights often emerge from connecting seemingly unrelated ideas.",
                 "briefSummary": "Qi connects features to vision of collective learning",
                 "detailedSummary": [
-                    "Qi frames ParaGraph as a tool for active team learning",
-                    "Qi describes how meetings contribute to collective knowledge",
-                    "Qi emphasizes the cumulative nature of team understanding"
+                    "Qi positions ParaGraph as more than a meeting tool",
+                    "Qi explains concept of building collective knowledge",
+                    "Qi describes evolution of ideas through knowledge graph",
+                    "Qi emphasizes value for research and innovation teams"
+                ]
+            },
+            {
+                "topic": "PLANNING",
+                "start": 1165,
+                "duration": 73,
+                "content": "And I'm coordinating with potential partners to gather more specific requirements. For example, academic users want better integration with research repositories, while corporate users are interested in features for tracking decision-making processes. This feedback helps us prioritize features and ensure we're building something that delivers real value.",
+                "briefSummary": "Qi discusses partner feedback and feature prioritization",
+                "detailedSummary": [
+                    "Qi describes ongoing partner coordination efforts",
+                    "Qi details specific academic user requirements",
+                    "Qi outlines corporate user interests",
+                    "Qi explains feedback-driven feature prioritization"
+                ]
+            },
+            {
+                "topic": "PLANNING",
+                "start": 1255,
+                "duration": 63,
+                "content": "Given your background in development, you could contribute significantly to our processing pipeline. But before diving into the code, I'd recommend spending time exploring our visualization system. Understanding the user experience will help you make better technical decisions. Also, your perspective as someone new to the project will be valuable - you might spot opportunities for improvement that we've overlooked.",
+                "briefSummary": "Qi outlines onboarding plan for Muhammad",
+                "detailedSummary": [
+                    "Qi suggests starting with visualization system exploration",
+                    "Qi emphasizes importance of understanding UX before coding",
+                    "Qi values fresh perspective for improvements",
+                    "Qi plans progression to pipeline development"
                 ]
             },
             {
                 "topic": "VISION",
-                "start": 990,
-                "duration": 45,
-                "content": "And I'm coordinating with potential partners. We're getting valuable feedback that helps us prioritize features. For example, academic users want better integration with research repositories.",
-                "briefSummary": "Qi discusses partner feedback and feature prioritization",
-                "detailedSummary": [
-                    "Qi describes ongoing coordination with potential partners",
-                    "Qi explains how user feedback guides feature prioritization",
-                    "Qi highlights specific request for research repository integration"
-                ]
-            },
-            {
-                "topic": "PLANNING",
-                "start": 1065,
-                "duration": 45,
-                "content": "Given your background in development, you could work with Kinan on the processing pipeline. But first, spend some time exploring our visualization system. Understanding the user experience will help you make better technical decisions.",
-                "briefSummary": "Qi outlines Muhammad's onboarding plan",
-                "detailedSummary": [
-                    "Qi suggests Muhammad collaborate with Kinan on the pipeline",
-                    "Qi recommends starting with visualization system exploration",
-                    "Qi emphasizes understanding UX before technical implementation",
-                    "Qi connects UX understanding to improved technical decisions"
-                ]
-            },
-            {
-                "topic": "PLANNING",
-                "start": 1170,
-                "duration": 45,
-                "content": "Perfect. Remember, ParaGraph started with a simple idea - making knowledge sharing more active and meaningful. Everything we build supports this vision. Welcome to the team, Muhammad!",
+                "start": 1405,
+                "duration": 50,
+                "content": "Perfect. Remember, ParaGraph started with a simple idea - making knowledge sharing more active and meaningful. Everything we build supports this vision. Welcome to the team, Muhammad! We're excited to have your perspective and expertise.",
                 "briefSummary": "Qi concludes with vision and welcome",
                 "detailedSummary": [
-                    "Qi reiterates ParaGraph's core mission of active knowledge sharing",
-                    "Qi connects all development work to the central vision",
-                    "Qi officially welcomes Muhammad to the team"
+                    "Qi reiterates ParaGraph's core mission",
+                    "Qi emphasizes alignment of all development with vision",
+                    "Qi welcomes Muhammad's expertise",
+                    "Qi closes meeting on positive note"
                 ]
             }
         ],
         "M": [
             {
                 "topic": "UX",
-                "start": 20,
-                "duration": 25,
-                "content": "Thanks everyone! I was really interested in the note-taking features. As a developer, I'm always learning new things, and it's difficult to organize everything. I tried many different apps, but they're either too strict or too messy. I want to know how ParaGraph is different.",
-                "briefSummary": "Muhammad explains his interest in ParaGraph's note organization",
+                "start": 12,
+                "duration": 20,
+                "content": "Thanks everyone! I was particularly intrigued by the note-taking aspect. As a developer who's always learning, I often struggle with organizing information effectively. I've tried various tools, but they either feel too rigid or too unstructured. I'd love to understand how ParaGraph approaches this challenge.",
+                "briefSummary": "Muhammad explains his interest in note organization",
                 "detailedSummary": [
-                    "Muhammad describes his challenge with organizing new learning materials",
-                    "Muhammad critiques existing note-taking apps as either too rigid or disorganized",
-                    "Muhammad expresses curiosity about ParaGraph's unique approach to organization"
+                    "Muhammad shares his personal experience with note-taking challenges",
+                    "Muhammad critiques existing tools as either too rigid or unstructured",
+                    "Muhammad expresses interest in ParaGraph's approach to organization"
                 ]
             },
             {
                 "topic": "OTHER",
-                "start": 90,
-                "duration": 15,
-                "content": "Eight languages? That's amazing! Are we planning to support multiple languages?",
+                "start": 88,
+                "duration": 7,
+                "content": "Eight languages? That's impressive! Is multilingual support a key feature we're planning?",
                 "briefSummary": "Muhammad inquires about language support",
                 "detailedSummary": [
-                    "Muhammad expresses amazement at Ewa's multilingual capabilities",
-                    "Muhammad asks about ParaGraph's planned language support features"
+                    "Muhammad expresses amazement at multilingual capabilities",
+                    "Muhammad asks about multilingual feature plans"
+                ]
+            },
+            {
+                "topic": "OTHER",
+                "start": 178,
+                "duration": 7,
+                "content": "Really? That's impressive!",
+                "briefSummary": "Muhammad shows enthusiasm for ASR achievement",
+                "detailedSummary": [
+                    "Muhammad expresses admiration for the team's ASR model",
+                    "Muhammad shows interest in technical capabilities"
                 ]
             },
             {
                 "topic": "UX",
-                "start": 225,
-                "duration": 30,
-                "content": "What do you mean by active? Could you give an example?",
+                "start": 265,
+                "duration": 13,
+                "content": "That's fascinating. Could you give an example of what you mean by active versus passive?",
                 "briefSummary": "Muhammad seeks clarification on active features",
                 "detailedSummary": [
-                    "Muhammad requests concrete examples of ParaGraph's active approach",
-                    "Muhammad shows interest in understanding the practical implications"
+                    "Muhammad shows interest in active/passive distinction",
+                    "Muhammad asks for concrete examples",
+                    "Muhammad engages with core concept discussion"
                 ]
             },
             {
                 "topic": "TECHNOLOGY",
-                "start": 360,
-                "duration": 30,
-                "content": "So it's like having an AI that thinks more like a human? That's fascinating. What about practical applications?",
-                "briefSummary": "Muhammad asks about AI aspects and applications",
+                "start": 358,
+                "duration": 12,
+                "content": "How do you identify these connections? Is it based on keywords?",
+                "briefSummary": "Muhammad asks about connection detection",
                 "detailedSummary": [
-                    "Muhammad draws parallel between ParaGraph and human-like AI thinking",
-                    "Muhammad inquires about real-world applications",
-                    "Muhammad shows enthusiasm for the cognitive science approach"
+                    "Muhammad inquires about technical implementation",
+                    "Muhammad questions connection identification method",
+                    "Muhammad shows interest in system mechanics"
+                ]
+            },
+            {
+                "topic": "VISION",
+                "start": 482,
+                "duration": 16,
+                "content": "This sounds like it could have lots of applications. Have you identified specific use cases?",
+                "briefSummary": "Muhammad inquires about applications",
+                "detailedSummary": [
+                    "Muhammad recognizes broader potential",
+                    "Muhammad asks about concrete use cases",
+                    "Muhammad shows interest in practical applications"
+                ]
+            },
+            {
+                "topic": "UX",
+                "start": 635,
+                "duration": 13,
+                "content": "Do you have any feedback from early users about these features?",
+                "briefSummary": "Muhammad asks about user feedback",
+                "detailedSummary": [
+                    "Muhammad shows interest in user experience",
+                    "Muhammad inquires about feature validation",
+                    "Muhammad focuses on practical user outcomes"
                 ]
             },
             {
                 "topic": "TECHNOLOGY",
-                "start": 570,
-                "duration": 30,
-                "content": "What about privacy? Since we're processing sensitive meeting data...",
+                "start": 693,
+                "duration": 12,
+                "content": "What about privacy considerations? Since we're processing sensitive meeting data...",
                 "briefSummary": "Muhammad raises privacy concerns",
                 "detailedSummary": [
-                    "Muhammad identifies privacy as a critical consideration",
+                    "Muhammad identifies important security consideration",
                     "Muhammad shows awareness of data sensitivity",
-                    "Muhammad prompts discussion of security measures"
+                    "Muhammad raises crucial implementation concern"
                 ]
             },
             {
                 "topic": "TECHNOLOGY",
-                "start": 720,
-                "duration": 30,
+                "start": 758,
+                "duration": 14,
                 "content": "And what about real-time processing? Can users see these connections forming during the meeting?",
-                "briefSummary": "Muhammad inquires about real-time capabilities",
+                "briefSummary": "Muhammad inquires about real-time features",
                 "detailedSummary": [
-                    "Muhammad asks about real-time processing features",
-                    "Muhammad shows interest in dynamic connection visualization",
-                    "Muhammad explores system's immediate feedback capabilities"
+                    "Muhammad asks about real-time processing capabilities",
+                    "Muhammad shows interest in dynamic features",
+                    "Muhammad explores system responsiveness"
                 ]
             },
             {
                 "topic": "PLANNING",
-                "start": 870,
-                "duration": 30,
-                "content": "I see how this goes beyond simple note-taking. What's our immediate focus for development?",
+                "start": 1008,
+                "duration": 15,
+                "content": "This is much more comprehensive than I initially thought. What's our immediate focus for development?",
                 "briefSummary": "Muhammad asks about development priorities",
                 "detailedSummary": [
-                    "Muhammad acknowledges ParaGraph's advanced capabilities",
-                    "Muhammad seeks clarity on immediate development goals",
-                    "Muhammad shows readiness to contribute to development"
+                    "Muhammad acknowledges system complexity",
+                    "Muhammad seeks clarity on immediate priorities",
+                    "Muhammad shows readiness to contribute"
                 ]
             },
             {
                 "topic": "PLANNING",
-                "start": 1035,
-                "duration": 30,
-                "content": "How can I help? Where should I start?",
+                "start": 1238,
+                "duration": 17,
+                "content": "It sounds like there's a lot to work on. Where would you like me to focus first?",
                 "briefSummary": "Muhammad volunteers to contribute",
                 "detailedSummary": [
-                    "Muhammad shows initiative by asking for tasks",
-                    "Muhammad expresses eagerness to contribute",
-                    "Muhammad seeks direction for initial involvement"
+                    "Muhammad recognizes scope of work",
+                    "Muhammad seeks direction for contribution",
+                    "Muhammad shows eagerness to start"
                 ]
             },
             {
                 "topic": "OTHER",
-                "start": 1215,
-                "duration": 15,
-                "content": "Thanks everyone! I'm excited to start contributing.",
+                "start": 1455,
+                "duration": 7,
+                "content": "Thanks everyone! I'm looking forward to contributing to this exciting project.",
                 "briefSummary": "Muhammad expresses enthusiasm to begin",
                 "detailedSummary": [
-                    "Muhammad thanks the team for the welcome",
-                    "Muhammad shows enthusiasm for joining the project",
-                    "Muhammad signals readiness to start work"
+                    "Muhammad thanks the team",
+                    "Muhammad shows enthusiasm for project",
+                    "Muhammad signals readiness to start"
                 ]
             }
         ],
         "E": [
             {
                 "topic": "VISION",
-                "start": 45,
-                "duration": 45,
-                "content": "That's a very good point, Muhammad. I take notes in eight different languages, so I understand this problem well. In our design, we focus on something important - it's not just about saving information, it's about understanding how different ideas connect to each other. That's why we made our visualization system.",
-                "briefSummary": "Ewa explains ParaGraph's focus on connecting ideas",
+                "start": 32,
+                "duration": 56,
+                "content": "That's actually a perfect starting point, Muhammad. As someone who's been taking notes across eight languages, I've experienced similar challenges. What we've discovered is that notes aren't just about capturing information – they're about understanding relationships between ideas. That's why our visualization approach focuses on making these connections visible and interactive. We've found that when people can see how ideas connect, they start thinking differently about their own learning process.",
+                "briefSummary": "Ewa explains ParaGraph's approach to note connections",
                 "detailedSummary": [
-                    "Ewa relates to Muhammad's challenge through her multilingual note-taking experience",
-                    "Ewa emphasizes ParaGraph's focus on understanding connections between ideas",
-                    "Ewa introduces the visualization system as a solution for connecting information"
+                    "Ewa relates to Muhammad through multilingual note-taking experience",
+                    "Ewa emphasizes shift from capture to connection in note-taking",
+                    "Ewa explains visualization's role in making connections visible",
+                    "Ewa describes impact on users' learning processes"
                 ]
             },
             {
                 "topic": "UX",
-                "start": 255,
-                "duration": 45,
-                "content": "Let me show you. When we have a meeting like this, people share many ideas. Some ideas seem unrelated at first, but there are often hidden connections. Our visualization system can show these connections in a way that's easy to understand. Want to see some examples?",
-                "briefSummary": "Ewa offers to demonstrate visualization capabilities",
+                "start": 278,
+                "duration": 80,
+                "content": "Let me demonstrate with our visualization system. When we have a meeting like this, people share many ideas that might seem unrelated at first glance. Our system doesn't just record these ideas - it actively looks for patterns and connections. For example, we use d3.js to create interactive visualizations that let users explore how different topics relate to each other. What's unique is how we handle the temporal aspect - you can see how ideas evolve and connect over time. The visualization isn't static; it adapts as new connections emerge during the discussion.",
+                "briefSummary": "Ewa details the dynamic visualization system",
                 "detailedSummary": [
-                    "Ewa proposes a hands-on demonstration of the visualization system",
-                    "Ewa explains how the system reveals hidden connections between ideas",
-                    "Ewa emphasizes the system's ability to make complex relationships understandable"
+                    "Ewa describes system's active pattern recognition",
+                    "Ewa explains d3.js implementation for interactive visualization",
+                    "Ewa highlights temporal evolution of connections",
+                    "Ewa emphasizes dynamic nature of visualization"
+                ]
+            },
+            {
+                "topic": "UX",
+                "start": 563,
+                "duration": 72,
+                "content": "And the visualization aspect is crucial here. We've designed our interface to be intuitive while handling complex information structures. The challenge was finding the right balance between showing enough information to be useful and not overwhelming users. We use color coding to represent different topics, interactive elements to explore connections, and multiple visualization layers that let users drill down into specific aspects of the discussion. All of this is designed to reduce cognitive load while maximizing insight discovery.",
+                "briefSummary": "Ewa explains UI design principles",
+                "detailedSummary": [
+                    "Ewa describes balance between complexity and usability",
+                    "Ewa details use of color coding and interactive elements",
+                    "Ewa explains layered visualization approach",
+                    "Ewa emphasizes focus on cognitive load management"
                 ]
             },
             {
                 "topic": "TECHNOLOGY",
-                "start": 315,
-                "duration": 45,
-                "content": "So we started with a simple timeline view - it shows who spoke when and about what topics. But the interesting part is how we show connections between different parts of the discussion. We use d3.js for the interactive elements, making it easy for users to explore these connections.",
-                "briefSummary": "Ewa details the technical implementation of visualizations",
+                "start": 772,
+                "duration": 83,
+                "content": "That's something we're actively working on, and it brings up an interesting challenge. We need to balance immediate insights with deeper analysis. Some connections only become clear after seeing the full context of a discussion. We're exploring ways to show preliminary connections in real-time while still allowing for more sophisticated analysis after the meeting. This relates to cognitive science principles about how understanding develops over time - sometimes you need that period of reflection to see the bigger picture.",
+                "briefSummary": "Ewa discusses real-time vs post-processing balance",
                 "detailedSummary": [
-                    "Ewa describes the timeline view's basic functionality for speech tracking",
-                    "Ewa explains the system's ability to visualize topic connections",
-                    "Ewa mentions d3.js implementation for interactive exploration features"
+                    "Ewa explains challenge of balancing immediate and deep insights",
+                    "Ewa describes approach to real-time connection detection",
+                    "Ewa connects implementation to cognitive science principles",
+                    "Ewa emphasizes importance of reflection period"
                 ]
             },
             {
                 "topic": "UX",
-                "start": 750,
-                "duration": 45,
-                "content": "That's actually something we're working on now. The challenge is balancing immediate insights with deeper analysis. Sometimes connections only become clear after seeing the full context.",
-                "briefSummary": "Ewa explains balance between immediate and deep insights",
-                "detailedSummary": [
-                    "Ewa discusses the challenge of real-time versus post-processing analysis",
-                    "Ewa explains the importance of full context for connection discovery",
-                    "Ewa describes the trade-off between speed and insight depth"
-                ]
-            },
-            {
-                "topic": "UX",
-                "start": 900,
-                "duration": 45,
-                "content": "We're currently refining the visualization components. I'm working on making the interface more intuitive, especially for exploring complex connection networks.",
+                "start": 1023,
+                "duration": 69,
+                "content": "We're currently refining the visualization components, particularly the interface for exploring complex connection networks. The challenge is making it powerful enough for sophisticated analysis while keeping it intuitive for new users. We're also working on features that help users understand why certain connections were identified, making the system's reasoning more transparent.",
                 "briefSummary": "Ewa describes current visualization improvements",
                 "detailedSummary": [
-                    "Ewa outlines ongoing refinements to visualization components",
-                    "Ewa focuses on improving interface intuitiveness",
-                    "Ewa emphasizes handling complex connection networks"
+                    "Ewa details refinements to connection network exploration",
+                    "Ewa explains balance between power and intuitiveness",
+                    "Ewa describes work on connection explanation features",
+                    "Ewa emphasizes importance of system transparency"
                 ]
             },
             {
                 "topic": "PLANNING",
-                "start": 1110,
-                "duration": 30,
-                "content": "Yes, and feel free to share your thoughts on the interface. Fresh perspectives often lead to improvements we hadn't considered.",
-                "briefSummary": "Ewa encourages Muhammad's interface feedback",
+                "start": 1318,
+                "duration": 37,
+                "content": "Yes, and please share any thoughts you have about the interface. We've been working on this for a while, so fresh perspectives are always helpful. Sometimes the best insights come from someone seeing something for the first time.",
+                "briefSummary": "Ewa encourages interface feedback",
                 "detailedSummary": [
-                    "Ewa invites Muhammad to share interface feedback",
-                    "Ewa values fresh perspectives for improvement",
-                    "Ewa creates an open environment for suggestions"
+                    "Ewa welcomes Muhammad's perspective on interface",
+                    "Ewa acknowledges value of fresh viewpoint",
+                    "Ewa shows openness to new insights"
                 ]
             }
         ],
         "K": [
             {
                 "topic": "TECHNOLOGY",
-                "start": 150,
-                "duration": 15,
+                "start": 168,
+                "duration": 10,
                 "content": "Yes, and speaking of language processing, Qi and I actually developed a Japanese ASR model that outperforms Whisper.",
-                "briefSummary": "Kinan mentions their advanced ASR capabilities",
+                "briefSummary": "Kinan mentions ASR achievements",
                 "detailedSummary": [
-                    "Kinan highlights their successful Japanese ASR model development",
-                    "Kinan compares their model's performance to Whisper",
-                    "Kinan demonstrates team's technical expertise in language processing"
+                    "Kinan highlights successful Japanese ASR development",
+                    "Kinan notes performance superiority over Whisper",
+                    "Kinan demonstrates team's technical expertise"
                 ]
             },
             {
                 "topic": "TECHNOLOGY",
-                "start": 435,
-                "duration": 30,
-                "content": "Right, and this affects how we handle the technical implementation. For the speech processing part, we need to preserve not just the words, but also the context and flow of ideas. This helps our system find meaningful connections later.",
-                "briefSummary": "Kinan explains context-aware speech processing",
+                "start": 455,
+                "duration": 27,
+                "content": "Let me add to that from the technical side. When processing speech, we preserve not just the words, but also contextual information and conversation flow. This rich data helps our system identify meaningful connections that might not be apparent from just analyzing keywords.",
+                "briefSummary": "Kinan explains speech processing depth",
                 "detailedSummary": [
-                    "Kinan describes the importance of preserving context in speech processing",
-                    "Kinan explains how speech context enables connection discovery",
-                    "Kinan connects technical implementation to system's core functionality"
+                    "Kinan details preservation of contextual information",
+                    "Kinan explains importance of conversation flow",
+                    "Kinan describes rich data approach to connection identification"
                 ]
             },
             {
-                "topic": "TECHNOLOGY",
-                "start": 795,
-                "duration": 30,
-                "content": "We're also thinking about how to handle different types of meetings. Technical discussions might need different visualization approaches compared to strategic planning sessions.",
-                "briefSummary": "Kinan discusses meeting-type adaptability",
-                "detailedSummary": [
-                    "Kinan identifies need for different visualization approaches",
-                    "Kinan contrasts technical and strategic meeting requirements",
-                    "Kinan emphasizes system's adaptability to meeting contexts"
-                ]
-            },
-            {
-                "topic": "TECHNOLOGY",
-                "start": 945,
+                "topic": "UX",
+                "start": 648,
                 "duration": 45,
-                "content": "On the technical side, we're optimizing the processing pipeline. The goal is to handle longer meetings efficiently while maintaining accuracy in connection detection.",
-                "briefSummary": "Kinan details pipeline optimization efforts",
+                "content": "Yes, we've been testing with research groups, and one interesting finding is that users often discover connections they hadn't noticed during the actual meetings. The system helps them see patterns in their discussions that weren't obvious in real-time. We're also seeing users starting to structure their meetings differently once they understand how the system can help them track and connect ideas.",
+                "briefSummary": "Kinan shares user testing insights",
                 "detailedSummary": [
-                    "Kinan describes ongoing optimization of the processing pipeline",
-                    "Kinan emphasizes balance between efficiency and accuracy",
-                    "Kinan focuses on scaling capabilities for longer meetings"
+                    "Kinan reports on research group testing results",
+                    "Kinan describes pattern discovery in post-meeting analysis",
+                    "Kinan notes changes in user meeting behavior",
+                    "Kinan highlights system's impact on meeting structure"
+                ]
+            },
+            {
+                "topic": "TECHNOLOGY",
+                "start": 855,
+                "duration": 70,
+                "content": "From a technical perspective, this means we're implementing a multi-stage processing pipeline. The first stage handles real-time transcription and basic topic identification. Then we have deeper processing layers that analyze relationships between ideas and generate more sophisticated connections. We're also working on adapting the visualization approach for different types of meetings - technical discussions might need different visualization strategies compared to strategic planning sessions.",
+                "briefSummary": "Kinan details processing pipeline architecture",
+                "detailedSummary": [
+                    "Kinan explains multi-stage processing approach",
+                    "Kinan details progression from basic to deep analysis",
+                    "Kinan describes meeting-type specific visualization",
+                    "Kinan outlines adaptive visualization strategies"
+                ]
+            },
+            {
+                "topic": "TECHNOLOGY",
+                "start": 1092,
+                "duration": 73,
+                "content": "On the technical side, we're optimizing the processing pipeline for better performance with longer meetings. This involves improving our topic detection algorithms and making the connection identification more efficient. We're also exploring ways to integrate different types of content - not just speech, but also shared documents and references.",
+                "briefSummary": "Kinan outlines technical optimizations",
+                "detailedSummary": [
+                    "Kinan describes pipeline optimization for longer meetings",
+                    "Kinan details improvements to topic detection",
+                    "Kinan explains efficiency enhancements for connection identification",
+                    "Kinan mentions expansion to multiple content types"
                 ]
             },
             {
                 "topic": "PLANNING",
-                "start": 1140,
-                "duration": 30,
-                "content": "I can walk you through our current architecture tomorrow. There are some interesting challenges you might enjoy working on.",
-                "briefSummary": "Kinan offers architecture walkthrough",
+                "start": 1355,
+                "duration": 50,
+                "content": "I'll walk you through our current architecture tomorrow. There are some interesting challenges you might enjoy working on, especially in the connection detection system. We're always looking for ways to make it more efficient and accurate.",
+                "briefSummary": "Kinan plans architecture walkthrough",
                 "detailedSummary": [
-                    "Kinan plans technical onboarding session for tomorrow",
-                    "Kinan identifies interesting technical challenges",
-                    "Kinan invites Muhammad's involvement in problem-solving"
+                    "Kinan schedules technical onboarding session",
+                    "Kinan identifies connection detection challenges",
+                    "Kinan invites collaboration on system improvements",
+                    "Kinan emphasizes ongoing optimization goals"
                 ]
             }
         ]

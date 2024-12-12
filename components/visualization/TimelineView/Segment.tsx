@@ -132,7 +132,53 @@ const TimelineSegment: React.FC<SegmentProps> = ({
   const [isHovered, setIsHovered] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const segmentRef = useRef<HTMLDivElement>(null);
+  const svgRef = useRef<SVGSVGElement>(null);
   const topicColor = topicConfig[segment.topic]?.color || DEFAULT_COLOR;
+
+  // Create gradient effect using D3
+  useEffect(() => {
+    if (!svgRef.current) return;
+
+    const svg = select(svgRef.current);
+    
+    // Clear existing gradients
+    svg.selectAll('defs').remove();
+    
+    // Create gradient def
+    const gradient = svg
+      .append('defs')
+      .append('linearGradient')
+      .attr('id', `segment-gradient-${segment.start}`)
+      .attr('gradientUnits', 'userSpaceOnUse')
+      .attr('x1', '0%')
+      .attr('y1', '0%')
+      .attr('x2', '100%')
+      .attr('y2', '0%');
+
+    // Edge gradient - stronger color
+    gradient.append('stop')
+      .attr('offset', '0%')
+      .attr('stop-color', topicColor)
+      .attr('stop-opacity', 0.8);
+
+    // Middle section - softer color
+    gradient.append('stop')
+      .attr('offset', '20%')
+      .attr('stop-color', topicColor)
+      .attr('stop-opacity', 0.2);
+
+    gradient.append('stop')
+      .attr('offset', '80%')
+      .attr('stop-color', topicColor)
+      .attr('stop-opacity', 0.2);
+
+    // Fade out at the end
+    gradient.append('stop')
+      .attr('offset', '100%')
+      .attr('stop-color', topicColor)
+      .attr('stop-opacity', 0.1);
+
+  }, [topicColor, segment.start]);
 
   return (
     <div
@@ -147,16 +193,35 @@ const TimelineSegment: React.FC<SegmentProps> = ({
       onMouseLeave={() => setIsHovered(false)}
       onClick={() => setIsExpanded(true)}
     >
-      {/* Segment bar */}
-      <div 
-        className="absolute inset-0 rounded-sm overflow-hidden"
-        style={{
-          backgroundColor: `${topicColor}20`,
-          borderLeft: `2px solid ${topicColor}`
-        }}
-      />
-      
-      {/* Tooltip */}
+      {/* Enhanced segment visualization */}
+      <svg 
+        ref={svgRef}
+        className="absolute inset-0 w-full h-full"
+        style={{ overflow: 'visible' }}
+      >
+        <g>
+          {/* Main segment with gradient */}
+          <rect
+            x="0"
+            y="0"
+            width="100%"
+            height="100%"
+            fill={`url(#segment-gradient-${segment.start})`}
+            rx="1"
+          />
+          {/* Left edge highlight */}
+          <rect
+            x="0"
+            y="0"
+            width="2"
+            height="100%"
+            fill={topicColor}
+            opacity={0.9}
+          />
+        </g>
+      </svg>
+
+      {/* Keep tooltip and DetailView the same */}
       <AnimatePresence>
         {isHovered && (
           <motion.div
@@ -167,7 +232,6 @@ const TimelineSegment: React.FC<SegmentProps> = ({
             transition={{ duration: 0.15 }}
           >
             <div className="bg-slate-900/95 backdrop-blur-sm rounded-lg py-2 px-3 mx-auto inline-block whitespace-nowrap">
-              {/* Timestamp line */}
               <div className="flex items-center gap-2 text-sm text-slate-200">
                 <div 
                   className="w-1.5 h-1.5 rounded-full flex-shrink-0"
@@ -175,7 +239,6 @@ const TimelineSegment: React.FC<SegmentProps> = ({
                 />
                 <span>{formatTime(segment.start)} - {formatTime(segment.start + segment.duration)}</span>
               </div>
-              {/* Brief Summary line */}
               <div className="text-sm text-white font-medium">
                 {segment.briefSummary}
               </div>
@@ -184,7 +247,6 @@ const TimelineSegment: React.FC<SegmentProps> = ({
         )}
       </AnimatePresence>
 
-      {/* DetailView remains the same */}
       <AnimatePresence>
         {isExpanded && (
           <DetailView
