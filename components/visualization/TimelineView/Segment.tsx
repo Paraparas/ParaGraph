@@ -17,11 +17,15 @@ interface SegmentProps {
   isHighlighted?: boolean;
 }
 
-const DetailView: React.FC<{
+const DetailView = ({
+  segment,
+  formatTime,
+  onClose
+}: {
   segment: Segment;
   formatTime: (seconds: number) => string;
   onClose: () => void;
-}> = ({ segment, formatTime, onClose }) => {
+}) => {
   const topicColor = topicConfig[segment.topic]?.color || DEFAULT_COLOR;
   const topicLabel = topicConfig[segment.topic]?.label || segment.topic;
 
