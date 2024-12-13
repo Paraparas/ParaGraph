@@ -110,7 +110,8 @@ const TopicView = () => {
   // Helper function to get color based on topicKey
   const getTopicColor = (node: TopicNode): string => {
     const mainTopic = node.type === 'main' ? node.topicKey : node.parentId;
-    return mainTopic ? topicConfig[mainTopic].color : '#94a3b8';
+    // return mainTopic ? topicConfig[mainTopic].color : '#94a3b8';
+    return '#94a3b8'; // Temporary
   };
 
   const getUniqueColors = () => [

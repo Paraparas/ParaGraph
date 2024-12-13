@@ -11,6 +11,7 @@ import {
   Segment
 } from '@/lib/types/transcript';
 import { topicConfig } from '../shared/TopicConfig';
+console.log("Loaded topicConfig:", topicConfig);
 import { useMeetingData } from '@/lib/hooks/useMeetingData';
 
 const formatTime = (seconds: number): string => {
@@ -238,10 +239,10 @@ const TimelineView: React.FC = () => {
                           <div
                             key={topic}
                             className="px-2 py-0.5 text-xs rounded-full"
-                            style={{
-                              backgroundColor: `${topicConfig[topic].color}15`,
-                              color: topicConfig[topic].color
-                            }}
+                            // style={{
+                            //   backgroundColor: `${topicConfig[topic].color}15`,
+                            //   color: topicConfig[topic].color
+                            // }}
                           >
                             {count}
                           </div>
