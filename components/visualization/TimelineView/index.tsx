@@ -55,15 +55,33 @@ const TimelineView: React.FC = () => {
   }, []);
 
   // 4. useMemo hooks
+  // Process speaker statistics from the new schema
   const speakerStats = useMemo(() => {
     if (!meetingData) return [];
+
+    // Group segments by speaker_id
+    const segmentsBySpeaker = meetingData.segments.reduce<Record<string, typeof meetingData.segments>>(
+      (acc, segment) => {
+        if (!acc[segment.speaker_id]) {
+          acc[segment.speaker_id] = [];
+        }
+        acc[segment.speaker_id].push(segment);
+        return acc;
+      },
+      {}
+    );
+
+    // Calculate stats for each speaker
     return meetingData.speakers.map(speaker => {
-      const segments = meetingData.segments[speaker.id] || [];
+      const segments = segmentsBySpeaker[speaker.id] || [];
       const totalTime = segments.reduce((sum, seg) => sum + seg.duration, 0);
-      const topicCounts = segments.reduce((counts, seg) => ({
-        ...counts,
-        [seg.topic]: (counts[seg.topic] || 0) + 1
-      }), {} as Record<string, number>);
+      const topicCounts = segments.reduce(
+        (counts, seg) => ({
+          ...counts,
+          [seg.topic]: (counts[seg.topic] || 0) + 1
+        }),
+        {} as Record<string, number>
+      );
 
       return {
         ...speaker,
@@ -74,17 +92,16 @@ const TimelineView: React.FC = () => {
     });
   }, [meetingData]);
 
+  // Calculate the total duration of all segments
   const totalDuration = useMemo(() => {
-    if (!meetingData) return 300;
+    if (!meetingData || !meetingData.segments.length) return 300;
     return Math.max(
-      ...Object.values(meetingData.segments || {}).flatMap(segments =>
-        segments.map(seg => seg.start + seg.duration)
-      ),
+      ...meetingData.segments.map(seg => seg.start + seg.duration),
       300
     );
   }, [meetingData]);
 
-  // Calculate dynamic time markers based on container width
+  // Generate time markers based on the total duration
   const timeMarkers = useMemo(() => {
     if (!containerWidth || !totalDuration) return [];
 
@@ -160,8 +177,8 @@ const TimelineView: React.FC = () => {
         </div>
       </div>
 
-      {/* Timeline Content - clean version */}
-      <div className="relative w-full" ref={containerRef}>
+            {/* Timeline Content - clean version */}
+            <div className="relative w-full" ref={containerRef}>
         {/* Time Ruler */}
         <div className="h-8 relative border-b border-slate-700/50 overflow-visible">
           <div className="absolute inset-x-0 flex justify-between px-4">
@@ -179,7 +196,10 @@ const TimelineView: React.FC = () => {
         {/* Speaker Lanes */}
         <div className="space-y-2">
           {speakerStats.map(speaker => {
-            const segments = meetingData.segments[speaker.id] || [];
+            // Filter segments for the current speaker
+            const segments = meetingData.segments.filter(
+              segment => segment.speaker_id === speaker.id
+            );
             return (
               <Card key={speaker.id} className="border-slate-700/50 bg-slate-800">
                 <CardContent className="p-0">

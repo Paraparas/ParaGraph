@@ -3,8 +3,9 @@ import OpenAI from 'openai';
 import { 
   LLMConfig, 
   ProcessingResponse, 
-  ProcessingStage 
+  ProcessingStage
 } from '../types/llm';
+import transcriptSchema from '../types/transcriptSchema';
 import { 
   MeetingData,
   Speaker,
@@ -14,7 +15,7 @@ import {
   LLMProcessingError,
   TranscriptParsingError 
 } from './errors';
-import { transcriptAnalysisPrompts, generatePrompt } from './prompts';
+import { transcriptSystemPrompt } from './prompts';
 import { llmConfig } from '../../config/llm';
 import { writeFile, mkdir } from 'fs/promises';
 import path from 'path';
@@ -47,15 +48,18 @@ export class TranscriptProcessor {
       console.log('Current NODE_ENV:', process.env.NODE_ENV);
 
       // Process with LLM
-      const completion = await this.openai.chat.completions.create({
+      const completion = await this.openai.beta.chat.completions.parse({
         model: this.config.model,
         messages: [
-          { role: 'system', content: transcriptAnalysisPrompts.system },
-          { role: 'user', content: generatePrompt(transcriptAnalysisPrompts, rawTranscript) }
+          { role: 'system', content: transcriptSystemPrompt },
+          { role: 'user', content: rawTranscript }
         ],
         temperature: this.config.temperature,
         max_tokens: this.config.maxTokens,
-        response_format: { type: "json_object" }
+        response_format: { 
+          type: "json_schema",
+          json_schema: transcriptSchema
+        }
       });
 
       const response = completion.choices[0]?.message?.content;
@@ -109,42 +113,6 @@ export class TranscriptProcessor {
   }
 
   private validateResponse(response: any): response is MeetingData {
-    // Basic structure validation
-    if (!response.speakers || !response.segments) {
-      return false;
-    }
-
-    // Validate speakers
-    if (!Array.isArray(response.speakers)) {
-      return false;
-    }
-
-    // Validate each speaker
-    for (const speaker of response.speakers) {
-      if (!speaker.id || !speaker.name) {
-        return false;
-      }
-    }
-
-    // Validate segments
-    for (const speakerId in response.segments) {
-      if (!Array.isArray(response.segments[speakerId])) {
-        return false;
-      }
-
-      // Validate each segment
-      for (const segment of response.segments[speakerId]) {
-        if (!segment.topic || 
-            typeof segment.start !== 'number' ||
-            typeof segment.duration !== 'number' ||
-            !segment.content ||
-            !segment.briefSummary ||
-            !Array.isArray(segment.detailedSummary)) {
-          return false;
-        }
-      }
-    }
-
     return true;
   }
 
