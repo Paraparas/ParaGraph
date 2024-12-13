@@ -77,7 +77,7 @@ export class TranscriptProcessor {
       // Save processed data in development mode
       if (process.env.NODE_ENV === 'development') {
         try {
-          const outputPath = path.join(process.cwd(), 'data', 'processed', 'final.json');
+          const outputPath = path.join(process.cwd(), 'data', 'processed', 'final-processed.json');
           await mkdir(path.join(process.cwd(), 'data', 'processed'), { recursive: true });
           await writeFile(
             outputPath,
