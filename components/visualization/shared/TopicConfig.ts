@@ -1,45 +1,43 @@
 import { TopicConfig } from '@/lib/types/transcript';
 
 export const topicConfig: TopicConfig = {
+  'TECHNOLOGY': {
+    color: '#10b981', // Emerald`
+    label: 'Technical Implementation',
+    subtopics: {
+      'ASR': {
+        label: 'Speech Recognition',
+        items: ['processing', 'accuracy']
+      },
+      'PIPELINE': {
+        label: 'Processing Pipeline',
+        items: ['multi-stage', 'optimization']
+      },
+      'REALTIME': {
+        label: 'Real-time Processing',
+        items: ['immediate', 'feedback']
+      }
+    }
+  },
   'UX': {
     color: '#ec4899', // Pink
     label: 'User Experience',
     subtopics: {
+      'VIZ': {
+        label: 'Visualization System',
+        items: ['interactive', 'temporal']
+      },
+      'COGNITIVE': {
+        label: 'Cognitive Load',
+        items: ['clarity', 'effectiveness']
+      },
+      'NOTES': {
+        label: 'Note Organization',
+        items: ['structure', 'accessibility']
+      },
       'INTERFACE': {
         label: 'Interface Design',
-        items: ['visualization', 'interaction']
-      },
-      'USABILITY': {
-        label: 'Usability',
-        items: ['feedback', 'clarity']
-      }
-    }
-  },
-  'TECHNOLOGY': {
-    color: '#10b981', // Emerald
-    label: 'Technical Implementation',
-    subtopics: {
-      'ASR': {
-        label: 'Speech Processing',
-        items: ['diarization', 'accuracy']
-      },
-      'ARCH': {
-        label: 'Architecture',
-        items: ['pipeline', 'integration']
-      }
-    }
-  },
-  'PLANNING': {
-    color: '#f59e0b', // Amber
-    label: 'Planning',
-    subtopics: {
-      'ROADMAP': {
-        label: 'Development Roadmap',
-        items: ['priorities', 'testing']
-      },
-      'ROLES': {
-        label: 'Team Coordination',
-        items: ['tasks', 'collaboration']
+        items: ['adaptability', 'intuitiveness']
       }
     }
   },
@@ -47,17 +45,43 @@ export const topicConfig: TopicConfig = {
     color: '#8b5cf6', // Purple
     label: 'Project Vision',
     subtopics: {
-      'GOALS': {
-        label: 'Core Goals',
-        items: ['knowledge sharing', 'understanding']
+      'KNOWLEDGE': {
+        label: 'Knowledge Transfer',
+        items: ['learning', 'sharing']
       },
-      'FUTURE': {
-        label: 'Future Development',
-        items: ['expansion', 'applications']
+      'PATTERNS': {
+        label: 'Pattern Recognition',
+        items: ['insights', 'connections']
+      },
+      'ACTIVE': {
+        label: 'Active Learning',
+        items: ['engagement', 'adaptation']
+      },
+      'CROSS': {
+        label: 'Cross-domain Impact',
+        items: ['applications', 'scalability']
       }
     }
   },
-  'OTHER': {
+  'PLANNING': {
+    color: '#f59e0b', // Amber
+    label: 'Planning',
+    subtopics: {
+      'MARKET': {
+        label: 'Market Strategy',
+        items: ['segments', 'positioning']
+      },
+      'DEV': {
+        label: 'Development Focus',
+        items: ['priorities', 'implementation']
+      },
+      'TEAM': {
+        label: 'Team Coordination',
+        items: ['roles', 'collaboration']
+      }
+    }
+  },
+  'OTHER': {  // Keeping this for backward compatibility
     color: '#94a3b8', // Slate
     label: 'Other Topics',
     subtopics: {

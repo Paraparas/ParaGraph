@@ -1,420 +1,284 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { motion, AnimatePresence } from 'framer-motion';
 import { topicConfig } from '../shared/TopicConfig';
-import type { 
-    TopicNode, 
-    TopicConnection, 
-    ExplicitConnection, 
-    ImplicitConnection 
-  } from '@/lib/types/transcript';
-  import { isExplicitConnection, isImplicitConnection } from '@/lib/types/transcript';
+import type {
+  TopicNode,
+  TopicConnection,
+  ExplicitConnection,
+  ImplicitConnection
+} from '@/lib/types/transcript';
+import { isExplicitConnection, isImplicitConnection } from '@/lib/types/transcript';
+import { sampleNodes, explicitConnections, implicitConnections } from '@/data/samples/final-topics';
 
-import { sampleNodes, explicitConnections, implicitConnections } from '@/data/samples/test-meeting-topics';
+// D3 imports
+import {
+  forceSimulation,
+  forceLink,
+  forceManyBody,
+  forceCenter,
+  forceCollide,
+  SimulationNodeDatum,
+  SimulationLinkDatum
+} from 'd3-force';
+import {
+  select,
+  Selection,
+  BaseType
+} from 'd3-selection';
+import {
+  zoom,
+  ZoomBehavior,
+  zoomIdentity
+} from 'd3-zoom';
+import {
+  drag,
+  DragBehavior
+} from 'd3-drag';
 
-const TopicView = () => {
-    const [showSpeakers, setShowSpeakers] = useState(false);
-    const [showInsights, setShowInsights] = useState(false);
-    const [activeInsightIndex, setActiveInsightIndex] = useState(-1);
-    const [hoveredConnection, setHoveredConnection] = useState<string | null>(null);
-    const [selectedTopic, setSelectedTopic] = useState<string | null>(null);
+// Type definitions
+interface ForceNode extends SimulationNodeDatum, Omit<TopicNode, 'type'> {
+  type: 'main' | 'subtopic';  // Restrict to only these two types
+}
+interface ForceLink extends SimulationLinkDatum<ForceNode> {
+  source: ForceNode | string;  // Can be either string or ForceNode during simulation
+  target: ForceNode | string;
+  type: 'explicit' | 'implicit';
+}
 
-    const calculateConnectionPath = (source: { x: number; y: number }, target: { x: number; y: number }) => {
-        const dx = target.x - source.x;
-        const dy = target.y - source.y;
+// Helper function to access node properties safely
+const getNodeType = (node: ForceNode | string): 'main' | 'subtopic' | undefined => {
+  if (typeof node === 'string') return undefined;
+  return node.type === 'main' || node.type === 'subtopic' ? node.type : undefined;
+};
+
+// For the connections issue, we need to safely get the ID
+const getNodeId = (node: ForceNode | string): string => {
+  return typeof node === 'string' ? node : node.id;
+};
+
+const TopicView: React.FC = () => {
+  const svgRef = useRef<SVGSVGElement>(null);
+  const [showSpeakers, setShowSpeakers] = useState(false);
+  const [showInsights, setShowInsights] = useState(false);
+  const [selectedNode, setSelectedNode] = useState<TopicNode | null>(null);
+  const [hoveredConnection, setHoveredConnection] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!svgRef.current) return;
+
+    // SVG setup
+    const width = 1200;
+    const height = 800;
+    const svg = select(svgRef.current);
+    svg.selectAll("*").remove();
+
+    // Create SVG groups
+    const g = svg.append("g");
+    const linksGroup = g.append("g").attr("class", "links");
+    const nodesGroup = g.append("g").attr("class", "nodes");
+
+    // Zoom behavior
+    const zoomBehavior = zoom<SVGSVGElement, unknown>()
+      .scaleExtent([0.3, 2])
+      .on("zoom", (event) => {
+        g.attr("transform", event.transform);
+      });
+
+    svg.call(zoomBehavior);
+    svg.call(zoomBehavior.transform, zoomIdentity);
+
+    // Prepare data
+    const nodes: ForceNode[] = sampleNodes
+      .filter((node): node is TopicNode & { type: 'main' | 'subtopic' } =>
+        node.type === 'main' || node.type === 'subtopic'
+      )
+      .map(node => ({
+        ...node,
+        x: undefined,
+        y: undefined
+      }));
+
+    const links: ForceLink[] = [
+      ...explicitConnections.map(conn => ({
+        ...conn,
+        source: conn.source,
+        target: conn.target
+      })),
+      ...implicitConnections.map(conn => ({
+        ...conn,
+        source: conn.source,
+        target: conn.target
+      }))
+    ];
+
+    // Create force simulation
+    const simulation = forceSimulation<ForceNode>(nodes)
+      .force("link", forceLink<ForceNode, ForceLink>(links)
+        .id(d => d.id)
+        .distance((d: ForceLink) => {
+          const sourceType = getNodeType(d.source);
+          const targetType = getNodeType(d.target);
+          if (sourceType === 'main' && targetType === 'subtopic') return 80;
+          return 150;
+        })
+      )
+      .force("charge", forceManyBody().strength(-1000))
+      .force("center", forceCenter(width / 2, height / 2))
+      .force("collide", forceCollide(60));
+
+    // Create links
+    const link = linksGroup
+      .selectAll("path")
+      .data(links)
+      .enter()
+      .append("path")
+      .attr("class", "link")
+      .attr("stroke", d => d.type === 'explicit' ? '#94a3b8' : '#22d3ee')
+      .attr("stroke-width", d => d.type === 'explicit' ? 2 : 1.5)
+      .attr("stroke-dasharray", d => d.type === 'implicit' ? "5,5" : "none")
+      .attr("fill", "none")
+      .attr("opacity", 0.6);
+
+    // Create nodes
+    const node = nodesGroup
+      .selectAll("g")
+      .data(nodes)
+      .enter()
+      .append("g")
+      .attr("class", "node");
+
+    // Node circles
+    node.append("circle")
+      .attr("r", d => d.type === 'main' ? 40 : 25)
+      .attr("fill", d => {
+        const mainTopic = d.type === 'main' ? d.topicKey : d.parentId;
+        return mainTopic ? topicConfig[mainTopic].color : '#94a3b8';
+      })
+      .attr("stroke", "#fff")
+      .attr("stroke-width", 2);
+
+    // Node labels
+    node.append("text")
+      .text(d => d.label)
+      .attr("text-anchor", "middle")
+      .attr("dy", ".3em")
+      .attr("fill", "white")
+      .attr("font-size", d => d.type === 'main' ? "14px" : "12px")
+      .attr("font-weight", "500")
+      .attr("pointer-events", "none");
+
+    // Drag behavior
+    const dragBehavior = drag<SVGGElement, ForceNode>()
+      .on("start", (event, d) => {
+        if (!event.active) simulation.alphaTarget(0.3).restart();
+        d.fx = d.x;
+        d.fy = d.y;
+      })
+      .on("drag", (event, d) => {
+        d.fx = event.x;
+        d.fy = event.y;
+      })
+      .on("end", (event, d) => {
+        if (!event.active) simulation.alphaTarget(0);
+        d.fx = null;
+        d.fy = null;
+      });
+
+    node.call(dragBehavior);
+
+    // Hover interactions
+    node
+      .on("mouseover", (event, d) => {
+        const connectedNodes = new Set<string>();
+        links.forEach(link => {
+          const sourceId = getNodeId(link.source);
+          const targetId = getNodeId(link.target);
+          if (sourceId === d.id) connectedNodes.add(targetId);
+          if (targetId === d.id) connectedNodes.add(sourceId);
+        });
+
+        node.style("opacity", n =>
+          connectedNodes.has(n.id) || n.id === d.id ? 1 : 0.3
+        );
+        link.style("opacity", l => {
+          const sourceId = getNodeId(l.source);
+          const targetId = getNodeId(l.target);
+          return sourceId === d.id || targetId === d.id ? 1 : 0.1;
+        });
+      })
+      .on("mouseout", () => {
+        node.style("opacity", 1);
+        link.style("opacity", 0.6);
+      });
+
+    // Link hover interactions
+    link
+      .on("mouseover", (event, d) => {
+        setHoveredConnection(`${d.source}-${d.target}`);
+      })
+      .on("mouseout", () => {
+        setHoveredConnection(null);
+      });
+
+    // Update positions with proper typing
+    simulation.on("tick", () => {
+      link.attr("d", (d: ForceLink) => {
+        // Safe type casting with runtime checks
+        const sourceNode = (typeof d.source === 'string' ? nodes.find(n => n.id === d.source) : d.source) as ForceNode;
+        const targetNode = (typeof d.target === 'string' ? nodes.find(n => n.id === d.target) : d.target) as ForceNode;
+
+        if (!sourceNode || !targetNode) return '';
+
+        const dx = targetNode.x! - sourceNode.x!;
+        const dy = targetNode.y! - sourceNode.y!;
         const distance = Math.sqrt(dx * dx + dy * dy);
+
+        // Calculate curve
         const curvature = Math.min(0.3, 100 / distance);
-        
-        const midX = (source.x + target.x) / 2;
-        const midY = (source.y + target.y) / 2 - distance * curvature;
-        
-        return {
-          path: `M ${source.x},${source.y} Q ${midX},${midY} ${target.x},${target.y}`,
-          labelPosition: { x: midX, y: midY }
-        };
-      };
+        const midX = (sourceNode.x! + targetNode.x!) / 2;
+        const midY = (sourceNode.y! + targetNode.y!) / 2 - distance * curvature;
 
-  // Calculate node positions
-  const nodePositions = useMemo(() => {
-    const positions: Record<string, { x: number; y: number }> = {};
-    
-    // Get viewport dimensions from viewBox
-    const viewportWidth = 1200;
-    const viewportHeight = 800;
-    
-    // Calculate safe area margins to keep nodes and text visible
-    const margin = 100; // Space for node radius + text + padding
-    const safeWidth = viewportWidth - 2 * margin;
-    const safeHeight = viewportHeight - 2 * margin;
-    
-    // Center point
-    const centerX = viewportWidth / 2;
-    const centerY = viewportHeight / 2;
-    
-    // Adjust radius based on safe area
-    const mainRadius = Math.min(safeWidth, safeHeight) * 0.35; // Reduced from previous value
-    const subtopicRadius = mainRadius * 0.7; // Proportional to main radius
-  
-    // Position main topics in a circle
-    const mainTopics = sampleNodes.filter(node => node.type === 'main');
-    mainTopics.forEach((node, index) => {
-      // Start angle from top (-π/2) and go clockwise
-      const angle = -Math.PI/2 + (index / mainTopics.length) * 2 * Math.PI;
-      positions[node.id] = {
-        x: centerX + Math.cos(angle) * mainRadius,
-        y: centerY + Math.sin(angle) * mainRadius
-      };
+        return `M ${sourceNode.x},${sourceNode.y} Q ${midX},${midY} ${targetNode.x},${targetNode.y}`;
+      });
+
+      node.attr("transform", d => `translate(${d.x},${d.y})`);
     });
-  
-    // Position subtopics around their parent with boundary checking
-    sampleNodes.filter(node => node.type === 'subtopic').forEach(node => {
-      const parentPos = positions[node.parentId!];
-      if (!parentPos) return;
-  
-      // Find siblings
-      const siblings = sampleNodes.filter(n => 
-        n.type === 'subtopic' && n.parentId === node.parentId
-      );
-      const siblingIndex = siblings.findIndex(n => n.id === node.id);
-      const totalSiblings = siblings.length;
-  
-      // Calculate arc range for subtopics (avoid overlap with other main nodes)
-      const arcRange = Math.PI * 0.8; // 108 degrees
-      const startAngle = -arcRange / 2;
-      
-      // Calculate angle to parent node from center
-      const parentAngle = Math.atan2(
-        parentPos.y - centerY,
-        parentPos.x - centerX
-      );
-  
-      // Calculate position relative to parent
-      const angleOffset = startAngle + (siblingIndex / (totalSiblings - 1 || 1)) * arcRange;
-      const finalAngle = parentAngle + angleOffset;
-  
-      // Calculate initial position
-      let x = parentPos.x + Math.cos(finalAngle) * subtopicRadius;
-      let y = parentPos.y + Math.sin(finalAngle) * subtopicRadius;
-  
-      // Ensure position is within bounds
-      x = Math.max(margin, Math.min(viewportWidth - margin, x));
-      y = Math.max(margin, Math.min(viewportHeight - margin, y));
-  
-      positions[node.id] = { x, y };
-    });
-  
-    return positions;
-  }, []);
 
-  // Helper function to get color based on topicKey
-  const getTopicColor = (node: TopicNode): string => {
-    const mainTopic = node.type === 'main' ? node.topicKey : node.parentId;
-    return mainTopic ? topicConfig[mainTopic].color : '#94a3b8';
-  };
+    // Cleanup
+    return () => {
+      simulation.stop();
+    };
+  }, [showSpeakers, showInsights]);
 
-  const getUniqueColors = () => [
-    'stroke-emerald-500/30',
-    'stroke-pink-500/30',
-    'stroke-purple-500/30',
-    'stroke-amber-500/30',
-    'stroke-blue-500/30',
-    'stroke-indigo-500/30',
-    'stroke-red-500/30',
-    'stroke-teal-500/30'
-  ];
-
-  const uniqueSpeakers = useMemo(() => {
-    const speakers = new Set<string>();
-    explicitConnections.forEach(conn => {
-      if (isExplicitConnection(conn) && conn.speaker) {
-        speakers.add(conn.speaker);
-      }
-    });
-    return Array.from(speakers);
-  }, [explicitConnections]);
-  
-  // Generate speaker styles dynamically
-  const speakerStyles = useMemo(() => {
-    const colors = getUniqueColors();
-    return uniqueSpeakers.reduce((styles, speaker, index) => {
-      styles[speaker] = {
-        bgClass: `${colors[index % colors.length]} stroke-2`,
-        textClass: 'font-medium tracking-normal'
-      };
-      return styles;
-    }, {} as Record<string, { bgClass: string; textClass: string }>);
-  }, [uniqueSpeakers]);
-
-    // Handle insight revelation
-    React.useEffect(() => {
-        if (showInsights && activeInsightIndex < implicitConnections.length - 1) {
-        const timer = setTimeout(() => {
-            setActiveInsightIndex(prev => prev + 1);
-        }, 1000); // Reveal one insight every second
-        return () => clearTimeout(timer);
-        }
-    }, [showInsights, activeInsightIndex]);
-
-    return (
-        <Card className="w-full min-h-screen bg-slate-900">
-          <div className="flex justify-between p-4">
-            <Button
-              variant={showSpeakers ? 'default' : 'outline'}
-              onClick={() => setShowSpeakers(!showSpeakers)}
-            >
-              {showSpeakers ? 'Hide Speakers' : 'Show Speakers'}
-            </Button>
-            <Button
-              variant={showInsights ? 'default' : 'outline'}
-              onClick={() => {
-                setShowInsights(!showInsights);
-                if (!showInsights) {
-                  setActiveInsightIndex(0); // Start revealing insights
-                } else {
-                  setActiveInsightIndex(-1); // Reset insights
-                }
-              }}
-              className="bg-purple-600 hover:bg-purple-700"
-            >
-              {showInsights ? 'Hide Insights' : 'Discover Insights'}
-            </Button>
-          </div>
-    
-          <div className="w-full h-[calc(100vh-100px)] overflow-hidden">
-            <svg width="100%" height="100%" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid meet">
-              {/* Explicit Connections */}
-              {explicitConnections.map((conn, idx) => {
-                const source = nodePositions[conn.source];
-                const target = nodePositions[conn.target];
-                if (!source || !target) return null;
-    
-                const { path, labelPosition } = calculateConnectionPath(source, target);
-    
-                return (
-                    <g key={`explicit-${idx}`}>
-                      <motion.path
-                        initial={{ pathLength: 0, opacity: 0 }}
-                        animate={{ pathLength: 1, opacity: 0.6 }}
-                        d={path}
-                        stroke="#94a3b8"
-                        strokeWidth={2}
-                        fill="none"
-                      />
-                      {showSpeakers && isExplicitConnection(conn) && conn.speaker && (
-                        <motion.g
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                        >
-                          {(() => {
-                            const dx = target.x - source.x;
-                            const dy = target.y - source.y;
-                            const angle = Math.atan2(dy, dx);
-                            
-                            const offset = 25;
-                            const offsetX = Math.sin(angle) * offset;
-                            const offsetY = -Math.cos(angle) * offset;
-                            
-                            const labelX = labelPosition.x + offsetX;
-                            const labelY = labelPosition.y + offsetY;
-                            
-                            const style = speakerStyles[conn.speaker] || {
-                              bgClass: 'stroke-gray-500/30 stroke-2',
-                              textClass: 'font-medium tracking-normal'
-                            };
-                            
-                            return (
-                              <>
-                                <motion.g
-                                  initial={{ scale: 0.8, opacity: 0 }}
-                                  animate={{ scale: 1, opacity: 1 }}
-                                  transition={{ type: "spring", stiffness: 100 }}
-                                >
-                                  <rect
-                                    x={labelX - 35}
-                                    y={labelY - 10}
-                                    width="70"
-                                    height="20"
-                                    rx="4"
-                                    fill="#1e293b"
-                                    className={`${style.bgClass} shadow-sm`}
-                                  />
-                                  <text
-                                    x={labelX}
-                                    y={labelY + 4}
-                                    textAnchor="middle"
-                                    fill="white"
-                                    className={`text-xs font-inter ${style.textClass}`}
-                                  >
-                                    {conn.speaker}
-                                  </text>
-                                </motion.g>
-                              </>
-                            );
-                          })()}
-                        </motion.g>
-                      )}
-                    </g>
-                  );
-              })}
-    
-              {/* Implicit Connections */}
-              <AnimatePresence>
-              {showInsights && implicitConnections.slice(0, activeInsightIndex + 1).map((conn, idx) => {
-                const source = nodePositions[conn.source];
-                const target = nodePositions[conn.target];
-                if (!source || !target) return null;
-
-                const { path, labelPosition } = calculateConnectionPath(source, target);
-                const connectionId = `implicit-${idx}`;
-
-                return (
-                    <g 
-                    key={connectionId}
-                    onMouseEnter={() => {
-                        console.log('Hovering connection:', connectionId, conn); // Enhanced debugging
-                        setHoveredConnection(connectionId);
-                    }}
-                    onMouseLeave={() => {
-                        console.log('Leaving connection:', connectionId); // Added debug
-                        setHoveredConnection(null);
-                    }}
-                    >
-                    {/* Add a transparent hit area for better hover detection */}
-                    <path
-                        d={path}
-                        stroke="transparent"
-                        strokeWidth={20}
-                        fill="none"
-                        style={{ cursor: 'pointer' }}
-                    />
-                    <motion.path
-                        initial={{ pathLength: 0, opacity: 0 }}
-                        animate={{ pathLength: 1, opacity: 0.7 }}
-                        exit={{ opacity: 0 }}
-                        d={path}
-                        stroke="#22d3ee"
-                        strokeWidth={2.5}
-                        strokeDasharray="5,5"
-                        fill="none"
-                    />
-                      {hoveredConnection === connectionId && isImplicitConnection(conn) && (
-                        <motion.g
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          exit={{ opacity: 0 }}
-                        >
-                          <text
-                            id={`measure-${connectionId}`}
-                            className="text-xs"
-                            style={{ visibility: 'hidden' }}
-                            >
-                                {conn.insight}
-                            </text>
-                            <foreignObject
-                            x={labelPosition.x - 200} // Wider than before
-                            y={labelPosition.y - 60}
-                            width="400" // Increased width
-                            height="auto" // Increased height
-                            style={{ overflow: 'visible' }} // Allow content to determine size
-                            >
-                            <div className="bg-slate-800/90 p-3 rounded-lg shadow-lg border border-cyan-500/20">
-                                <p className="text-xs text-white/90 leading-relaxed max-w-[280px] font-inter tracking-tight">
-                                {conn.insight}
-                                </p>
-                                {conn.importance && (
-                                <p className="text-xs text-cyan-400/80 mt-1 font-inter font-medium tracking-tight">
-                                    {conn.importance}
-                                </p>
-                                )}
-                            </div>
-                            </foreignObject>
-                        </motion.g>
-                      )}
-                    </g>
-                  );
-                })}
-              </AnimatePresence>
-
-          {/* Nodes */}
-          {sampleNodes.map(node => {
-            const pos = nodePositions[node.id];
-            if (!pos) return null;
-
-            // Calculate text dimensions and adjust node size
-            const words = node.label.split(' ');
-            const isMainNode = node.type === 'main';
-            const baseRadius = isMainNode ? 40 : 25;
-            const fontSize = isMainNode ? 14 : 12;
-            
-            // Split text into lines if too long
-            const maxCharsPerLine = isMainNode ? 15 : 12;
-            const lines = words.reduce((acc: string[], word) => {
-                const currentLine = acc[acc.length - 1];
-                if (!currentLine || (currentLine + ' ' + word).length > maxCharsPerLine) {
-                acc.push(word);
-                } else {
-                acc[acc.length - 1] = currentLine + ' ' + word;
-                }
-                return acc;
-            }, []);
-
-            // Adjust circle size based on text
-            const radius = Math.max(baseRadius, 
-                (lines.length > 1 ? baseRadius * 1.2 : baseRadius)
-            );
-
-            return (
-                <g key={node.id}>
-                  {/* Background circle for better text contrast */}
-                  <motion.circle
-                    initial={{ r: 0 }}
-                    animate={{ r: radius + 2, opacity: 0.3 }}
-                    cx={pos.x}
-                    cy={pos.y}
-                    fill="#000000"
-                    className="cursor-pointer"
-                  />
-                  
-                  {/* Main node circle */}
-                  <motion.circle
-                    initial={{ r: 0 }}
-                    animate={{ 
-                      r: radius,
-                      opacity: selectedTopic ? (selectedTopic === node.id || selectedTopic === node.parentId ? 0.8 : 0.3) : 0.8
-                    }}
-                    cx={pos.x}
-                    cy={pos.y}
-                    fill={getTopicColor(node)}
-                    className="cursor-pointer hover:opacity-100"
-                    onClick={() => node.type === 'main' && setSelectedTopic(
-                      selectedTopic === node.id ? null : node.id
-                    )}
-                  />
-                  
-                  {/* Multi-line text */}
-                  <g>
-                    {lines.map((line, i) => (
-                      <text
-                        key={`${node.id}-line-${i}`}
-                        x={pos.x}
-                        y={pos.y + (i - (lines.length - 1) / 2) * (fontSize + 2)}
-                        textAnchor="middle"
-                        dy=".3em"
-                        fill="white"
-                        fontSize={fontSize}
-                        className="font-inter font-medium select-none tracking-tight"
-                      >
-                        <tspan className="bg-opacity-50 px-1 rounded">
-                          {line}
-                        </tspan>
-                      </text>
-                    ))}
-                  </g>
-                </g>
-              );
-          })}
-        </svg>
+  return (
+    <Card className="w-full min-h-screen bg-slate-900">
+      <div className="flex justify-between p-4">
+        <Button
+          variant={showSpeakers ? 'default' : 'outline'}
+          onClick={() => setShowSpeakers(!showSpeakers)}
+        >
+          {showSpeakers ? 'Hide Speakers' : 'Show Speakers'}
+        </Button>
+        <Button
+          variant={showInsights ? 'default' : 'outline'}
+          onClick={() => {
+            setShowInsights(!showInsights);
+          }}
+          className="bg-purple-600 hover:bg-purple-700"
+        >
+          {showInsights ? 'Hide Insights' : 'Discover Insights'}
+        </Button>
+      </div>
+      <div className="w-full h-[calc(100vh-100px)] overflow-hidden">
+        <svg
+          ref={svgRef}
+          width="100%"
+          height="100%"
+          viewBox="0 0 1200 800"
+          preserveAspectRatio="xMidYMid meet"
+        />
       </div>
     </Card>
   );
