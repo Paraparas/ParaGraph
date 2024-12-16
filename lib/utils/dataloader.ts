@@ -10,8 +10,8 @@ export async function getMeetingData(options: {
 }): Promise<MeetingData> {
   const {
     mode = 'cached',
-    transcriptPath = 'data/raw/test-transcript.md',
-    cachePath = 'data/processed/test-meeting.json'
+    transcriptPath = 'data/raw/raw-test.txt',
+    cachePath = 'data/processed/test-meeting-1.json'
   } = options;
 
   try {
