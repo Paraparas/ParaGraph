@@ -67,6 +67,8 @@ interface TooltipData {
     details?: string[];
     speakers?: string[];
     timestamp?: string;
+    insight?: string;
+    importance?: string[];
   };
   position: {
     x: number;
@@ -306,12 +308,56 @@ const TopicView: React.FC = () => {
 
     const linkEnter = linkSelection.enter().append("path");
     const linkUpdate = linkEnter.merge(linkSelection)
-      .attr("class", "link")
-      .attr("stroke", d => d.type === 'explicit' ? "#94a3b8" : "#22d3ee")
-      .attr("stroke-width", 2)
-      .attr("stroke-dasharray", d => d.type === 'implicit' ? "5,5" : "none")
-      .attr("fill", "none")
-      .attr("opacity", 0.6);
+    .attr("class", "link")
+    .attr("stroke", d => d.type === 'explicit' ? "#94a3b8" : "#22d3ee")
+    .attr("stroke-width", 2)
+    .attr("stroke-dasharray", d => d.type === 'implicit' ? "5,5" : "none")
+    .attr("fill", "none")
+    .attr("opacity", 0.6)
+    .on("mouseover", (event, d) => {
+        // Highlight connected nodes
+        const sourceId = getNodeId(d.source);
+        const targetId = getNodeId(d.target);
+
+        nodeUpdate.style("opacity", n =>
+            n.id === sourceId || n.id === targetId ? 1 : 0.3
+        );
+        linkUpdate.style("opacity", l => l === d ? 1 : 0.1);
+
+        // Show tooltip
+        if (d.type === 'explicit') {
+            setTooltip({
+                type: 'link',
+                content: {
+                    title: 'Contributed by',
+                    description: d.content,
+                    speakers: [d.speaker!],
+                },
+                position: {
+                    x: event.pageX,
+                    y: event.pageY
+                }
+            });
+        } else {
+            setTooltip({
+                type: 'link',
+                content: {
+                    title: 'Hidden Connection',
+                    insight: (d as ImplicitConnection).insight,
+                    importance: [(d as ImplicitConnection).importance],
+                },
+                position: {
+                    x: event.pageX,
+                    y: event.pageY
+                }
+            });
+        }
+    })
+    .on("mouseout", () => {
+        nodeUpdate.style("opacity", 1);
+        linkUpdate.style("opacity", 0.6);
+        setTooltip(null);
+    });
 
     // Update nodes
     const nodeSelection = nodesGroup.selectAll<SVGGElement, ForceNode>("g").data(nodes);
@@ -496,41 +542,77 @@ const TopicView: React.FC = () => {
           }}
         >
           <div className="space-y-2">
-            <p className="text-sm text-white/90 font-medium">
-              {tooltip.content.title}
+      <p className="text-sm text-white/90 font-medium">
+        {tooltip.content.title}
+      </p>
+      {tooltip.type === 'link' ? (
+        // Link tooltip content
+        tooltip.content.speakers ? (
+          // Explicit connection
+          <>
+            <p className="text-xs">
+              <span className="text-cyan-400">{tooltip.content.speakers}</span>
             </p>
             {tooltip.content.description && (
-              <p className="text-xs text-slate-300">
+              <p className="text-xs text-slate-300 mt-1">
                 {tooltip.content.description}
               </p>
             )}
-            {tooltip.content.details && (
-              <div className="text-xs text-slate-300 space-y-1">
-                {tooltip.content.details.map((detail, i) => (
-                  <p key={i}>• {detail}</p>
-                ))}
-              </div>
-            )}
-            {tooltip.content.speakers && (
-              <div className="flex gap-1 mt-2">
-                {tooltip.content.speakers.map((speaker, i) => (
-                  <span
-                    key={i}
-                    className="text-xs px-2 py-0.5 bg-slate-700/50 rounded-full text-cyan-400"
-                  >
-                    {speaker}
-                  </span>
-                ))}
-              </div>
-            )}
-            {tooltip.content.timestamp && (
-              <p className="text-xs text-slate-400 mt-1">
-                {tooltip.content.timestamp}
+          </>
+        ) : (
+          // Implicit connection
+          <>
+            {tooltip.content.insight && (
+              <p className="text-xs">
+                <span className="text-purple-400 font-medium">Insight: </span>
+                <span className="text-slate-300">{tooltip.content.insight}</span>
               </p>
             )}
-          </div>
-        </div>
+            {tooltip.content.importance && (
+              <p className="text-xs mt-2">
+                <span className="text-amber-400 font-medium">Why Important: </span>
+                <span className="text-slate-300">{tooltip.content.importance}</span>
+              </p>
+            )}
+          </>
+        )
+      ) : (
+        // Node tooltip content (existing)
+        <>
+          {tooltip.content.description && (
+            <p className="text-xs text-slate-300">
+              {tooltip.content.description}
+            </p>
+          )}
+          {tooltip.content.details && (
+            <div className="text-xs text-slate-300 space-y-1">
+              {tooltip.content.details.map((detail, i) => (
+                <p key={i}>• {detail}</p>
+              ))}
+            </div>
+          )}
+          {tooltip.content.speakers && (
+            <div className="flex gap-1 mt-2">
+              {tooltip.content.speakers.map((speaker, i) => (
+                <span
+                  key={i}
+                  className="text-xs px-2 py-0.5 bg-slate-700/50 rounded-full text-cyan-400"
+                >
+                  {speaker}
+                </span>
+              ))}
+            </div>
+          )}
+          {tooltip.content.timestamp && (
+            <p className="text-xs text-slate-400 mt-1">
+              {tooltip.content.timestamp}
+            </p>
+          )}
+        </>
       )}
+    </div>
+  </div>
+)}
     </Card>
   );
 };
