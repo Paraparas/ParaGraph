@@ -97,13 +97,23 @@ export interface TopicConfig {
     items: string[];
   }
 
-  // New types for TopicView
+// New enhanced interfaces
+export interface TopicSummary {
+  brief: string;
+  details?: {
+    keyPoints?: string[];
+    timestamp?: string;
+    speakers?: string[];
+  };
+}
+
 export interface TopicNode {
   id: string;
   label: string;
-  type: 'main' | 'subtopic' | 'item';
-  parentId?: string;  // For subtopics and items
-  topicKey: string;   // Reference to main topic (for color)
+  type: 'main' | 'subtopic';  // Removed 'item' as we're not using it
+  topicKey: string;
+  parentId?: string;
+  summary?: TopicSummary;
 }
 
 // Connection types
@@ -113,18 +123,21 @@ export interface BaseConnection {
   strength?: number;
 }
 
-export interface ExplicitConnection extends BaseConnection {
+export interface ExplicitConnection {
+  source: string;
+  target: string;
   type: 'explicit';
   speaker: string;
-  content: string;  // What was actually said
-  timestamp?: number;  // When in the meeting this connection was made
+  content: string;
+  timestamp?: string;
 }
 
-export interface ImplicitConnection extends BaseConnection {
+export interface ImplicitConnection {
+  source: string;
+  target: string;
   type: 'implicit';
-  insight: string;  // LLM's explanation of the connection
-  importance: string;  // Why this connection matters
-  confidence?: number;  // LLM's confidence in this connection (0-1)
+  insight: string;
+  importance: string;
 }
 
 export type TopicConnection = ExplicitConnection | ImplicitConnection;
