@@ -22,7 +22,8 @@ export async function getMeetingData(options: {
         'utf-8'
       );
       const processor = new TranscriptProcessor();
-      const result = await processor.processTranscript(rawTranscript);
+      const refinedTranscript = await processor.refineRawTranscript(rawTranscript);
+      const result = await processor.processRefinedTranscript(refinedTranscript);
       if (!result.success) {
         throw new Error(result.error);
       }

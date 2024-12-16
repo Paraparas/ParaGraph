@@ -15,7 +15,7 @@ import {
   LLMProcessingError,
   TranscriptParsingError 
 } from './errors';
-import { transcriptSystemPrompt } from './prompts';
+import { refineRawTranscriptPrompt, processRefinedTranscriptPrompt } from './prompts';
 import { llmConfig } from '../../config/llm';
 import { writeFile, mkdir } from 'fs/promises';
 import path from 'path';
@@ -41,7 +41,39 @@ export class TranscriptProcessor {
     };
   }
 
-  async processTranscript(rawTranscript: string): Promise<ProcessingResponse> {
+  async refineRawTranscript(rawTranscript: string): Promise<string> {
+    try {
+      console.log('Starting refinement of raw transcript');
+
+      // TODO: Replace this with the appropriate OpenAI API call for refining transcripts
+      const refinedTranscript = await this.openai.chat.completions.create({
+        model: this.config.model,
+        messages: [
+          { role: 'system', content: refineRawTranscriptPrompt},
+          { role: 'user', content: rawTranscript}
+        ],
+        temperature: this.config.temperature,
+        max_tokens: this.config.maxTokens
+      });
+
+      // Extract the content of the response (to be refined once the API call is implemented)
+      const refinedText = refinedTranscript.choices[0]?.message?.content;
+      if (!refinedText) {
+        throw new LLMProcessingError('No response received while refining the raw transcript');
+      }
+
+      console.log('Refinement completed successfully');
+      return refinedText;
+    } catch (error) {
+      console.error('Error refining raw transcript:', error);
+      throw new TranscriptParsingError(
+        error instanceof Error ? error.message : 'Unknown error occurred during refinement'
+      );
+    }
+
+  }
+
+  async processRefinedTranscript(refinedTranscript: string): Promise<ProcessingResponse> {
     try {
       this.processingStages = [];
       this.updateStage('parsing', 'processing');
@@ -51,8 +83,8 @@ export class TranscriptProcessor {
       const completion = await this.openai.beta.chat.completions.parse({
         model: this.config.model,
         messages: [
-          { role: 'system', content: transcriptSystemPrompt },
-          { role: 'user', content: rawTranscript }
+          { role: 'system', content: processRefinedTranscriptPrompt },
+          { role: 'user', content: refinedTranscript }
         ],
         temperature: this.config.temperature,
         max_tokens: this.config.maxTokens,
