@@ -7,7 +7,7 @@ import type {
   ExplicitConnection,
   ImplicitConnection,
 } from '@/lib/types/transcript';
-import { sampleNodes, explicitConnections } from '@/data/samples/final-topics';
+import { sampleNodes, explicitConnections, implicitConnections } from '@/data/samples/final-topics';
 import { isExplicitConnection, isImplicitConnection } from '@/lib/types/transcript';
 
 // D3 imports
@@ -45,6 +45,9 @@ interface ForceLink extends SimulationLinkDatum<ForceNode> {
   type: 'explicit' | 'implicit';
   speaker?: string;  // Optional for explicit connections
   content?: string;  // Optional for explicit connections
+  // For implicit connections
+  insight?: string;
+  importance?: string;
 }
 
 interface ExpandedState {
@@ -147,6 +150,10 @@ const TopicView: React.FC = () => {
   }, [expandedNodes]);
 
 
+  // Add refs to store simulation and transform state
+  const simulationRef = useRef<any>(null);
+  const transformRef = useRef<any>(null);
+
   useEffect(() => {
     if (!svgRef.current) return;
 
@@ -223,7 +230,19 @@ const TopicView: React.FC = () => {
           ...conn,
           source: conn.source,
           target: conn.target
-        }))
+        })),
+      // Add implicit connections when showInsights is true
+      ...(showInsights
+        ? implicitConnections
+          .filter(conn =>
+            nodeIds.has(conn.source) && nodeIds.has(conn.target)
+          )
+          .map(conn => ({
+            ...conn,
+            source: conn.source,
+            target: conn.target
+          }))
+        : [])
     ];
 
     // Modify force simulation parameters
@@ -295,20 +314,22 @@ const TopicView: React.FC = () => {
           .style("left", `${event.pageX + 10}px`)
           .style("top", `${event.pageY - 10}px`)
           .html(d.type === 'explicit' ? `
-      <div class="space-y-2">
-        <p class="text-sm text-white/90 font-medium">Contributed by</p>
-        <p class="text-xs text-cyan-400 mt-1">${d.speaker}</p>
-        <p class="text-xs text-slate-300">
-          ${d.content}
-        </p>
-      </div>
-    ` : `
-      <div class="space-y-2">
-        <p class="text-sm text-white/90 font-medium">
-          Hidden Connection
-        </p>
-      </div>
-    `);
+    <div class="space-y-2">
+      <p class="text-sm text-white/90 font-medium">Contributed by</p>
+      <p class="text-xs text-cyan-400 mt-1">${d.speaker}</p>
+      <p class="text-xs text-slate-300">
+        ${d.content}
+      </p>
+    </div>
+  ` : `
+    <div class="space-y-2">
+      <p class="text-sm text-white/90 font-medium">Hidden Connection</p>
+      <p class="text-xs text-cyan-400">${(d as ImplicitConnection).insight}</p>
+      <p class="text-xs text-slate-300 mt-1">
+        ${(d as ImplicitConnection).importance}
+      </p>
+    </div>
+  `);
       })
       .on("mouseout", () => {
         // Remove highlighting
@@ -451,7 +472,7 @@ const TopicView: React.FC = () => {
     return () => {
       simulation.stop();
     };
-  }, [expandedNodes, getVisibleNodes],);
+  }, [expandedNodes, getVisibleNodes, showInsights],);
 
   return (
     <Card className="w-full min-h-screen bg-slate-900 relative">

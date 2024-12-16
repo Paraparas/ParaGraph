@@ -129,6 +129,83 @@ export const sampleNodes: TopicNode[] = [
       }
     }
   },
+  // Deep-level Technology nodes
+  {
+    id: 'TECHNOLOGY_ASR_DIARIZATION',
+    label: 'Speaker Diarization',
+    type: 'subtopic',
+    parentId: 'TECHNOLOGY_ASR',
+    topicKey: 'TECHNOLOGY',
+    summary: {
+      brief: 'Advanced speaker identification system',
+      details: {
+        keyPoints: [
+          'Real-time speaker tracking',
+          'Multi-speaker separation',
+          'Voice signature detection'
+        ],
+        timestamp: '[02:48-02:58]',
+        speakers: ['Kinan']
+      }
+    }
+  },
+  {
+    id: 'TECHNOLOGY_ASR_DIARIZATION_HW',
+    label: 'Hardware Pipeline',
+    type: 'subtopic',
+    parentId: 'TECHNOLOGY_ASR_DIARIZATION',
+    topicKey: 'TECHNOLOGY',
+    summary: {
+      brief: 'GPU optimization for real-time processing',
+      details: {
+        keyPoints: [
+          'Custom GPU configurations',
+          'Parallel processing optimization',
+          'Low-latency processing'
+        ],
+        timestamp: '[07:35-08:02]',
+        speakers: ['Kinan']
+      }
+    }
+  },
+  {
+    id: 'TECHNOLOGY_ASR_DIARIZATION_SW',
+    label: 'Software Integration',
+    type: 'subtopic',
+    parentId: 'TECHNOLOGY_ASR_DIARIZATION',
+    topicKey: 'TECHNOLOGY',
+    summary: {
+      brief: 'Software architecture for diarization',
+      details: {
+        keyPoints: [
+          'Pipeline integration',
+          'Real-time API design',
+          'System architecture'
+        ],
+        timestamp: '[07:35-08:02]',
+        speakers: ['Kinan', 'Qi']
+      }
+    }
+  },
+  {
+    id: 'TECHNOLOGY_PIPELINE_CONTEXTUAL',
+    label: 'Contextual Analysis',
+    type: 'subtopic',
+    parentId: 'TECHNOLOGY_PIPELINE',
+    topicKey: 'TECHNOLOGY',
+    summary: {
+      brief: 'Deep contextual understanding system',
+      details: {
+        keyPoints: [
+          'Context preservation',
+          'Cross-reference analysis',
+          'Semantic understanding'
+        ],
+        timestamp: '[06:10-07:35]',
+        speakers: ['Qi']
+      }
+    }
+  },
 
   // UX subtopics
   {
@@ -383,7 +460,7 @@ export const explicitConnections: ExplicitConnection[] = [
     speaker: 'Kinan',
     content: 'Speaker tracking visualization in real-time'
   },
-  
+
   // UX connections
   {
     source: 'UX_VIZ',
@@ -433,45 +510,59 @@ export const explicitConnections: ExplicitConnection[] = [
 
 export const implicitConnections: ImplicitConnection[] = [
   {
-    source: 'UX_COGNITIVE',
-    target: 'VISION_KNOWLEDGE',
-    type: 'implicit',
-    insight: 'Cognitive load optimization enhances knowledge transfer effectiveness',
-    importance: 'Shows how UX decisions directly impact learning outcomes'
-  },
-  {
-    source: 'TECHNOLOGY_PIPELINE',
-    target: 'UX_VIZ',
-    type: 'implicit',
-    insight: 'Multi-stage processing enables sophisticated visualization capabilities',
-    importance: 'Technical architecture supporting advanced user experience'
-  },
-  {
-    source: 'VISION_PATTERNS',
-    target: 'UX_NOTES',
-    type: 'implicit',
-    insight: 'Pattern recognition algorithms enhance note organization',
-    importance: 'AI capabilities improving user productivity'
-  },
-  {
-    source: 'UX_INTERFACE',
-    target: 'VISION_CROSS',
-    type: 'implicit',
-    insight: 'Adaptive interface design enables cross-domain applications',
-    importance: 'UX flexibility supporting broader impact'
-  },
-  {
-    source: 'TECHNOLOGY_REALTIME',
+    source: 'TECHNOLOGY_ASR_DIARIZATION_SW',
     target: 'VISION_ACTIVE',
     type: 'implicit',
-    insight: 'Real-time processing enables active learning feedback loops',
-    importance: 'Technical capabilities supporting core vision'
+    insight: 'Speaker identification enables personalized active learning',
+    importance: 'Shows how low-level technical capabilities enable high-level learning features'
   },
   {
-    source: 'PLANNING_TEAM',
-    target: 'VISION_KNOWLEDGE',
+    source: 'TECHNOLOGY_PIPELINE_CONTEXTUAL',
+    target: 'VISION_PATTERNS',
     type: 'implicit',
-    insight: 'Team coordination structure reflects knowledge transfer principles',
-    importance: 'Organizational alignment with product vision'
+    insight: 'Contextual understanding enables deeper pattern recognition',
+    importance: 'Demonstrates synergy between technical processing and cognitive insights'
   }
+  // {
+  //   source: 'UX_COGNITIVE',
+  //   target: 'VISION_KNOWLEDGE',
+  //   type: 'implicit',
+  //   insight: 'Cognitive load optimization enhances knowledge transfer effectiveness',
+  //   importance: 'Shows how UX decisions directly impact learning outcomes'
+  // },
+  // {
+  //   source: 'TECHNOLOGY_PIPELINE',
+  //   target: 'UX_VIZ',
+  //   type: 'implicit',
+  //   insight: 'Multi-stage processing enables sophisticated visualization capabilities',
+  //   importance: 'Technical architecture supporting advanced user experience'
+  // },
+  // {
+  //   source: 'VISION_PATTERNS',
+  //   target: 'UX_NOTES',
+  //   type: 'implicit',
+  //   insight: 'Pattern recognition algorithms enhance note organization',
+  //   importance: 'AI capabilities improving user productivity'
+  // },
+  // {
+  //   source: 'UX_INTERFACE',
+  //   target: 'VISION_CROSS',
+  //   type: 'implicit',
+  //   insight: 'Adaptive interface design enables cross-domain applications',
+  //   importance: 'UX flexibility supporting broader impact'
+  // },
+  // {
+  //   source: 'TECHNOLOGY_REALTIME',
+  //   target: 'VISION_ACTIVE',
+  //   type: 'implicit',
+  //   insight: 'Real-time processing enables active learning feedback loops',
+  //   importance: 'Technical capabilities supporting core vision'
+  // },
+  // {
+  //   source: 'PLANNING_TEAM',
+  //   target: 'VISION_KNOWLEDGE',
+  //   type: 'implicit',
+  //   insight: 'Team coordination structure reflects knowledge transfer principles',
+  //   importance: 'Organizational alignment with product vision'
+  // }
 ];
