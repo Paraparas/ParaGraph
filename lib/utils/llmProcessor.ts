@@ -63,6 +63,23 @@ export class TranscriptProcessor {
       }
 
       console.log('Refinement completed successfully');
+
+      // Save processed data in development mode
+      if (process.env.NODE_ENV === 'development') {
+        try {
+          const outputPath = path.join(process.cwd(), 'data', 'processed', 'refined-transcript.txt');
+          await mkdir(path.join(process.cwd(), 'data', 'processed'), { recursive: true });
+          await writeFile(
+            outputPath,
+            refinedText,
+            'utf-8'
+          );
+          console.log('Processed data saved to:', outputPath);
+        } catch (error) {
+          console.error('Error saving processed data:', error);
+        }
+      }
+
       return refinedText;
     } catch (error) {
       console.error('Error refining raw transcript:', error);
