@@ -3,6 +3,8 @@
 import React from 'react';
 import MeetingOverview from './MeetingOverview';
 import DataCard from './DataCard';
+import { useMeetingData } from '@/lib/hooks/useMeetingData';
+
 
 // Mock data
 const topicData = [
@@ -14,6 +16,8 @@ const topicData = [
 ];
 
 const QuickView: React.FC = () => {
+  const { meetingData, isLoading, error } = useMeetingData('cached');
+
   return (
     <div className="space-y-6">
       {/* Meeting Overview with Topic Distribution */}

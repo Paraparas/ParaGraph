@@ -45,8 +45,16 @@ Additional Notes:
 Apply these guidelines while preserving the authentic character of the meeting and its participants. The goal is a professional, readable transcript that accurately represents the meeting’s content and flow.
 `
 
-export const processRefinedTranscriptPrompt: string = "Extract time-segmented summaries from meeting transcripts, including topics, timestamps, content, and speaker information."
+export const timelineViewPrompt: string = "Extract time-segmented summaries from meeting transcripts, including topics, timestamps, content, and speaker information."
 
+export const quickViewPrompt: string = `You are an expert in analyzing meeting transcripts. Your task is to parse a meeting transcript and create an overview of the meeting. This overview will include two components: 
+
+1) Key insights: a list of 3-5 key insights from the meeting. 
+
+2) Action items: for each person in the meeting, summarize the tasks that the person will or should perform after the meeting.`
+
+
+export const topicViewPrompt: string = `Make a topic view from the following transcript.`
 
 // export const transcriptAnalysisPrompts: PromptTemplate = {
 //   system: `You are an expert in analyzing meeting transcripts and extracting structured information.
