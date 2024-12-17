@@ -12,7 +12,7 @@ const MeetingVisualizer = () => {
   return (
     <div className="p-6 max-w-[1600px] mx-auto">
       <h1 className="text-2xl font-semibold text-white mb-6">
-        Meeting Visualization
+        ParaGraph
       </h1>
 
       <div className="space-y-6">

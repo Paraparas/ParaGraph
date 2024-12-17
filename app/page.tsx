@@ -62,7 +62,7 @@ export default function Home() {
               Para<span className="text-indigo-400">Graph</span>
             </h1>
             <p className="text-xl text-slate-300 max-w-2xl mx-auto">
-              Transform your meeting discussions into interactive visual journeys
+            Transform your Unstructured Meetings into Measurable Knowledge
             </p>
           </motion.div>
 
