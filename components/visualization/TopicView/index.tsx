@@ -310,8 +310,8 @@ const TopicView: React.FC = () => {
     const linkUpdate = linkEnter.merge(linkSelection)
     .attr("class", "link")
     .attr("stroke", d => d.type === 'explicit' ? "#94a3b8" : "#22d3ee")
-    .attr("stroke-width", 2)
-    .attr("stroke-dasharray", d => d.type === 'implicit' ? "5,5" : "none")
+    .attr("stroke-width", d => d.type === 'explicit' ? 3 : 5) // Thicker for implicit links
+    .attr("stroke-dasharray", d => d.type === 'implicit' ? "8,4" : "none") // Also adjusted dash pattern
     .attr("fill", "none")
     .attr("opacity", 0.6)
     .on("mouseover", (event, d) => {
