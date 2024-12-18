@@ -5,8 +5,8 @@ import { cn } from "@/lib/utils"
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
-  title: 'Para Research Navigator',
-  description: 'Your Personal Active Research Advisor',
+  title: 'ParaGraph',
+  description: 'Transform Unstructured Meetings into Measurable Knowledge',
 }
 
 export default function RootLayout({
