@@ -8,7 +8,7 @@ ParaGraph transforms your unstructured meetings into measurable knowledge throug
 
 ### Initial Setup
 
-- Navigate to the landing page: <our final URL>
+- Navigate to the landing page: https://graph.paraparas.com/
 
 ### Uploading Content
 
@@ -19,7 +19,7 @@ ParaGraph transforms your unstructured meetings into measurable knowledge throug
   - Supported formats: TXT, DOCX, PDF
   - Required format: Speaker labels (e.g., from Google Meet)
 
-[SCREENSHOT: Landing page with upload options]
+![Landing](./public/images/Landing.png)
 
 ## 2. QuickView
 
@@ -29,10 +29,9 @@ The QuickView provides an immediate summary of your meeting:
 
 - Duration and participant count
 - Topic distribution with interactive pie chart
-- Key insights
-- Action items
+- Key insights & Action items
 
-[SCREENSHOT: QuickView layout with topic distribution]
+![QuickView](./public/images/QuickView.png)
 
 ## 3. MemberView
 
@@ -45,13 +44,14 @@ The MemberView provides a detailed chronological visualization of your meeting:
   - Multiple selection supported
 - Speaker Lanes
   - Collapsable individual timelines per speaker
-  - Basic statistics: name, duration, covered topics
+  - Basic statistics: speaker name, speech duration, covered topics
 - Interactive Segments
   - Hover over topics for brief summaries
   - Click segments for detailed summaries
-  - Filter by category
 
-[SCREENSHOT: MemberView layout with speaker lanes]
+![Timeline_seg1](./public/images/Timeline_seg1.png)
+
+![Timeline_seg2](./public/images/Timeline_seg1.png)
 
 ## 4. ProjectView
 
@@ -59,32 +59,25 @@ The MemberView provides a detailed chronological visualization of your meeting:
 
 The ProjectView displays your meeting content as an interactive knowledge graph:
 
-- Main topic nodes
-- Subtopic connections
-- Hidden insights
+- Extracted and categorized topics and subtopics by AI
+- Explicit and implicit connections through analogy-making
 
-#### Node Types
+![TopicView](./public/images/TopicView.png)
 
-1. Main Topics
-   - Expandable multi-level content
-   - Consistent color-coded by category
-2. Subtopics
-   - Extracted and categorized by AI
-
-[SCREENSHOT: ProjectView knowledge graph]
+![TopicView2](./public/images/TopicView2.png)
 
 ### Connection Types
 
 1. Explicit Connections
    - Solid lines
    - Speaker attribution
-   - Direct relationships
 2. Hidden Connections
    - Dashed lines
    - AI-discovered insights
-   - Cross-topic relationships
 
-[SCREENSHOT: Connection types demonstration]
+![TopicView3](./public/images/TopicView3.png)
+
+![TopicView4](./public/images/TopicView4.png)
 
 ## 5. Advanced Features
 
@@ -99,7 +92,9 @@ The "Discover Insights" feature reveals hidden connections in your knowledge gra
    - Importance rating
    - Related concepts
 
-[SCREENSHOT: Discover Insights feature]
+![TopicView5](./public/images/TopicView5.png)
+
+![TopicView6](./public/images/TopicView6.png)
 
 ### Navigation Tips
 
