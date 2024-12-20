@@ -3,8 +3,9 @@
 import React from 'react';
 import MeetingOverview from './MeetingOverview';
 import DataCard from './DataCard';
+import { useMeetingData } from '@/lib/hooks/useMeetingData';
 
-// Mock data
+// Mock data for topic distribution (can be ignored for now)
 const topicData = [
   { name: 'Vision', value: 8, color: '#8b5cf6' },
   { name: 'Technology', value: 7, color: '#10b981' },
@@ -14,58 +15,82 @@ const topicData = [
 ];
 
 const QuickView: React.FC = () => {
+  const { meetingData, isLoading, error } = useMeetingData('cached');
+
+  // Handle loading and error states
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
+  function formatDuration(seconds: number): string {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}m ${secs}s`;
+  }
+  
+  // Extract data for MeetingOverview
+  const participants = meetingData?.speakers.length || 0;
+  const segments = meetingData?.segments.length || 0;
+  const duration = meetingData
+    ? formatDuration(
+        Math.max(...meetingData.segments.map(seg => seg.start + seg.duration), 0)
+      )
+    : '0s';
+  const topics = meetingData
+    ? new Set(meetingData.segments.map(seg => seg.topic)).size
+    : 0;
+
+  // Extract key insights and action items
+  const keyInsights = meetingData?.key_insights || [];
+  const actionItems = meetingData?.action_items || [];
+
   return (
     <div className="space-y-6">
       {/* Meeting Overview with Topic Distribution */}
       <MeetingOverview
-        duration="24m 22s"
-        participants={4}
-        topics={5}
-        segments={34}
+        duration={duration}
+        participants={participants}
+        topics={topics}
+        segments={segments}
         topicData={topicData}
       />
 
       {/* Key Insights */}
       <DataCard title="Key Insights">
         <div className="space-y-3">
-          <div className="flex gap-3 text-slate-300">
-            <span className="text-slate-400">•</span>
-            <div>ParaGraph takes an active approach to knowledge sharing, moving beyond passive storage to enable dynamic connection discovery and pattern recognition.</div>
-          </div>
-          <div className="flex gap-3 text-slate-300">
-            <span className="text-slate-400">•</span>
-            <div>The system employs a multi-stage processing pipeline that combines real-time analysis with deeper, context-aware processing to identify meaningful connections.</div>
-          </div>
-          <div className="flex gap-3 text-slate-300">
-            <span className="text-slate-400">•</span>
-            <div>Privacy and security are prioritized through self-hosted infrastructure options and granular control over connection sharing.</div>
-          </div>
-          <div className="flex gap-3 text-slate-300">
-            <span className="text-slate-400">•</span>
-            <div>The visualization system balances sophisticated analysis capabilities with intuitive user experience, using color coding and interactive layers.</div>
-          </div>
+          {keyInsights.length > 0 ? (
+            keyInsights.map((insight, index) => (
+              <div key={index} className="flex gap-3 text-slate-300">
+                <span className="text-slate-400">•</span>
+                <div>{insight}</div>
+              </div>
+            ))
+          ) : (
+            <div className="text-slate-400">No key insights available.</div>
+          )}
         </div>
       </DataCard>
 
       {/* Action Items */}
       <DataCard title="Action Items">
         <div className="space-y-3">
-          <div className="flex gap-3 text-slate-300">
-            <span className="text-slate-400">•</span>
-            <div>Muhammad will explore the visualization system thoroughly before starting development work on the processing pipeline.</div>
-          </div>
-          <div className="flex gap-3 text-slate-300">
-            <span className="text-slate-400">•</span>
-            <div>Kinan will conduct an architecture walkthrough with Muhammad tomorrow, focusing on the connection detection system.</div>
-          </div>
-          <div className="flex gap-3 text-slate-300">
-            <span className="text-slate-400">•</span>
-            <div>Ewa will continue refining the visualization components, with emphasis on making complex networks more intuitive.</div>
-          </div>
-          <div className="flex gap-3 text-slate-300">
-            <span className="text-slate-400">•</span>
-            <div>Qi will gather more specific requirements from academic and corporate partners to guide feature prioritization.</div>
-          </div>
+          {actionItems.length > 0 ? (
+            actionItems.map((item, index) => (
+              <div key={index} className="flex gap-3 text-slate-300">
+                <span className="text-slate-400">•</span>
+                <div>
+                  <strong>{item.person}</strong> -{' '}
+                  {item.tasks.join(', ')}
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className="text-slate-400">No action items available.</div>
+          )}
         </div>
       </DataCard>
     </div>

@@ -10,8 +10,9 @@ export async function getMeetingData(options: {
 }): Promise<MeetingData> {
   const {
     mode = 'cached',
-    transcriptPath = 'data/raw/final.md',
-    cachePath = 'data/processed/final_refined.json'
+    transcriptPath = 'data/raw/raw-test.txt',
+    cachePath = 'data/processed/example-combined-processed.json',
+    // cachePath = 'data/processed/test-meeting-1.json'
   } = options;
 
   try {
@@ -22,7 +23,8 @@ export async function getMeetingData(options: {
         'utf-8'
       );
       const processor = new TranscriptProcessor();
-      const result = await processor.processTranscript(rawTranscript);
+      const refinedTranscript = await processor.refineRawTranscript(rawTranscript);
+      const result = await processor.processRefinedTranscript(refinedTranscript);
       if (!result.success) {
         throw new Error(result.error);
       }
