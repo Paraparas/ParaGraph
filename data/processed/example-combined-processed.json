@@ -1,0 +1,330 @@
+{
+    "speakers": [
+      {
+        "id": "1",
+        "name": "Qi Chen",
+        "role": "Project Lead"
+      },
+      {
+        "id": "2",
+        "name": "Kinan Martin",
+        "role": "Developer"
+      },
+      {
+        "id": "3",
+        "name": "Muhammad Asad",
+        "role": "Team Member"
+      }
+    ],
+    "segments": [
+      {
+        "speaker_id": "1",
+        "topic": "ASR Module Decision",
+        "start": 0,
+        "duration": 6,
+        "content": "Actually, getting back to Kinan's question at the beginning, we need to make a decision today regarding the ASR module. If we want to implement the ASR module, we can allow users to upload recordings, but currently, it's optional since users can start from their transcripts.",
+        "briefSummary": "Decision needed on ASR module implementation.",
+        "detailedSummary": [
+          "Discussed the need for a decision on the ASR module.",
+          "Mentioned user options for uploading recordings or starting from transcripts."
+        ]
+      },
+      {
+        "speaker_id": "1",
+        "topic": "ASR Module Implementation",
+        "start": 6,
+        "duration": 14,
+        "content": "It would be better to have the ASR module, but if the implementation takes too long, we may need to reconsider. Our focus should be on integrating with OpenAI or cloud services and improving visualization. We have the capability as ASR developers to integrate later, so we need your input on whether this is manageable now or if we should postpone it.",
+        "briefSummary": "Considerations for ASR module implementation timeline.",
+        "detailedSummary": [
+          "Stressed the importance of ASR module for user experience.",
+          "Highlighted the need to integrate with OpenAI and improve visualization."
+        ]
+      },
+      {
+        "speaker_id": "2",
+        "topic": "Challenges of ASR Integration",
+        "start": 20,
+        "duration": 16,
+        "content": "I believe ASR integration is definitely possible. However, one challenge might be speaker diarization, which involves identifying who is speaking when. This can be more difficult with a raw audio recording of the entire meeting.",
+        "briefSummary": "Identified challenges in ASR integration.",
+        "detailedSummary": [
+          "Confirmed feasibility of ASR integration.",
+          "Pointed out difficulties with speaker diarization in raw audio."
+        ]
+      },
+      {
+        "speaker_id": "1",
+        "topic": "Speaker Diarization",
+        "start": 36,
+        "duration": 6,
+        "content": "Yes, exactly.",
+        "briefSummary": "Agreement on the challenges of speaker diarization.",
+        "detailedSummary": []
+      },
+      {
+        "speaker_id": "2",
+        "topic": "Google Meet API Benefits",
+        "start": 42,
+        "duration": 14,
+        "content": "With Google Meet's API, they record each person's audio individually, making it easier to identify speakers. It seems Muhammad has left, but this capability is beneficial.",
+        "briefSummary": "Discussed benefits of Google Meet API for speaker identification.",
+        "detailedSummary": [
+          "Mentioned Google Meet's capability for individual audio recording.",
+          "Noted the advantage for speaker identification."
+        ]
+      },
+      {
+        "speaker_id": "1",
+        "topic": "Integration with Meeting Applications",
+        "start": 56,
+        "duration": 18,
+        "content": "Yes, with Google Meet, we not only get speaker diarization but also speaker identification for free. As we develop the product, we want to ensure integration with major meeting applications like Zoom, Google Meet, and Microsoft Teams. This will be a key feature in our plan.",
+        "briefSummary": "Importance of integrating with major meeting applications.",
+        "detailedSummary": [
+          "Highlighted the need for integration with major platforms.",
+          "Stressed the importance of speaker identification features."
+        ]
+      },
+      {
+        "speaker_id": "1",
+        "topic": "Focus on LLM Integration",
+        "start": 76,
+        "duration": 18,
+        "content": "However, we need to focus more on integrating with large language models. I still have a few advanced features in mind, but we should prioritize what we can achieve for the demo. Hi Muhammad, can you hear us?",
+        "briefSummary": "Emphasized focus on LLM integration for the demo.",
+        "detailedSummary": [
+          "Discussed prioritization of tasks for the demo.",
+          "Mentioned advanced features for future consideration."
+        ]
+      },
+      {
+        "speaker_id": "3",
+        "topic": "Connection Issue",
+        "start": 84,
+        "duration": 6,
+        "content": "Yes, sorry for the disturbance; I had an internet connection issue.",
+        "briefSummary": "Muhammad apologizes for connection issues.",
+        "detailedSummary": []
+      },
+      {
+        "speaker_id": "1",
+        "topic": "Recording Confirmation",
+        "start": 90,
+        "duration": 6,
+        "content": "No worries, we have the recording. Okay.",
+        "briefSummary": "Confirmed that the meeting is being recorded.",
+        "detailedSummary": []
+      },
+      {
+        "speaker_id": "2",
+        "topic": "Transcript Conversion Tools",
+        "start": 96,
+        "duration": 16,
+        "content": "To summarize, I will explore tools that can convert a raw recording into a transcript. It’s feasible, and it doesn’t have to be perfect. Even without speaker identification, the model might produce an acceptable output for the demo by deducing the speaker from context.",
+        "briefSummary": "Plan to explore tools for transcript conversion.",
+        "detailedSummary": [
+          "Summarized the need for tools to convert recordings to transcripts.",
+          "Mentioned the feasibility of producing acceptable outputs without perfect speaker identification."
+        ]
+      },
+      {
+        "speaker_id": "1",
+        "topic": "Data Processing Pipeline",
+        "start": 102,
+        "duration": 10,
+        "content": "Yes, that’s right.",
+        "briefSummary": "Agreement on the approach to transcript conversion.",
+        "detailedSummary": []
+      },
+      {
+        "speaker_id": "2",
+        "topic": "Pipeline for LLM",
+        "start": 108,
+        "duration": 14,
+        "content": "I’ll look into it and keep you updated. Our pipeline processes data from either recordings or transcripts to the large language model, which then parses the data for our visualization layer. As long as we have reliable parsed data, the source doesn’t matter.",
+        "briefSummary": "Discussed data processing pipeline for LLM integration.",
+        "detailedSummary": [
+          "Outlined the pipeline for processing data from recordings or transcripts.",
+          "Emphasized the importance of reliable parsed data."
+        ]
+      },
+      {
+        "speaker_id": "1",
+        "topic": "Combination of Modules",
+        "start": 116,
+        "duration": 6,
+        "content": "Exactly, that’s why we feel it’s a combination of two modules. We’re okay with either option as long as we can provide reliable parsed data to the visualization module.",
+        "briefSummary": "Confirmed the combination of modules for data processing.",
+        "detailedSummary": []
+      },
+      {
+        "speaker_id": "2",
+        "topic": "Review of Existing Repo",
+        "start": 132,
+        "duration": 6,
+        "content": "On the topic of LLM integration, I was reviewing the existing repo, which includes a test meeting transcription and an example JSON file of the annotated meeting.",
+        "briefSummary": "Reviewed existing resources for LLM integration.",
+        "detailedSummary": []
+      },
+      {
+        "speaker_id": "1",
+        "topic": "GPT-4 Model Features",
+        "start": 138,
+        "duration": 8,
+        "content": "Yes, I see.",
+        "briefSummary": "Acknowledged the review of existing resources.",
+        "detailedSummary": []
+      },
+      {
+        "speaker_id": "2",
+        "topic": "Structured Outputs in GPT-4",
+        "start": 146,
+        "duration": 18,
+        "content": "I noticed you used one of the GPT-4 models, and there’s a new functionality called structured outputs. This allows the OpenAI model to generate output that follows a specific JSON schema, ensuring valid JSON output.",
+        "briefSummary": "Discussed new structured outputs feature in GPT-4.",
+        "detailedSummary": [
+          "Highlighted the structured outputs functionality in GPT-4.",
+          "Explained its importance for generating valid JSON output."
+        ]
+      },
+      {
+        "speaker_id": "1",
+        "topic": "Implementation of Structured Outputs",
+        "start": 164,
+        "duration": 8,
+        "content": "Sure.",
+        "briefSummary": "Agreed to the implementation of structured outputs.",
+        "detailedSummary": []
+      },
+      {
+        "speaker_id": "2",
+        "topic": "Screen Sharing for Implementation",
+        "start": 172,
+        "duration": 18,
+        "content": "I was able to implement this functionality. I can share my screen if that interests you.",
+        "briefSummary": "Offered to share screen for demonstration.",
+        "detailedSummary": []
+      },
+      {
+        "speaker_id": "1",
+        "topic": "Screen Sharing Confirmation",
+        "start": 190,
+        "duration": 6,
+        "content": "Yes, please do.",
+        "briefSummary": "Requested screen sharing for further details.",
+        "detailedSummary": []
+      },
+      {
+        "speaker_id": "3",
+        "topic": "Screen Sharing",
+        "start": 196,
+        "duration": 6,
+        "content": "Share your screen.",
+        "briefSummary": "Encouraged Kinan to share his screen.",
+        "detailedSummary": []
+      },
+      {
+        "speaker_id": "2",
+        "topic": "Screen Sharing Demonstration",
+        "start": 202,
+        "duration": 8,
+        "content": "Can you see this?",
+        "briefSummary": "Initiated screen sharing.",
+        "detailedSummary": []
+      },
+      {
+        "speaker_id": "1",
+        "topic": "Screen Sharing Acknowledgment",
+        "start": 210,
+        "duration": 4,
+        "content": "Yes, we can see it.",
+        "briefSummary": "Confirmed visibility of shared screen.",
+        "detailedSummary": []
+      },
+      {
+        "speaker_id": "2",
+        "topic": "Example Transcript Functionality",
+        "start": 214,
+        "duration": 14,
+        "content": "This is the example transcript of the meeting. I have a function that makes a call to the model. Only specific versions of the model can do this, but we can parse the transcript and fit the response format.",
+        "briefSummary": "Demonstrated example transcript functionality.",
+        "detailedSummary": [
+          "Showed the example transcript from the meeting.",
+          "Explained the function that calls the model for parsing."
+        ]
+      },
+      {
+        "speaker_id": "2",
+        "topic": "Speaker ID Adjustment",
+        "start": 228,
+        "duration": 12,
+        "content": "One thing I adjusted is that the speaker ID is now not the name of the segment. Previously, it was M or Q, depending on the person's name, but now it’s structured differently.",
+        "briefSummary": "Adjusted speaker ID structure for output.",
+        "detailedSummary": [
+          "Described changes to speaker ID representation.",
+          "Explained the need for structured output."
+        ]
+      },
+      {
+        "speaker_id": "1",
+        "topic": "Understanding Adjustments",
+        "start": 240,
+        "duration": 6,
+        "content": "Okay, understood.",
+        "briefSummary": "Acknowledged the adjustments made.",
+        "detailedSummary": []
+      },
+      {
+        "speaker_id": "2",
+        "topic": "JSON Output Generation",
+        "start": 246,
+        "duration": 16,
+        "content": "This adjustment allows us to generate a JSON output that matches the format needed for visualization. It includes a detailed summary, and the existing code has a section dedicated to verifying that the output is a correctly formed JSON object.",
+        "briefSummary": "Explained JSON output generation process.",
+        "detailedSummary": [
+          "Clarified how adjustments facilitate JSON output for visualization.",
+          "Mentioned verification processes for JSON output."
+        ]
+      },
+      {
+        "speaker_id": "1",
+        "topic": "Positive Feedback",
+        "start": 262,
+        "duration": 6,
+        "content": "Yes, that’s great.",
+        "briefSummary": "Expressed approval of the JSON output process.",
+        "detailedSummary": []
+      }
+    ],
+    "key_insights": [
+      "The team needs to make a decision on implementing the ASR module today, weighing the benefits against potential delays.",
+      "Speaker diarization is a key challenge for ASR integration, but using Google Meet's API can simplify this process.",
+      "Integrating with large language models (LLMs) is a priority, and the team is exploring options for reliable data parsing from both recordings and transcripts.",
+      "Kinan has made progress with the existing repo, implementing structured outputs for better JSON formatting, which is crucial for visualization."
+    ],
+    "action_items": [
+      {
+        "person": "Qi Chen",
+        "tasks": [
+          "Decide on the implementation of the ASR module based on team input.",
+          "Focus on prioritizing features for the upcoming demo."
+        ]
+      },
+      {
+        "person": "Kinan Martin",
+        "tasks": [
+          "Explore tools for converting raw recordings into transcripts.",
+          "Keep the team updated on the progress of ASR integration and speaker diarization.",
+          "Share the implementation details of structured outputs for JSON formatting with the team."
+        ]
+      },
+      {
+        "person": "Muhammad Asad",
+        "tasks": [
+          "Stay updated on the ASR module decision and its implications for integration.",
+          "Participate in discussions regarding the integration of large language models."
+        ]
+      }
+    ]
+  }

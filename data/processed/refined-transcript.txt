@@ -1,0 +1,53 @@
+[00:00-00:06] Qi Chen: “Actually, getting back to Kinan's question at the beginning, we need to make a decision today regarding the ASR module. If we want to implement the ASR module, we can allow users to upload recordings, but currently, it's optional since users can start from their transcripts.”
+
+[00:06-00:20] Qi Chen: “It would be better to have the ASR module, but if the implementation takes too long, we may need to reconsider. Our focus should be on integrating with OpenAI or cloud services and improving visualization. We have the capability as ASR developers to integrate later, so we need your input on whether this is manageable now or if we should postpone it.”
+
+[00:20-00:36] Kinan Martin: “I believe ASR integration is definitely possible. However, one challenge might be speaker diarization, which involves identifying who is speaking when. This can be more difficult with a raw audio recording of the entire meeting.”
+
+[00:36-00:42] Qi Chen: “Yes, exactly.”
+
+[00:42-00:56] Kinan Martin: “With Google Meet's API, they record each person's audio individually, making it easier to identify speakers. It seems Muhammad has left, but this capability is beneficial.”
+
+[00:56-01:06] Qi Chen: “Yes, with Google Meet, we not only get speaker diarization but also speaker identification for free. As we develop the product, we want to ensure integration with major meeting applications like Zoom, Google Meet, and Microsoft Teams. This will be a key feature in our plan.”
+
+[01:06-01:24] Qi Chen: “However, we need to focus more on integrating with large language models. I still have a few advanced features in mind, but we should prioritize what we can achieve for the demo. Hi Muhammad, can you hear us?”
+
+[01:24-01:30] Muhammad Asad: “Yes, sorry for the disturbance; I had an internet connection issue.”
+
+[01:30-01:36] Qi Chen: “No worries, we have the recording. Okay.”
+
+[01:36-01:52] Kinan Martin: “To summarize, I will explore tools that can convert a raw recording into a transcript. It’s feasible, and it doesn’t have to be perfect. Even without speaker identification, the model might produce an acceptable output for the demo by deducing the speaker from context.”
+
+[01:52-02:02] Qi Chen: “Yes, that’s right.”
+
+[02:02-02:16] Kinan Martin: “I’ll look into it and keep you updated. Our pipeline processes data from either recordings or transcripts to the large language model, which then parses the data for our visualization layer. As long as we have reliable parsed data, the source doesn’t matter.”
+
+[02:16-02:32] Qi Chen: “Exactly, that’s why we feel it’s a combination of two modules. We’re okay with either option as long as we can provide reliable parsed data to the visualization module.”
+
+[02:32-02:38] Kinan Martin: “On the topic of LLM integration, I was reviewing the existing repo, which includes a test meeting transcription and an example JSON file of the annotated meeting.”
+
+[02:38-02:46] Qi Chen: “Yes, I see.”
+
+[02:46-03:04] Kinan Martin: “I noticed you used one of the GPT-4 models, and there’s a new functionality called structured outputs. This allows the OpenAI model to generate output that follows a specific JSON schema, ensuring valid JSON output.”
+
+[03:04-03:10] Qi Chen: “Sure.”
+
+[03:10-03:28] Kinan Martin: “I was able to implement this functionality. I can share my screen if that interests you.”
+
+[03:28-03:34] Qi Chen: “Yes, please do.”
+
+[03:34-03:40] Muhammad Asad: “Share your screen.”
+
+[03:40-03:46] Kinan Martin: “Can you see this?”
+
+[03:46-03:50] Qi Chen: “Yes, we can see it.”
+
+[03:50-04:04] Kinan Martin: “This is the example transcript of the meeting. I have a function that makes a call to the model. Only specific versions of the model can do this, but we can parse the transcript and fit the response format.”
+
+[04:04-04:16] Kinan Martin: “One thing I adjusted is that the speaker ID is now not the name of the segment. Previously, it was M or Q, depending on the person's name, but now it’s structured differently.”
+
+[04:16-04:26] Qi Chen: “Okay, understood.”
+
+[04:26-04:42] Kinan Martin: “This adjustment allows us to generate a JSON output that matches the format needed for visualization. It includes a detailed summary, and the existing code has a section dedicated to verifying that the output is a correctly formed JSON object.”
+
+[04:42-04:48] Qi Chen: “Yes, that’s great.”

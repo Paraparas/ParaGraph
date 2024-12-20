@@ -1,0 +1,68 @@
+etb-sbze-hgb (2024-12-01 14:06 GMT) - Transcript
+Attendees
+Kinan Martin, Kinan Martin's Presentation, Muhammad Asad, Qi Chen, Qi Chen's Presentation
+Transcript
+Qi Chen: actually getting back to Kina's question at the beginning.
+Qi Chen: decision probably within today if we want to have the ASR module right so if we want to have the meaning the ASR module we can allow users to upload recordings but now actually it's optional because users they can start from their transcript so it would be better if we have that AR module but meaning if the implementation if it would take
+Qi Chen: probably a few days that's just too much because we want to focus on integration with open AI or cloud and a better visualization and know and also we have the capability because we are some ASR developers researchers we can always integrate with ASR later and then that's our plan and so we really need you decide for us if you think is manageable let's do it. So if you think it's too much we can maybe do it later. Yeah.
+Kinan Martin: So, I think that the ASR integration is definitely possible. one thing that might be harder to do is cuz for instance,…
+Qi Chen: 
+Kinan Martin: we could definitely pass the entire audio. of the meeting into some model like whisper or…
+Qi Chen: Yeah. Yes.
+Kinan Martin: something. But I think some things that might be harder are things speaker diorization. So, basically,…
+Qi Chen: Yes. Yes.
+Kinan Martin: indicating who is speaking when. and that's something that is maybe a little bit harder…
+Qi Chen: Yes. speaker.
+Kinan Martin: if you're just going from a raw audio recording of the whole meeting. because with Google Meet with their API, I think that they're actually recording each person's audio individually and so they can Yeah.
+Qi Chen: Yeah. Yes. Yes.
+Kinan Martin: Yeah. And so it seems like Muhammad left but they can more easily identify who is speaking at each time.
+Qi Chen: 
+Kinan Martin: Yeah. Yeah.
+Qi Chen: Yes. Yeah.
+Qi Chen: So basically if we use Google meet we get not only the speaker derization we even get the speaker identification for free instantly. and also maybe later so when we make it into product we want make sure we integrate with all those major meeting application zoom google meet Microsoft all like it I mean it will be a feature in our plan but probably actually we really need you to work more on the integration with large language model because actually in my mind I still have a few more I mean
+Qi Chen: 
+Qi Chen: more advanced feature. So probably I don't know…
+Kinan Martin: 
+Qi Chen: if we have time but definitely we want to focus on something more I mean just focus for the demo. Yes. Hi Muhammad C can you hear us?
+Kinan Martin: I see.
+Muhammad Asad: Yes, sorry. Sorry disturbance internet connection.
+Qi Chen: No worries because we have the recording. No worries. Okay. Okay.
+Kinan Martin: So I guess maybe to summarize, so I think that maybe I'll try to look into how or what tools or things might exist right now to go from a raw recording to a transcript. I think it's possible and it probably also doesn't have to be perfect. So for instance maybe even without the speaker identification the model could somehow make something that would be acceptable for the demo or it might be able to sort of deduce the speaker from the context.
+Qi Chen: 
+Kinan Martin: But yeah So I think I'll look into it and…
+Qi Chen: Yeah. Yeah.
+Qi Chen: So, yeah.
+Kinan Martin: then I'll let you guys know. Yeah. Mhm. Yeah.
+Qi Chen: Yeah. Yeah. So, basically I mean because our entire pipelines is from either the recording or the transcript to the large language model and to the pars label the data and finally to our visualization layer. So as long as we have those the quality of those processed data after the large language model so we don't care the source if is from the recording or transcript.
+00:05:00
+Qi Chen: 
+Qi Chen: So basically that's why it feels like a combination of two modules from you right. So either I mean option we are okay with as long as is we can have reliable parsed data to feed to the visualization module.
+Qi Chen: Yeah. Okay. Yes. Yes. Yes.
+Kinan Martin: And…
+Kinan Martin: I guess and I guess on that topic of the LLM integration because that leads into what I was working on so basically in the existing repo there's that test meeting transcription of the meeting and then there's also the example JSON file of the sort of annotated meeting or…
+Qi Chen: 
+Qi Chen: Yes. Yes.
+Kinan Martin: the lip processed meeting. and…
+Qi Chen: Yes. Yes.
+Kinan Martin: so what I was able to do, so I think that for that one, or I was looking at how you had implemented it, Chi. and I think that you used one of the …
+Qi Chen: Yes. Yes. Yes.
+Kinan Martin: let me see. you used one of the GPT4 models, I believe. so there's a new functionality called structured outputs and I'm also explaining for Muhammad because I briefly mentioned it to Chi so there's a capability called structured outputs…
+Qi Chen: Yeah. Yeah.
+Kinan Martin: where basically you can use the open AI model to generate exactly following a certain JSON schema that you can give it. And so cuz the problem is that you can tell the language model give me a JSON output that follows this guideline, but the model will never like you're not ever guaranteed to have that exact output. And then it also may have other things around it. so the nice thing about this is that it allows you to generate a JSON or make the model it will actually only allow the model to select tokens that match the JSON schema that you give it. And so you're essentially guaranteed that you will get a valid JSON output.
+Qi Chen: Sure.
+Kinan Martin: 
+Kinan Martin: And so that was what I was able to implement here. I guess I could show my screen maybe if that is interesting to you guys.
+Qi Chen: Yeah. Yeah.
+Muhammad Asad: Share your screen.
+Qi Chen: Yeah. Yeah.
+Kinan Martin: Yeah. can you guys see this?
+Qi Chen: Yeah. Yeah. Okay. Yeah.
+Kinan Martin: So this is the example transcript of the meeting and that's the input. and then I have this function here where basically it makes a call to and it's actually sort of only specific versions or new versions of the model can do it.  But with using this model we're able to parse the transcript and fit this response format.
+Kinan Martin: One thing also that I had to do so this is actually not exactly the same JSON format that you were using Chi because one difference here is that the speaker ID is not like the name of the segment…
+Qi Chen: Okay. Yes. Yes.
+Kinan Martin: because otherwise like you you can't yeah it's sort of like a slight thing but basically before I think this was M or Q or something depending on the person's name but now it's  here. but what this allows us to do is it allows us to so if I call this or if I call that and then I just read the JSON file, then I'm able to get a JSON output that looks like this, which is exactly the format that we would need to generate that visualization.
+00:10:00
+Kinan Martin: So yeah, so it has the rie detailed summary, and then the nice thing is that I think in the code that exists already there's a big sort of section that's all about verifying the output and…
+Qi Chen: 
+Kinan Martin: making sure that it is actually a correctly formed JSON thing.
+Qi Chen: Yeah. Yes.
